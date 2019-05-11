@@ -1,0 +1,71 @@
+Before-install:
+  - mkdir -p ~/python-virtualenvs
+
+Vim:
+  - brew install vim && brew install macvim
+  - ln -sf ~/dotfiles/vim/vimrc.vim ~/.vimrc
+  - mkdir -p $HOME/.vim/undo
+
+Emacs:
+  - brew tap d12frosted/emacs-plus
+  - brew install emacs-plus aspell
+  - mkdir -p ~/.emacs-saves ~/.emacs-undo
+  - Spacemacs:
+      - rm -rf ~/.emacs.d && ln -sf ~/dotfiles/emacs/spacemacs/emacs_d ~/.emacs.d
+      - rm -rf ~/.spacemacs && ln -sf ~/dotfiles/emacs/spacemacs/spacemacs.el ~/.spacemacs
+  - Doom:
+      - rm -rf ~/.emacs.d && ln -sf ~/dotfiles/emacs/doom/emacs_d ~/.emacs.d
+      - mkdir -p ~/.doom.d && ln -sf ~/dotfiles/emacs/doom/doom.d/init.el ~/.doom.d/init.el
+  - cp ~/dotfiles/emacs/apps/* /Applications/
+
+Zsh:
+  - brew install zsh
+  - sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells' && chsh -s $(which zsh)
+  - ln -sf ~/dotfiles/zsh/zshrc_manager.sh ~/.zshrc
+  - ln -sf ~/dotfiles/zsh/zim ~/.zim
+  - ln -sf ~/dotfiles/zsh/zimrc.sh ~/.zimrc
+  - ln -sf ~/dotfiles/zsh/zlogin.sh ~/.zlogin
+  - git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+
+Tmux:
+  - brew install tmux reattach-to-user-namespace
+  - ln -sf ~/dotfiles/tmux/tmux_manager.conf ~/.tmux.conf
+
+Vim plugins:
+  - curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  - vim -c 'PlugInstall' -c 'qa!'
+  - ~/dotfiles/vim/install_cmdT.sh
+  - ~/dotfiles/vim/install_ycm.sh
+  - brew install clang-format
+
+System Python:
+  - brew prune
+  - brew install python
+  - pip install -r ~/dotfiles/install/sys_python_req.txt
+
+Homebrew:
+  - /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Brew packages:
+  - brew install $(cat ~/dotfiles/install/my_brews.txt)
+
+Python venvs:
+  - flask
+  - grip
+  - sphinx
+  - tensorflow
+
+Pyenvs installation:
+  - python3 -m venv ~/python-virtualenvs/pyenv_name/
+  - source ~/python-virtualenvs/pyenv_name/bin/activate
+  - pip install pyenv_name
+
+Colorls:
+  - gem install colorls
+
+VSCode:
+  - Install "Settings sync" by "Shan Khan" https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
+  - Press Shift + Alt + D it will ask your GitHub Gist ID.
+  - Generate a new GitHub token and enter.
+  - Enter Your Gist ID. Gist ID ---> 9daeed44c74f3ed7434f939ed07958d1
+  - Settings Downloaded. 

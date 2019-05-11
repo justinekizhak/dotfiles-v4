@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# -----------------------------------------------------------------------------
+# Copyright (c) 2018, Justine T Kizhakkinedath
+# All rights reserved
+#
+# Licensed under the terms of MIT License
+# See LICENSE file in the project root for full information.
+# -----------------------------------------------------------------------------
+
+
+# Default behaviour: Upload to testpypi unless the command argument is pypi
+# Eg pip-upload_package
+#    will upload to testpypi
+# and pip-upload_package pypi
+#     will upload to pypi
+
+if [ "$1" == "pypi" ]; then
+    ~/python-virtualenvs/my_venv36/bin/twine upload -r pypi dist/*
+else
+    ~/python-virtualenvs/my_venv36/bin/twine upload -r testpypi dist/*
+fi

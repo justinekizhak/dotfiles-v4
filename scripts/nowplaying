@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ `uname` = "Darwin" ]; then
+  track="$(osascript ~/dotfiles/scripts/current-itunes-track)"
+  if [ "$track" ]; then
+    echo "\u266C $track"
+  fi
+else
+  track="$(~/.dotfiles/bin/sp current | sed '3q;d' | awk '{$1=""; print $0}' | sed 's/^ *//g' | sed 's/ *$//g') - $(~/.dotfiles/bin/sp current | sed '4q;d' | awk '{$1=""; print $0}' | sed 's/^ *//g' | sed 's/ *$//g')"
+  if [ "$track" ]; then
+    echo "\u266C $track"
+  fi
+fi

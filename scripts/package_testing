@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# -----------------------------------------------------------------------------
+# Copyright (c) 2018, Justine T Kizhakkinedath
+# All rights reserved
+#
+# Licensed under the terms of MIT License
+# See LICENSE file in the project root for full information.
+# -----------------------------------------------------------------------------
+
+echo "
+Behaviour: Will delete any existing python virtualenv
+create a new virtualenv
+Install package inside it."
+
+read -p "Are you sure? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo "----->Creating requirements file...<-----"
+    pipreqs . --force
+    echo "----->Done. Deactivating venv...<-----"
+    deactivate
+    echo "----->Done. Removing build folders...<-----"
+    rm -rf build dist devinstaller.egg-info/ venv
+    echo "----->Done. Creating new venv...<-----"
+    python3 -m venv venv
+    # source venv/bin/activate
+    echo "----->Done. Pip installing required packages...<-----"
+    venv/bin/pip3 install --upgrade pip
+    venv/bin/pip3 install wheel
+    venv/bin/pip3 install -r requirements.txt
+    echo "----->Done. Pip installing package using develop mode...<-----"
+    venv/bin/python setup.py develop
+    echo "----->All done.<-----"
+fi
