@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/jimeh/tmux-themepack
+	branch = master
+	commit = 1b1b8098419daacb92ca401ad6ee0ca6894a40ca
+	parent = 50e15f0029137223cd0813d61210f4fcde6143eb
+	method = merge
+	cmdver = 0.4.0
