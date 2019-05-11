@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/syl20bnr/spacemacs
+	branch = master
+	commit = c7a103a772d808101d7635ec10f292ab9202d9ee
+	parent = 45b370b2c5dfba2a5e08aa25750df9cb058caec0
+	method = merge
+	cmdver = 0.4.0
