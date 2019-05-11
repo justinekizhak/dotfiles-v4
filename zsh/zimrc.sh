@@ -11,8 +11,8 @@
 # Select what modules you would like enabled.
 # The second line of modules may depend on options set by modules in the first
 # line. These dependencies are noted on the respective module's README.md.
-zmodules=(directory environment git git-info history input utility custom \
-          prompt completion syntax-highlighting history-substring-search )
+zmodules=(autosuggestions directory environment git git-info history input utility custom \
+          prompt completion syntax-highlighting history-substring-search)
 
 
 ###################
@@ -34,16 +34,17 @@ zprompt_theme='eriner'
 # is provided, the default '.zcompdump' is used.
 #zcompdump_file=".zcompdump-${HOST}-${ZSH_VERSION}"
 
+
 #
 # Utility
 #
 
 # Uncomment to enable spelling correction prompt for commands. See:
 # http://zsh.sourceforge.net/Doc/Release/Options.html#Input_002fOutput
-#setopt CORRECT
+setopt CORRECT
 
 # Set custom spelling correction prompt
-#SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 
 #
 # Environment
@@ -65,7 +66,7 @@ zinput_mode='vi'
 
 # Uncomment to enable double-dot expansion. This appends '../' to your input for
 # each '.' you type after an initial '..'
-#zdouble_dot_expand='true'
+zdouble_dot_expand='true'
 
 #
 # Syntax-Highlighting

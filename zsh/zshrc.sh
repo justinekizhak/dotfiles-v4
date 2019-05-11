@@ -43,13 +43,12 @@ if [[ "${terminfo[kcud1]}" != "" ]]; then
   bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+
 # Add to path
 add-to-path $HOME/dotfiles/scripts
 add-to-path $HOME/Library/Python/3.6/bin
 add-to-path $HOME/Library/Python/3.7/bin
 add-to-path $HOME/.cargo/bin
-
-
-prompt eriner blue blue
 
 source $HOME/git-subrepo/.rc

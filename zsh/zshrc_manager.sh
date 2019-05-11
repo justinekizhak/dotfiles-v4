@@ -47,9 +47,6 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 [[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
 
 source ~/dotfiles/zsh/custom_functions.sh
-# source ~/dotfiles/zsh/oh-my-zsh.sh
 source ~/dotfiles/zsh/keybindings.sh
-source ~/dotfiles/zsh/custom_plugins.sh
+# source ~/dotfiles/zsh/custom_plugins.sh
 source ~/dotfiles/zsh/zshrc.sh
-
-# zprof
