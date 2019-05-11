@@ -1,3 +1,5 @@
+
+
 #################
 # CORE SETTINGS #
 #################
@@ -22,7 +24,7 @@ zmodules=(directory environment git git-info history input utility custom \
 #
 
 # Set your desired prompt here
-zprompt_theme='steeef'
+zprompt_theme='eriner'
 
 #
 # Completion
@@ -48,7 +50,7 @@ zprompt_theme='steeef'
 #
 
 # Set the string below to the desired terminal title format string.
-# The terminal title is redrawn upon directory change, however, variables like 
+# The terminal title is redrawn upon directory change, however, variables like
 # ${PWD} are only evaluated once. Use prompt expansion strings for dynamic data:
 #   http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Simple-Prompt-Escapes
 # The example below uses the following format: 'username@host:/current/directory'
@@ -59,7 +61,7 @@ ztermtitle='%n@%m:%~'
 #
 
 # Set to vi or emacs
-zinput_mode='emacs'
+zinput_mode='vi'
 
 # Uncomment to enable double-dot expansion. This appends '../' to your input for
 # each '.' you type after an initial '..'
@@ -76,12 +78,14 @@ zinput_mode='emacs'
 # removing the 'cursor' highlighter will fix the disappearing cursor problem
 zhighlighters=(main brackets cursor)
 
+
 #
 # SSH
 #
 
 # Load these ssh identities with the ssh module
 #zssh_ids=(id_rsa)
+
 
 #
 # Pacman
@@ -92,5 +96,3 @@ zhighlighters=(main brackets cursor)
 
 # Load any helper scripts as defined here
 #zpacman_helper=(aur)
-
-
