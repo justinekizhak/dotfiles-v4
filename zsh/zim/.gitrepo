@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/zimfw/zimfw
+	branch = master
+	commit = dc6ef566afdf27f64d6f16eafc49ee5a1e3f996c
+	parent = ae0e8c05fcb85384e317ff9911d7a4afdfed0364
+	method = merge
+	cmdver = 0.4.0
