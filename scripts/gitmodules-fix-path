@@ -1,0 +1,137 @@
+#! /usr/bin/env python3
+# -----------------------------------------------------------------------------
+# Created: Sun 12 May 2019 22:39:54 IST
+# Last-Updated: Mon 13 May 2019 03:22:34 IST
+#
+# gitmodules-fix-path is part of dotfiles
+# URL: https://github.com/justinekizhak/dotfiles
+# Description: For git-subrepo. Move the .gitmodules file to git root. When you
+# add a new git subrepo to your project, it doesn't do anything for the
+# gitmodules inside it. This will cause you to give error on git submodule
+# update.
+#
+# Copyright (c) 2019, Justine Kizhakkinedath
+# All rights reserved
+#
+# Licensed under the terms of MIT License
+# See LICENSE file in the project root for full information.
+# -----------------------------------------------------------------------------
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+# OR OTHER DEALINGS IN THE SOFTWARE.
+#
+# -----------------------------------------------------------------------------
+
+import argparse
+import sys
+import os
+import pytest
+
+class GitRepoRootError(Exception):
+    def __init__(self):
+        Exception.__init__(self, "You need to call the script from the repo \n\
+        root, where your .git folder resides")
+
+def read_file(file_location):
+    """Opens '.gitmodules' file and returns the contents as a list"""
+    with open(file_location+"/.gitmodules", 'r') as f:
+        file_contents = [line.strip() for line in f]
+        return file_contents
+
+def edit_file(file_location, file_contents):
+    """Takes in file contents as a list. Make changes and returns a new list
+    with required file contents"""
+    return_file_contents = []
+    for line in file_contents:
+        if "submodule" in line:
+            return_file_contents.append("\n")
+            line = line.translate({ord(c): None for c in '"[]'}).split()
+            line = "[submodule \"%s/%s\"]" % (file_location, line[1])
+        elif "path" in line:
+            line = line.split()
+            line = "\n\tpath = %s/%s" % (file_location, line[2])
+        else:
+            line = "\n\t"+line
+        return_file_contents.append(line)
+    return_file_contents.pop(0)
+    return return_file_contents
+
+def check_file_location(file_location):
+    """Checks the given file location input by the user and formats it."""
+    if ".gitmodules" in file_location:
+        file_location = file_location.replace('.gitmodules', '')
+    if file_location.endswith("/"):
+        file_location = file_location[:-1]
+    return file_location
+
+def check_if_git_root(root_location):
+    """Checks if the given location """
+    if not os.path.isdir(root_location+"/.git"):
+        raise GitRepoRootError()
+    else:
+        return True
+
+def write_file(file_contents, root_location):
+    """Creates a new '.gitmodules' file (if it doesn't exists)in the project root"""
+    with open(root_location+"/.gitmodules", 'a+') as f:
+        f.write(file_contents)
+
+def remove_file(file_location):
+    if os.path.exists(file_location+"/.gitmodules"):
+        os.remove(file_location+"/.gitmodules")
+    else:
+        print("File doesn't exists")
+
+def main(args=None):
+    """The main routine."""
+    parser = argparse.ArgumentParser(description='Move the .gitmodules file to \
+    git root.\
+    When you add a new git subrepo to your project, it doesn\'t do anything \
+    for the gitmodules inside it.\
+    This will cause you to give error on git submodule update.'
+        )
+
+    parser.add_argument('file_location', metavar='F', nargs='+', help='Location to subrepo folder')
+    root_location = os.getcwd()
+    check_if_git_root(root_location)
+    file_location = parser.parse_args().file_location[0]
+    file_location = check_file_location(file_location)
+    file_contents = read_file(file_location)
+    file_contents = edit_file(file_location, file_contents)
+    file_contents = ''.join(file_contents)
+    write_file(file_contents, root_location)
+    remove_file(file_location)
+
+if __name__ == "__main__":
+    main()
+
+
+#------------------------------------------------pytest-----------------------------------------
+
+def test_check_file_location_gitmodules ():
+    assert check_file_location('/Users/justine/dotfiles-v2/.gitmodules') == '/Users/justine/dotfiles-v2'
+
+def test_check_file_location_backslash ():
+    assert check_file_location('/Users/justine/dotfiles-v2') == '/Users/justine/dotfiles-v2'
+
+def test_check_if_git_root():
+    assert check_if_git_root('/Users/justine/dotfiles') == True
+
+def test_check_if_git_root_2():
+    with pytest.raises(GitRepoRootError):
+        check_if_git_root('/Users/justine')
