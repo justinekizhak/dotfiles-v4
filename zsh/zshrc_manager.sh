@@ -1,5 +1,5 @@
 # Created: Sun 15 Jul 2018 14:58:36 IST
-# Last-Updated: Thu  9 Aug 2018 02:30:57 IST
+# Last-Updated: Sun 12 May 2019 21:35:25 IST
 #
 # zshrc_manager.sh is part of dotfiles
 # URL: https://gitlab.com/justinethomas/dotfiles
@@ -43,10 +43,11 @@ else
  echo "tmux not installed."
 fi
 
-export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
 [[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
 
 source ~/dotfiles/zsh/custom_functions.sh
 source ~/dotfiles/zsh/keybindings.sh
-# source ~/dotfiles/zsh/custom_plugins.sh
 source ~/dotfiles/zsh/zshrc.sh
+
+# [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc
