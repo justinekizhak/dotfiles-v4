@@ -45,6 +45,8 @@ fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
+export GIT_SUBREPO_VERBOSE=True
+
 # Add to path
 add-to-path $HOME/dotfiles/scripts
 add-to-path $HOME/Library/Python/3.6/bin
