@@ -60,6 +60,7 @@ prompt_eriner_main() {
   # End the prompt, closing last segment.
   prompt_eriner_end() {
     print -n "%k%F{${prompt_eriner_bg}}%f "
+    print "\n%k%F{${prompt_eriner_color2}}%f "
   }
 
   ### Prompt components
