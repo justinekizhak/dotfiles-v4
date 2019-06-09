@@ -12,12 +12,12 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export VISUAL=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PYTHONBREAKPOINT=pudb.set_trace
 
 # Alias
 alias emacs-client="emacsclient -c -a '' -n"
 # alias fed='f -e "emacsclient -n -c"'
 # alias ls="colorls -A --sort-dirs --git-status"
-alias lsg="ls -la | ag"
 alias pip="pip3"
 alias psg="ps ax | ag"
 alias python="python3"
@@ -54,3 +54,7 @@ add-to-path $HOME/Library/Python/3.7/bin
 add-to-path $HOME/.cargo/bin
 
 source $HOME/git-subrepo/.rc
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
