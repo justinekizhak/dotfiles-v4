@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------------------------
 # Created: Sun  9 Jun 2019 23:45:18 IST
-# Last-Updated: Mon 10 Jun 2019 01:41:17 IST
+# Last-Updated: Mon 10 Jun 2019 02:12:15 IST
 #
 # lsg is part of dotfiles
 # URL: https://gitlab.com/justinekizhak/dotfiles
-# Description: Check if a specific file or folder exists in current or in a
+# Description: Check if a specific file/s or folder/s exists in current or in a
 # specified directory.
 # This script started as an alias to `ls | grep FILENAME` but now its more
 # flexible and robust than that.
-# Usage: `lsg FILENAME -p PATH_TO_SEARCH [flags -c]`
 #
 # Copyright (c) 2019, Justine Kizhakkinedath
 # All rights reserved
@@ -44,12 +43,16 @@ import argparse
 
 def search(search_path, search_term):
     result = {'files': [], 'directories': [], 'links': []}
-    for entry in os.listdir(search_path):
-        if search_term.lower() in entry.lower():
-            if os.path.isdir(os.path.join(search_path, entry)):
-                result['directories'].append(entry)
-            if os.path.isfile(os.path.join(search_path, entry)):
-                result['files'].append(entry)
+    for s_t in search_term:
+        for entry in os.listdir(search_path):
+            if s_t.lower() in entry.lower():
+                full_path = os.path.join(search_path, entry)
+                if os.path.isfile(full_path):
+                    result['files'].append(entry)
+                elif os.path.isdir(full_path):
+                    result['directories'].append(entry)
+                else:
+                    result['links'].append(entry)
     return result
 
 
@@ -58,22 +61,28 @@ def print_result(result):
     number_of_files = len(result['files'])
     number_of_links = len(result['links'])
 
+    # print total
+    total_number = number_of_directories + number_of_links + number_of_files
+    print("----------Total number of entries---------->", total_number)
+
     # print directories
     if (number_of_directories > 0):
-        print(number_of_directories,
-              "Directories-------------------------------->")
+        print(
+            "----------Directories---------------------->",
+            number_of_directories,
+        )
         for directory in result['directories']:
             print(directory)
 
-    #print files
+    # print files
     if (number_of_files > 0):
-        print(number_of_files, "Files-------------------------------------->")
+        print("----------Files---------------------------->", number_of_files)
         for f in result['files']:
             print(f)
 
-    #print links
+    # print links
     if (number_of_links > 0):
-        print(number_of_links, "Links-------------------------------------->")
+        print("----------Links---------------------------->", number_of_links)
         for l in result['links']:
             print(l)
 
@@ -83,18 +92,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Check if a specific file or folder \
     exists in current or in a specified directory')
-    parser.add_argument('file name',
+    parser.add_argument('file_name',
                         metavar='FILENAME',
                         type=str,
                         nargs='+',
                         help='name of file or folder to search')
-    parser.add_argument('--path', '-p',
+    parser.add_argument('--path',
+                        '-p',
                         metavar='PATH',
                         dest='path',
                         default=".",
                         help='path to search (default: current directory)')
     args = parser.parse_args()
-    search_term = args.search_term[0]
+    search_term = args.file_name
     search_path = os.getcwd() + "/" + args.path
     result = search(search_path, search_term)
     print_result(result)
