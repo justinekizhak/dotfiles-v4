@@ -4,7 +4,7 @@
 
 [[file:img/github.png]]
 
-* Table of Contents                     :TOC_4_gh:noexport:
+* Table of Contents                     :TOC_5_gh:noexport:
 - [[#description][Description]]
   - [[#features][Features:]]
 - [[#install][Install]]
@@ -103,7 +103,7 @@ In a =magit-status= buffer (~SPC g s~):
 | ~F P~       | list pull-requests                                        |
 | ~F I~       | list issues                                               |
 | ~p y~       | pull pull-requests and issues for the current repository  |
-| ~p Y~       | pull all notifications for the current repository’s forge |
+| ~p Y~       | pull all notifications for the current repository's forge |
 
 In a =forge-topic= buffer:
 
