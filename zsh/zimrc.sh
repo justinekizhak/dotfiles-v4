@@ -24,7 +24,7 @@ zmodules=(autosuggestions directory environment git git-info history input utili
 #
 
 # Set your desired prompt here
-zprompt_theme='eriner'
+zprompt_theme='magicmace'
 
 #
 # Completion

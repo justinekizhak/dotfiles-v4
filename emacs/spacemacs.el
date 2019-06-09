@@ -31,25 +31,23 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     auto-completion
+     (html :variables web-fmt-tool 'web-beautify)
      ;; extra-langs
+     ;; fasd
+     auto-completion
      cscope
      csv
      debug
      emacs-lisp
-     ;; fasd
      git
      haskell
      helm
-     ;; (html :variables web-fmt-tool 'prettier)
-     (html :variables web-fmt-tool 'web-beautify)
-     web-beautify
-     prettier
      imenu-list
      javascript
      json
      markdown
      org
+     prettier
      ranger
      ruby
      rust
@@ -60,8 +58,10 @@ values."
      typescript
      version-control
      vimscript
+     web-beautify
      yaml
      (c-c++ :variables c-c++-enable-clang-support t)
+     (multiple-cursors :variables multiple-cursors-backend 'evil-mc)
      (shell :variables shell-default-shell 'ansi-term
             shell-default-term-shell "/bin/zsh"
             shell-default-full-span nil
@@ -398,6 +398,12 @@ values."
 
   ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+  (setq-default dotspacemacs-configuration-layers
+                '((python :variables
+                          python-formatter 'yapf
+                          python-format-on-save t
+                          python-sort-imports-on-save t
+                          )))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

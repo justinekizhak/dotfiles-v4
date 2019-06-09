@@ -1,4 +1,5 @@
 Before-install:
+  - git submodules update --init --recursive
   - mkdir -p ~/python-virtualenvs
 
 Vim:
@@ -22,10 +23,8 @@ Zsh:
   - brew install zsh
   - sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells' && chsh -s $(which zsh)
   - ln -sf ~/dotfiles/zsh/zshrc_manager.sh ~/.zshrc
-  - ln -sf ~/dotfiles/zsh/zim ~/.zim
   - ln -sf ~/dotfiles/zsh/zimrc.sh ~/.zimrc
   - ln -sf ~/dotfiles/zsh/zlogin.sh ~/.zlogin
-  - git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
 Tmux:
   - brew install tmux reattach-to-user-namespace
@@ -48,12 +47,6 @@ Homebrew:
 
 Brew packages:
   - brew install $(cat ~/dotfiles/install/my_brews.txt)
-
-Python venvs:
-  - flask
-  - grip
-  - sphinx
-  - tensorflow
 
 Pyenvs installation:
   - python3 -m venv ~/python-virtualenvs/pyenv_name/
