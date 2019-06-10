@@ -404,6 +404,31 @@ values."
                           python-format-on-save t
                           python-sort-imports-on-save t
                           )))
+
+  (defun spacemacs/python-toggle-breakpoint ()
+     "Add a break point, highlight it."
+     (interactive)
+     (let ((trace (cond ((spacemacs/pyenv-executable-find "trepan3k") "import trepan.api; trepan.api.debug()")
+                        ((spacemacs/pyenv-executable-find "wdb") "import wdb; wdb.set_trace()")
+                        ((spacemacs/pyenv-executable-find "ipdb") "import ipdb; ipdb.set_trace()")
+                        ((spacemacs/pyenv-executable-find "pudb") "import pudb; pudb.set_trace()")
+                        ((spacemacs/pyenv-executable-find "ipdb3") "import ipdb; ipdb.set_trace()")
+                        ((spacemacs/pyenv-executable-find "pudb3")
+                         (if (string= (getenv "PYTHONBREAKPOINT") "pudb.set_trace")
+                             "breakpoint()" "import pudb; pudb.set_trace()"))
+                        ((spacemacs/pyenv-executable-find "python3.7") "breakpoint()")
+                        ((spacemacs/pyenv-executable-find "python3.8") "breakpoint()")
+                        (t "breakpoint()")))
+           (line (thing-at-point 'line)))
+       (if (and line (string-match trace line))
+           (kill-whole-line)
+         (progn
+           (back-to-indentation)
+           (insert trace)
+           (insert "\n")
+           (python-indent-line)))))
+
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
