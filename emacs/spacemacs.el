@@ -69,6 +69,7 @@ values."
             shell-default-position 'bottom)
      (python :variables python-test-runner 'pytest
              pytest-global-name "python3 -m pytest")
+     (vue :variables vue-backend 'lsp)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
