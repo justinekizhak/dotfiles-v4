@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/halfo/lambda-mod-zsh-theme.git
+	branch = master
+	commit = 6b83aedf9de41ea4e226cdbc78af1b7b92beb6ac
+	parent = b85b7ce7a5d44cf1fe6e91c5f98e588698ec8c52
+	method = merge
+	cmdver = 0.4.0

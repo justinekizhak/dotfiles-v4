@@ -140,6 +140,7 @@
       - [[#php][Php]]
       - [[#python][Python]]
       - [[#racket][Racket]]
+      - [[#reasonml][Reasonml]]
       - [[#ruby][Ruby]]
       - [[#rust][Rust]]
       - [[#scala][Scala]]
@@ -156,8 +157,10 @@
       - [[#haskell][Haskell]]
       - [[#idris][Idris]]
   - [[#utilities][Utilities]]
+    - [[#dotnet][Dotnet]]
     - [[#ipython-notebook][Ipython notebook]]
     - [[#protocol-buffers][Protocol buffers]]
+    - [[#sailfish-os-developer][Sailfish os developer]]
 - [[#readers][Readers]]
   - [[#dash][Dash]]
   - [[#deft][Deft]]
@@ -165,6 +168,8 @@
   - [[#epub][Epub]]
   - [[#pdf][Pdf]]
   - [[#speed-reading][Speed reading]]
+- [[#readmeorg-files-that-need-proper-tags][README.org files that need proper tags]]
+  - [[#zig][Zig]]
 - [[#source-control][Source control]]
   - [[#git][Git]]
   - [[#github][Github]]
@@ -560,7 +565,7 @@ This layer adds support for Emoji emoticons from [[https://www.webpagefx.com/too
 Features:
 - Browse Emoji in a dedicated buffer
 - Display Emoji images in buffer
-- Insert one or several Emoji with an helm front-end
+- Insert one or several Emoji with a helm front-end
 - Completion of Emojis using [[https://github.com/dunn/company-emoji][company-emoji]]
 
 ** Games
@@ -605,10 +610,10 @@ Features:
 This layer adds support for traditional Chinese script to Spacemacs.
 
 Features:
-- Support for the [[https://en.wikipedia.org/wiki/Pinyin][Pinyin(拼音)]] input method via [[https://github.com/tumashu/chinese-pyim][chinese-pyim]].
-- Support for the [[https://en.wikipedia.org/wiki/Wubi_method][Wubi(五笔)]] input method via [[https://github.com/andyque/chinese-wbim][chinese-wbim]].
+- Support for the [[https://en.wikipedia.org/wiki/Pinyin][Pinyin (拼音)]] input method via [[https://github.com/tumashu/chinese-pyim][chinese-pyim]].
+- Support for the [[https://en.wikipedia.org/wiki/Wubi_method][Wubi (五笔)]] input method via [[https://github.com/andyque/chinese-wbim][chinese-wbim]].
 - Integration of the native input method framework [[https://en.wikipedia.org/wiki/Fcitx][fcitx]] via [[https://github.com/cute-jumper/fcitx.el][cute-jumper/fcitx.el]].
-- Integration of the [[https://en.wikipedia.org/wiki/Youdao][Youdao(有道) Dictionary]] via [[https://github.com/xuchunyang/youdao-dictionary.el][youdao-dictionary]].
+- Integration of the [[https://en.wikipedia.org/wiki/Youdao][Youdao (有道) Dictionary]] via [[https://github.com/xuchunyang/youdao-dictionary.el][youdao-dictionary]].
 - Support for file searches in =dired= using Chinese Pinyin characters via [[https://github.com/redguardtoo/find-by-pinyin-dired][find-by-pinyin-dired]].
 - Support for jumping to Chinese Pinyin characters with =ace-jump-mode= via [[https://github.com/cute-jumper/ace-pinyin][ace-pinyin]].
 - Support for conversion between simplified and traditional Chinese texts via [[https://github.com/gucong/emacs-chinese-conv/][chinese-conv]].
@@ -1891,6 +1896,18 @@ Features:
 - Code navigation with =gtags=
 - Structurally safe editing using optional [[https://github.com/luxbock/evil-cleverparens][evil-cleverparens]]
 
+**** Reasonml
+[[file:+lang/reasonml/README.org][+lang/reasonml/README.org]]
+
+Spacemacs layer for ReasonML, based around [[https://github.com/reasonml-editor/reason-mode][reason-mode]].
+
+Features:
+- Syntax highlighting / indentation
+- Autocomplete (via =merlin=)
+- Lint / error display (via =merlin=, and =flycheck= if =syntax-checking= layer is enabled)
+- REPL via =rtop=
+- Auto-formatting (via =refmt=)
+
 **** Ruby
 [[file:+lang/ruby/README.org][+lang/ruby/README.org]]
 
@@ -2065,6 +2082,14 @@ Features:
 - Integration of the =Idris= build system
 
 ** Utilities
+*** Dotnet
+[[file:+tools/dotnet/README.org][+tools/dotnet/README.org]]
+
+This layer adds support for the dotnet cli package.
+
+Features:
+- dotnet operations
+
 *** Ipython notebook
 [[file:+lang/ipython-notebook/README.org][+lang/ipython-notebook/README.org]]
 
@@ -2087,6 +2112,14 @@ Features:
 - Syntax checking using Flycheck (=protoc= compiler must be available)
 - Correct indentation and commenting
 - Quickly browse file contents using imenu (default key binding ~SPC j i~).
+
+*** Sailfish os developer
+[[file:+tools/sailfish-developer/README.org][+tools/sailfish-developer/README.org]]
+
+This layer adds support of sailfish-os development packages.
+
+Features:
+- [[https://github.com/vityafx/sailfish-scratchbox.el][sailfish-scratchbox]]: handy sb2 interaction.
 
 * Readers
 ** Dash
@@ -2164,6 +2197,15 @@ A speed reading mode for Emacs.
 Features:
 - Support for =speed-reading= of arbitrary texts
 
+* README.org files that need proper tags
+** Zig
+[[file:+lang/zig/README.org][+lang/zig/README.org]]
+
+This layer adds support for the zig programming language [[https://ziglang.org/]]
+
+Features:
+- Syntax Highlighting
+
 * Source control
 ** Git
 [[file:+source-control/git/README.org][+source-control/git/README.org]]
@@ -2188,7 +2230,6 @@ New to Magit? Checkout the [[https://magit.vc/about/][official intro]].
 This layers adds support for [[http://github.com][GitHub]].
 
 Features:
-- [[https://github.com/vermiculus/magithub][magithub]]: Magit-integrated interface to [[https://hub.github.com/][hub]] command line
 - [[https://github.com/magit/forge][forge]]: integration with various forges, such as GitHub and GitLab.
 - [[https://github.com/defunkt/gist.el][gist.el]]: full-featured mode to browse and post GitHub gists.
 - [[https://github.com/sshaw/git-link][git-link]]: quickly generate URLs for commits or files.
@@ -2784,6 +2825,7 @@ Features:
 Features:
 - adds copy support to the X-clipboard from the terminal.
 - adds paste support to the X-clipboard from the terminal.
+- [[https://github.com/redguardtoo/cliphist][cliphist]] package: integration with clipboard managers on Linux and Mac.
 
 ** Ycmd
 [[file:+tools/ycmd/README.org][+tools/ycmd/README.org]]

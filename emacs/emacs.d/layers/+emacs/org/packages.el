@@ -17,6 +17,7 @@
         evil-org
         evil-surround
         gnuplot
+        (helm-org :toggle (configuration-layer/layer-used-p 'helm))
         (helm-org-rifle :toggle (configuration-layer/layer-used-p 'helm))
         htmlize
         ;; ob, org and org-agenda are installed by `org-plus-contrib'
@@ -41,6 +42,7 @@
         (org-re-reveal :toggle org-enable-reveal-js-support)
         persp-mode
         (ox-hugo :toggle org-enable-hugo-support)
+        (ox-jira :toggle org-enable-jira-support)
         (org-trello :toggle org-enable-trello-support)
         (org-sticky-header :toggle org-enable-sticky-header)
         ))
@@ -81,6 +83,11 @@
   (use-package helm-org-rifle
     :defer t
     :init (spacemacs/set-leader-keys "aor" 'helm-org-rifle)))
+
+(defun org/init-helm-org ()
+  (use-package helm-org
+    :commands (helm-org-in-buffer-headings)
+    :defer t))
 
 (defun org/init-htmlize ()
   (use-package htmlize
@@ -126,8 +133,7 @@
 
       (with-eval-after-load 'org-indent
         (spacemacs|hide-lighter org-indent-mode))
-      (let ((dir (configuration-layer/get-layer-local-dir 'org)))
-        (setq org-export-async-init-file (concat dir "org-async-init.el")))
+
       (defmacro spacemacs|org-emphasize (fname char)
         "Make function for setting the emphasis in org mode"
         `(defun ,fname () (interactive)
@@ -565,10 +571,13 @@ Headline^^            Visit entry^^               Filter^^                    Da
       (spacemacs/declare-prefix-for-mode 'org-mode "mBa" "add")
       (spacemacs/declare-prefix-for-mode 'org-mode "mBg" "goto")
       (spacemacs/set-leader-keys-for-major-mode 'org-mode
-        "Bac" 'org-brain-add-child
         "Bv" 'org-brain-visualize
+        "Bac" 'org-brain-add-child
+        "Bah" 'org-brain-add-child-headline
         "Bap" 'org-brain-add-parent
+        "Bar" 'org-brain-add-resource
         "Baf" 'org-brain-add-friendship
+        "Bgg" 'org-brain-goto
         "Bgc" 'org-brain-goto-child
         "Bgp" 'org-brain-goto-parent
         "Bgf" 'org-brain-goto-friend
@@ -645,6 +654,8 @@ Headline^^            Visit entry^^               Filter^^                    Da
       (when (spacemacs/system-is-mac)
         (setq org-pomodoro-audio-player "/usr/bin/afplay"))
       (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "Cp" 'org-pomodoro)
+      (spacemacs/set-leader-keys-for-major-mode 'org-journal-mode
         "Cp" 'org-pomodoro)
       (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
         "Cp" 'org-pomodoro))))
@@ -758,6 +769,9 @@ Headline^^            Visit entry^^               Filter^^                    Da
 
 (defun org/init-ox-hugo ()
   (use-package ox-hugo :after ox))
+
+(defun org/init-ox-jira ()
+  (use-package ox-jira :after ox))
 
 (defun org/init-org-trello ()
   (use-package org-trello

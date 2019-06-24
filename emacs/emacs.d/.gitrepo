@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/syl20bnr/spacemacs
 	branch = develop
-	commit = 3d4e6fc0df0846526570fbb3b473b472e9243276
+	commit = ae51fd7a77645fc660b32d9cf7d24e1ca8631a95
 	parent = 7da718d565ab86065b8be5c4a1f7df2ba07b7694
 	method = merge
 	cmdver = 0.4.0

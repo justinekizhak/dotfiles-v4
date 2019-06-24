@@ -7,83 +7,108 @@
 - - -
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 <!-- {Put your badges here} -->
+
 - - -
 # Dotfiles
 - - -
 
-## Table of contents
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
 - [Dotfiles](#dotfiles)
-  - [Table of contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Features](#features)
-  - [Get Started](#get-started)
-  - [Full Documentation](#full-documentation)
-  - [License](#license)
+    - [Introduction](#introduction)
+    - [Features](#features)
+    - [Get Started](#get-started)
+    - [Full Documentation](#full-documentation)
+    - [License](#license)
+
+<!-- markdown-toc end -->
+
 
 ## Introduction
 
 They say your dotfiles will most likely be the longest project you ever work on.
-So for this reason, your dotfiles must be organized in a disciplined manner for 
-maintainability and extensibility.   
-My dotfiles are the direct reflection of my software development workflow and 
-practices of my past 3 years.   
+So for this reason, your dotfiles must be organized in a disciplined manner for
+maintainability and extensibility.
+
+My dotfiles are the direct reflection of my software development workflow and
+practices of my past 3 years.
+
 My dotfiles have undergone many transformation from single file vimrc to
 forking someone else's to building a simple yet sophisticated structure for
-housing more dotfiles.   
-One thing you may notice is that my workflow consists of diverse toolkit, 
+housing more dotfiles.
+
+One thing you may notice is that my workflow consists of diverse toolkit,
 this makes it for easier adoption and exploration.
 
 **[Back to top](#table-of-contents)**
 
 ## Features
 
-Contains settings for 
-- Emacs
-  - Spacemacs
-  - Doom Emacs
-- Vim
-- Zsh
-  - Zim framework
-  - Oh my zsh framework
-  - and some other custom plugins and functions
-- Tmux
-- Custom bash scripts
-- Fonts
-- VSCode (only install instructions for dotfiles)
-- and some terminal settings
+  Contains settings for
+    - Emacs
+      - Spacemacs
+    - Vim
+    - Zsh
+      - Zim framework
+      - Oh my zsh framework
+      - and some other custom plugins and functions
+    - Tmux
+    - Custom bash scripts
+    - Fonts
+    - VSCode (only install instructions for dotfiles)
+    - and some terminal settings
 
 **[Back to top](#table-of-contents)**
 
 ## Get Started
 
-1) `git clone https://gitlab.com/justinekizhak/dotfiles`
+    1) `git clone https://gitlab.com/justinekizhak/dotfiles`
 
-2) Use instructions in `install.yaml` file.
-  Just copy paste lines in the file into terminal.
-  All instructions are bash compatible.
+    2) Use instructions in `install.yaml` file.
+      Just copy paste lines in the file into terminal.
+      All instructions are bash compatible.
 
-Instead of cloning I would strongly suggest forking. I make lots of changes
-to my dotfiles, which you may or may not like.  
-And also forking will help you in experimentation.
+    Instead of cloning I would strongly suggest forking. I make lots of changes
+    to my dotfiles, which you may or may not like.
+    And also forking will help you in experimentation.
 
 **[Back to top](#table-of-contents)**
 
 ## Full Documentation
 
-For full documentation [read the docs]()
+This repo uses [git subrepo] for adding modules.
 
-Visit [website](https://justine.kizhak.com/dotfiles.html).
+Adding modules:
+  `git subrepo clone MODULE_URL MODULE_LOCATION`
+
+Add new prompt themes:
+
+- Subrepo clone the module
+    `git subrepo clone PROMPT_URL PROMPT_LOCATION`
+
+- Symlink zsh file as `prompt_FILENAME_setup`
+
+Example:
+    `git subrepo clone https://github.com/denysdovhan/spaceship-prompt zsh/zim/modules/prompt/external-themes/spaceship`
+    `ln -s ~/dotfiles/zsh/zim/modules/prompt/external-themes/spaceship/spaceship.zsh ~/dotfiles/zsh/zim/modules/prompt/functions/prompt_spaceship_setup`
+
+
+Repo at [Gitlab][website].
 
 Read [CHANGELOG], [CODE_OF_CONDUCT], [CONTRIBUTING] guide.
 
+[git subrepo]:
+[website]: https://gitlab.com/justinekizhak/dotfiles
 [CHANGELOG]: CHANGELOG.md
 [CONTRIBUTING]: CONTRIBUTING.md
 [CODE_OF_CONDUCT]: CODE_OF_CONDUCT.md
 
 ## License
 
-Licensed under the terms of MIT License.
+Licensed under the terms of [MIT License].
+
+[MIT License]: License.txt
 
 **[Back to top](#table-of-contents)**
 

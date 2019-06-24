@@ -52,6 +52,7 @@ add-to-path $HOME/dotfiles/scripts
 add-to-path $HOME/Library/Python/3.6/bin
 add-to-path $HOME/Library/Python/3.7/bin
 add-to-path $HOME/.cargo/bin
+add-to-path $HOME/flutter/bin
 
 source $HOME/git-subrepo/.rc
 

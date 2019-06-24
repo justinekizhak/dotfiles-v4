@@ -73,6 +73,7 @@ the [full installation instructions](#install) for other options.
 - [Quotes](#quotes)
 - [Contributions](#contributions)
 - [Communities](#communities)
+- [Spacemacs Everywhere](#spacemacs-everywhere)
 - [License](#license)
 - [Supporting Spacemacs](#supporting-spacemacs)
 
@@ -205,7 +206,12 @@ After completing the Spacemacs [install process](#install), then it's also
 recommended to add the [osx layer][] to your [dotfile][]. Installation
 instructions are available in the documentation for the [osx layer][].
 
-*Note:* you might have some issues when doing some search on your projects, you
+Depending on the installed version of GnuTLS securely installing emacs 
+packages may fail. In this case it is possible to install using 
+`emacs --insecure`. However be aware that this means your packages will 
+be transferred using http, use at your own risk.
+
+You might also have some issues when doing some search on your projects, you
 probably want to install grep through homebrew with default names:
 
 ```sh
@@ -239,6 +245,12 @@ Source: [Stack Overflow][so-server-unsafe]
 
 For efficient searches we recommend installing `pt` ([the platinum searcher][]).
 `pt` version 1.7.7 or higher is required.
+
+**Notes:**
+Depending on the installed version of GnuTLS securely installing emacs 
+packages may fail. In this case it is possible to install using 
+`emacs --insecure`. However be aware that this means your packages will 
+be transferred using http, use at your own risk.
 
 # Install
 ## Default installation
@@ -433,6 +445,14 @@ Before contributing be sure to consult the
 - [Gitter Chat]
 - [Stack Exchange]
 - [Reddit]
+
+# Spacemacs Everywhere
+
+Once you've learned the Spacemacs key bindings, you can use them in other IDEs/tools, thanks to the following projects:
+- [IntelliSpace](https://github.com/MarcoIeni/intelli-space) - Spacemacs' like key bindings for IntelliJ platform
+- [Spaceclipse](https://github.com/MarcoIeni/spaceclipse) - Spacemacs’ like key bindings for Eclipse
+- [SpaceVim](https://github.com/SpaceVim/SpaceVim) - A community-driven modular vim distribution
+- [VSpaceCode](https://github.com/VSpaceCode/VSpaceCode) - Spacemacs’ like key bindings for Visual Studio Code
 
 # License
 The license is GPLv3 for all parts specific to Spacemacs, this includes:

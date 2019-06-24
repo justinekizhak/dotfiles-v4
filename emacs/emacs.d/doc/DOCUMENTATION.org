@@ -248,7 +248,8 @@ and bugs are fixed quickly.
 - *Minimalistic and nice graphical UI* keeps your available screen space for
   what matters: your text files.
 - *Fast boot time*: packages and configuration are lazy-loaded as much as
-  possible.
+  possible. For even faster boot time, Spacemacs now provides full support for
+  the new portable dumper available in Emacs 27 and later.
 - *Lower the risk of RSI* by heavily using the space bar instead of modifiers.
   If you have issues with your thumbs you can still use Spacemacs using
   modifiers.
@@ -1191,7 +1192,7 @@ To change the default font set the variable =dotspacemacs-default-font= in your
 
 #+BEGIN_SRC emacs-lisp
   (setq-default dotspacemacs-default-font '("Source Code Pro"
-                                            :size 13
+                                            :size 10.0
                                             :weight normal
                                             :width normal))
 #+END_SRC
@@ -1255,7 +1256,9 @@ and ~T~):
 | ~SPC t l~   | toggle truncate lines                                             |
 | ~SPC t L~   | toggle visual lines                                               |
 | ~SPC t n~   | toggle line numbers                                               |
+| ~SPC t r~   | toggle relative line numbers                                      |
 | ~SPC t v~   | toggle smooth scrolling                                           |
+| ~SPC t V~   | toggle visual line numbers                                        |
 | ~SPC t z~   | toggle 0/1 based column indexing                                  |
 
 | Key binding | Description                                                      |
@@ -1285,17 +1288,25 @@ If it is set to =relative=, line numbers are show in a relative way:
   (setq-default dotspacemacs-line-numbers 'relative)
 #+END_SRC
 
+If it is set to =visual=, line numbers are shown in a relative way, but wrapped
+lines will be treated as multiple lines:
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default dotspacemacs-line-numbers 'visual)
+#+END_SRC
+
 =dotspacemacs-line-numbers= can also be set to a property list for finer control
 over line numbers activation.
 
 Available properties:
 
-| Property              | Description                                                                                  |
-|-----------------------+----------------------------------------------------------------------------------------------|
-| =:disabled-for-modes= | list of major modes where line numbering is inhibited                                        |
-| =:enabled-for-modes=  | disable for all major modes except those listed. Takes precedence over =:disabled-for-modes= |
-| =:relative=           | if non-nil, line numbers are relative to the position of the cursor                          |
-| =:size-limit-kb=      | size limit in kilobytes after which line numbers are not activated                           |
+| Property              | Description                                                                                                                                                                                                                                     |
+|-----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| =:disabled-for-modes= | list of major modes where line numbering is inhibited                                                                                                                                                                                           |
+| =:enabled-for-modes=  | disable for all major modes except those listed. Takes precedence over =:disabled-for-modes=                                                                                                                                                    |
+| =:relative=           | if non-nil, line numbers are relative to the position of the cursor                                                                                                                                                                             |
+| =:visual=             | if non-nil, line numbers are relative to the position of the cursor, but lines are separated by visual state - a wrapped line, for example, will be treated as more than one line. When set to t, this option takes precedence over =:relative= |
+| =:size-limit-kb=      | size limit in kilobytes after which line numbers are not activated                                                                                                                                                                              |
 
 Note that if =:enabled-for-modes= is =nil= or not specified, then the default is
 to enable line numbers in any =prog-mode= and =text-mode= that wasn't explicitly
@@ -1616,7 +1627,7 @@ In the transient state:
 | Key binding   | Description                    |
 |---------------+--------------------------------|
 | ~+~, ~=~, ~k~ | increase transparency          |
-| ~-~, ~j~      | decrease transparency          |
+| ~-~, ~_~, ~j~ | decrease transparency          |
 | ~T~           | toggle transparency on and off |
 | ~q~           | quit transient state           |
 
@@ -1787,9 +1798,9 @@ There are also some handy globally available key bindings related to workspaces:
 
 * Commands
 ** Vim key bindings
-Spacemacs is based on =Vim= modal user interface to navigate and edit text. If
-you are not familiar with the =Vim= way of editing text you can try the
-[[https://github.com/syl20bnr/evil-tutor][evil-tutor]] lessons by pressing ~SPC h T~ at any time.
+Spacemacs is based on the =Vim= modal user interface to navigate and edit text.
+If you are not familiar with the =Vim= way of editing text, then you can try the
+[[https://github.com/syl20bnr/evil-tutor][evil-tutor]] lessons by pressing ~SPC h T v~ at any time.
 
 *** Escaping
 Spacemacs uses [[https://github.com/syl20bnr/evil-escape][evil-escape]] to
@@ -2096,7 +2107,7 @@ selecting an avy candidate.
 
 **** ace-link mode
 Similar to =avy=, [[https://github.com/abo-abo/ace-link][ace-link]] allows one to jump to any link in
-=help-mode= and =info-mode= with two key strokes.
+=help-mode= and =info-mode=.
 
 | Key binding | Description                                           |
 |-------------+-------------------------------------------------------|
@@ -2140,10 +2151,11 @@ The ~SPC j~ prefix is for jumping, joining and splitting.
 | Key binding | Description                                                                       |
 |-------------+-----------------------------------------------------------------------------------|
 | ~SPC j 0~   | go to the beginning of line (and set a mark at the previous location in the line) |
+| ~SPC j (~   | jump to first unbalanced parentheses                                              |
 | ~SPC j $~   | go to the end of line (and set a mark at the previous location in the line)       |
 | ~SPC j b~   | undo a jump (go back to previous location)                                        |
+| ~SPC j c~   | go to last change                                                                 |
 | ~SPC j d~   | jump to a listing of the current directory                                        |
-| ~SPC j C~   | jump to first unbalanced parentheses                                              |
 | ~SPC j D~   | jump to a listing of the current directory (other window)                         |
 | ~SPC j f~   | jump to the definition of an Emacs Lisp function                                  |
 | ~SPC j i~   | jump to a definition in buffer (imenu)                                            |
@@ -2153,6 +2165,7 @@ The ~SPC j~ prefix is for jumping, joining and splitting.
 | ~SPC j l~   | jump to a line with avy (works as an evil motion)                                 |
 | ~SPC j q~   | show the dumb-jump quick look tooltip                                             |
 | ~SPC j u~   | jump to a URL in the current buffer                                               |
+| ~SPC j U~   | select a URL in the current buffer and follow it                                  |
 | ~SPC j v~   | jump to the definition/declaration of an Emacs Lisp variable                      |
 | ~SPC j w~   | jump to a word in the current buffer (works as an evil motion)                    |
 
@@ -2166,6 +2179,8 @@ The ~SPC j~ prefix is for jumping, joining and splitting.
 | ~SPC j o~   | split the current line at point but let point on current line            |
 | ~SPC j s~   | split a quoted string or s-expression in place                           |
 | ~SPC j S~   | split a quoted string or s-expression, insert a new line and auto-indent |
+| ~SPC j =~   | format the marked region or entire buffer                                |
+| ~SPC j +~   | format the marked region or entire buffer also cleanup whitespace        |
 
 *** Window manipulation
 **** Window manipulation key bindings
@@ -2345,9 +2360,6 @@ Buffer manipulation commands (start with ~b~):
 |-----------------+----------------------------------------------------------------------------------------|
 | ~SPC TAB~       | switch to alternate buffer in the current window (switch back and forth)               |
 | ~SPC b b~       | switch to a buffer                                                                     |
-| ~SPC b c n~     | create an indirect buffer                                                              |
-| ~SPC b c c~     | create an indirect buffer that is clone of current buffer                              |
-| ~SPC b c w~     | create an indirect buffer that is clone of current buffer, and open it in other window |
 | ~SPC b d~       | kill the current buffer (does not delete the visited file)                             |
 | ~SPC u SPC b d~ | kill the current buffer and window (does not delete the visited file)                  |
 | ~SPC b D~       | kill a visible buffer using [[https://github.com/abo-abo/ace-window][ace-window]]                                                 |
@@ -2373,13 +2385,16 @@ Buffer manipulation commands (start with ~b~):
 
 **** Create a new empty buffer
 
-| Key binding | Description                                           |
-|-------------+-------------------------------------------------------|
-| ~SPC b N h~ | create new empty buffer in a new window on the left   |
-| ~SPC b N j~ | create new empty buffer in a new window at the bottom |
-| ~SPC b N k~ | create new empty buffer in a new window above         |
-| ~SPC b N l~ | create new empty buffer in a new window below         |
-| ~SPC b N n~ | create new empty buffer in current window             |
+| Key binding   | Description                                                                                     |
+|---------------+-------------------------------------------------------------------------------------------------|
+| ~SPC b N h~   | create new empty buffer in a new window on the left                                             |
+| ~SPC b N C-i~ | create an indirect buffer from an existing opened buffer                                        |
+| ~SPC b N i~   | create an indirect buffer that is clone of currently opened buffer                              |
+| ~SPC b N I~   | create an indirect buffer that is clone of currently opened buffer, and open it in other window |
+| ~SPC b N j~   | create new empty buffer in a new window at the bottom                                           |
+| ~SPC b N k~   | create new empty buffer in a new window above                                                   |
+| ~SPC b N l~   | create new empty buffer in a new window below                                                   |
+| ~SPC b N n~   | create new empty buffer in current window                                                       |
 
 **** Buffers manipulation transient state
 A convenient buffer manipulation transient state allows to quickly cycles through
@@ -2967,7 +2982,7 @@ The font size of the current buffer can be adjusted with the commands:
 | Key binding                           | Description                                                                    |
 |---------------------------------------+--------------------------------------------------------------------------------|
 | ~SPC z x +~, ~SPC z x =~, ~SPC z x k~ | scale up the font and initiate the font scaling transient state                |
-| ~SPC z x -~, ~SPC z x j~              | scale down the font and initiate the font scaling transient state              |
+| ~SPC z x -~, ~SPC z x _~, ~SPC z x j~ | scale down the font and initiate the font scaling transient state              |
 | ~SPC z x 0~                           | reset the font size (no scaling) and initiate the font scaling transient state |
 
 In the transient state:
@@ -2975,8 +2990,9 @@ In the transient state:
 | Key binding   | Description            |
 |---------------+------------------------|
 | ~+~, ~=~, ~k~ | increase the font size |
-| ~-~, ~j~      | decrease the font size |
+| ~-~, ~_~, ~j~ | decrease the font size |
 | ~0~           | reset the font size    |
+| ~q~           | quit transient state   |
 
 Note that /only/ the text of the current buffer is scaled, the other buffers,
 the mode-line and the minibuffer are not affected. To zoom the whole content of
@@ -2988,34 +3004,38 @@ You can zoom in and out the whole content of the frame with the commands:
 | Key binding                           | Description                                                                 |
 |---------------------------------------+-----------------------------------------------------------------------------|
 | ~SPC z f +~, ~SPC z f =~, ~SPC z f k~ | zoom in the frame content and initiate the frame scaling transient state    |
-| ~SPC z f -~, ~SPC z f j~              | zoom out the frame content and initiate the frame scaling transient state   |
+| ~SPC z f -~, ~SPC z f _~, ~SPC z f j~ | zoom out the frame content and initiate the frame scaling transient state   |
 | ~SPC z f 0~                           | reset the frame content size and initiate the frame scaling transient state |
 
 In the transient state:
 
-| Key binding   | Description      |
-|---------------+------------------|
-| ~+~, ~=~, ~k~ | zoom frame in    |
-| ~-~, ~j~      | zoom frame out   |
-| ~0~           | reset frame zoom |
+| Key binding   | Description          |
+|---------------+----------------------|
+| ~+~, ~=~, ~k~ | zoom frame in        |
+| ~-~, ~_~, ~j~ | zoom frame out       |
+| ~0~           | reset frame zoom     |
+| ~q~           | quit transient state |
 
 *** Increase/Decrease numbers
 Spacemacs uses [[https://github.com/cofi/evil-numbers][evil-numbers]] to easily increase or decrease numbers.
 
-| Key binding | Description                                                         |
-|-------------+---------------------------------------------------------------------|
-| ~SPC n +~   | increase the number under point by one and initiate transient state |
-| ~SPC n -~   | decrease the number under point by one and initiate transient state |
+| Key binding          | Description                                                         |
+|----------------------+---------------------------------------------------------------------|
+| ~SPC n +~, ~SPC n =~ | increase the number under point by one and initiate transient state |
+| ~SPC n -~, ~SPC n _~ | decrease the number under point by one and initiate transient state |
 
 In the transient state:
 
-| Key binding | Description                            |
-|-------------+----------------------------------------|
-| ~+~         | increase the number under point by one |
-| ~-~         | decrease the number under point by one |
+| Key binding   | Description                            |
+|---------------+----------------------------------------|
+| ~+~, ~=~, ~k~ | increase the number under point by one |
+| ~-~, ~_~, ~j~ | decrease the number under point by one |
+| ~0..9~        | add a number prefix argument           |
+| ~q~           | quit transient state                   |
 
-*Tips:* you can increase or decrease a value by more that once by using a prefix
-argument (i.e. ~10 SPC n +~ will add 10 to the number under point).
+*Tips:* You can increase or decrease a number by more than one at a time, by
+using a prefix argument (i.e. ~10 SPC n +~ will add =10= to the number under
+point).
 
 *** Spell checking
 Spell checking is enabled by including the [[https://github.com/syl20bnr/spacemacs/blob/develop/layers/%2Bcheckers/spell-checking/README.org][spell
@@ -3513,7 +3533,7 @@ usable; if it is not then restart Emacs with =emacs --debug-init= and open a
 ** Upgrading/Downgrading Emacs version
 To ensure that packages are correctly compiled for the new Emacs version you
 installed, be sure to run the interactive command =spacemacs/recompile-elpa=
-with ~SPC SPC spacemacs/recompile-elpa~.
+with ~SPC u SPC SPC spacemacs/recompile-elpa~.
 
 * Achievements
 ** Issues

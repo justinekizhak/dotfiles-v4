@@ -89,7 +89,7 @@ Only modes that don't derive from `prog-mode' should be listed here."
 (defcustom spacemacs-large-file-modes-list
   '(archive-mode tar-mode jka-compr git-commit-mode image-mode
                  doc-view-mode doc-view-mode-maybe ebrowse-tree-mode
-                 pdf-view-mode)
+                 pdf-view-mode fundamental-mode)
   "Major modes which `spacemacs/check-large-file' will not be
 automatically applied to."
   :group 'spacemacs
@@ -122,6 +122,22 @@ automatically applied to."
         (evil-indent (point-min) (point-max))
         (message "Indented buffer.")))
     (whitespace-cleanup)))
+
+;; http://emacsblog.org/2007/01/17/indent-whole-buffer/
+(defun spacemacs/iwb-region-or-buffer ()
+  "IWBs a region if selected, otherwise the whole buffer."
+  (interactive)
+  (save-excursion
+    (if (region-active-p)
+        (progn
+          (untabify (region-beginning) (region-end))
+          (indent-region (region-beginning) (region-end)))
+      (progn
+        (set-buffer-file-coding-system default-file-name-coding-system)
+        ;; (set-buffer-file-coding-system 'utf-8-unix)
+        (untabify (point-min) (point-max))
+        (indent-region (point-min) (point-max))
+        (whitespace-cleanup)))))
 
 ;; from https://gist.github.com/3402786
 (defun spacemacs/toggle-maximize-buffer ()
@@ -583,21 +599,27 @@ variable as a fallback to display the directory, useful in buffers like the
 ones created by `magit' and `dired'."
   (interactive)
   (if-let (directory-path (spacemacs--directory-path))
-      (message "%s" (kill-new directory-path))
+      (progn
+        (kill-new directory-path)
+        (message "%s" directory-path))
     (message "WARNING: Current buffer does not have a directory!")))
 
 (defun spacemacs/copy-file-path ()
   "Copy and show the file path of the current buffer."
   (interactive)
   (if-let (file-path (spacemacs--file-path))
-      (message "%s" (kill-new file-path))
+      (progn
+        (kill-new file-path)
+        (message "%s" file-path))
     (message "WARNING: Current buffer is not attached to a file!")))
 
 (defun spacemacs/copy-file-name ()
   "Copy and show the file name of the current buffer."
   (interactive)
   (if-let (file-name (file-name-nondirectory (spacemacs--file-path)))
-      (message "%s" (kill-new file-name))
+      (progn
+        (kill-new file-name)
+        (message "%s" file-name))
     (message "WARNING: Current buffer is not attached to a file!")))
 
 (defun spacemacs/copy-file-name-base ()
@@ -605,14 +627,18 @@ ones created by `magit' and `dired'."
 buffer."
   (interactive)
   (if-let (file-name (file-name-base (spacemacs--file-path)))
-      (message "%s" (kill-new file-name))
+      (progn
+        (kill-new file-name)
+        (message "%s" file-name))
     (message "WARNING: Current buffer is not attached to a file!")))
 
 (defun spacemacs/copy-file-path-with-line ()
   "Copy and show the file path of the current buffer, including line number."
   (interactive)
   (if-let (file-path (spacemacs--file-path-with-line))
-      (message "%s" (kill-new file-path))
+      (progn
+        (kill-new file-path)
+        (message "%s" file-path))
     (message "WARNING: Current buffer is not attached to a file!")))
 
 (defun spacemacs/copy-file-path-with-line-column ()
@@ -622,7 +648,9 @@ This function respects the value of the `column-number-indicator-zero-based'
 variable."
   (interactive)
   (if-let (file-path (spacemacs--file-path-with-line-column))
-      (message "%s" (kill-new file-path))
+      (progn
+        (kill-new file-path)
+        (message "%s" file-path))
     (message "WARNING: Current buffer is not attached to a file!")))
 
 
@@ -647,9 +675,10 @@ variable."
 
 (defun spacemacs/new-empty-buffer (&optional split)
   "Create a new buffer called untitled(<n>).
-A SPLIT argument with the value: `left',
-`below', `above' or `right', opens the new
-buffer in a split window."
+A SPLIT argument with the value: `left', `below', `above' or `right',
+opens the new buffer in a split window.
+If the variable `dotspacemacs-new-empty-buffer-major-mode' has been set,
+then apply that major mode to the new buffer."
   (interactive)
   (let ((newbuf (generate-new-buffer "untitled")))
     (case split
@@ -660,7 +689,9 @@ buffer in a split window."
       ('frame (select-frame (make-frame))))
     ;; Prompt to save on `save-some-buffers' with positive PRED
     (with-current-buffer newbuf
-      (setq-local buffer-offer-save t))
+      (setq-local buffer-offer-save t)
+      (when dotspacemacs-new-empty-buffer-major-mode
+        (funcall dotspacemacs-new-empty-buffer-major-mode)))
     ;; pass non-nil force-same-window to prevent `switch-to-buffer' from
     ;; displaying buffer in another window
     (switch-to-buffer newbuf nil 'force-same-window)))
@@ -1312,19 +1343,21 @@ Compare them on count first,and in case of tie sort them alphabetically."
   "If current mode is not one of spacemacs-indent-sensitive-modes
 indent yanked text (with universal arg don't indent)."
   (evil-start-undo-step)
-  (let ((prefix (car args))
-        (enable (and (not (member major-mode spacemacs-indent-sensitive-modes))
-                     (or (derived-mode-p 'prog-mode)
-                         (member major-mode spacemacs-yank-indent-modes)))))
-    (when (and enable (equal '(4) prefix))
-      (setq args (cdr args)))
-    (apply yank-func args)
-    (when (and enable (not (equal '(4) prefix)))
-      (let ((transient-mark-mode nil)
-            (save-undo buffer-undo-list))
-        (spacemacs/yank-advised-indent-function (region-beginning)
-                                                (region-end)))))
-  (evil-end-undo-step))
+  (prog1
+      (let ((prefix (car args))
+            (enable (and (not (member major-mode spacemacs-indent-sensitive-modes))
+                         (or (derived-mode-p 'prog-mode)
+                             (member major-mode spacemacs-yank-indent-modes)))))
+        (when (and enable (equal '(4) prefix))
+          (setq args (cdr args)))
+        (prog1
+            (apply yank-func args)
+          (when (and enable (not (equal '(4) prefix)))
+            (let ((transient-mark-mode nil)
+                  (save-undo buffer-undo-list))
+              (spacemacs/yank-advised-indent-function (region-beginning)
+                                                      (region-end))))))
+    (evil-end-undo-step)))
 
 (dolist (func '(yank yank-pop evil-paste-before evil-paste-after))
   (advice-add func :around #'spacemacs//yank-indent-region))
@@ -1426,6 +1459,16 @@ Decision is based on `dotspacemacs-line-numbers'."
       (and (listp dotspacemacs-line-numbers)
            (car (spacemacs/mplist-get-values dotspacemacs-line-numbers :relative)))))
 
+(defun spacemacs/visual-line-numbers-p ()
+  "Return non-nil if line numbers should be visual.
+This is similar to relative line numbers, but wrapped lines are
+treated as multiple lines.
+
+Decision is based on `dotspacemacs-line-numbers'."
+  (or (eq dotspacemacs-line-numbers 'visual)
+      (and (listp dotspacemacs-line-numbers)
+           (car (spacemacs/mplist-get-values dotspacemacs-line-numbers :visual)))))
+
 (defun spacemacs//linum-on (origfunc &rest args)
   "Advice function to improve `linum-on' function."
   (when (spacemacs/enable-line-numbers-p)
@@ -1452,7 +1495,8 @@ Decision is based on `dotspacemacs-line-numbers'."
   (and dotspacemacs-line-numbers
        (not (listp dotspacemacs-line-numbers))
        (or (eq dotspacemacs-line-numbers t)
-           (eq dotspacemacs-line-numbers 'relative))
+           (eq dotspacemacs-line-numbers 'relative)
+           (eq dotspacemacs-line-numbers 'visual))
        (derived-mode-p 'prog-mode 'text-mode)))
 
 (defun spacemacs//linum-curent-buffer-is-not-too-big ()

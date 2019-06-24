@@ -80,6 +80,10 @@ Cancels autosave on exiting perspectives mode."
   (let ((ivy-ignore-buffers (remove #'spacemacs//layout-not-contains-buffer-p ivy-ignore-buffers)))
     (ivy-switch-buffer)))
 
+(defun spacemacs-layouts//advice-with-persp-buffer-list (orig-fun &rest args)
+  "Advice to provide perp buffer list."
+  (with-persp-buffer-list () (apply orig-fun args)))
+
 
 ;; Persp transient-state
 
@@ -164,13 +168,10 @@ ask the user if a new layout should be created."
       (let ((persp-reset-windows-on-nil-window-conf t)
             (generated-name (and dotspacemacs-auto-generate-layout-names
                                  (spacemacs//generate-layout-name pos))))
-        (cond
-         (generated-name
-          (persp-switch generated-name))
-         ((y-or-n-p (concat "Layout in this position doesn't exist. "
-                            "Do you want to create one? "))
-          (persp-switch nil)
-          (spacemacs/home-delete-other-windows)))))))
+        (if generated-name
+            (persp-switch generated-name) ; select an existing layout
+          (persp-switch nil)              ; create a new layout
+          (spacemacs/home-delete-other-windows))))))
 
 ;; Define all `spacemacs/persp-switch-to-X' functions
 (dolist (i (number-sequence 9 0 -1))
@@ -292,7 +293,7 @@ Available PROPS:
                                        ,binding ,already-defined? ,name)
              (setq spacemacs--custom-layout-alist
                    (delete (assoc ,binding spacemacs--custom-layout-alist)
-                     spacemacs--custom-layout-alist))
+                           spacemacs--custom-layout-alist))
              (push '(,binding . ,name) spacemacs--custom-layout-alist))
          (push '(,binding . ,name) spacemacs--custom-layout-alist)))))
 
@@ -354,10 +355,10 @@ buffers that belong to the current buffer's project."
   (if (persp-with-name-exists-p name)
       (message "There is already a perspective named %s" name)
     (if-let ((project (projectile-project-p)))
-      (spacemacs||switch-layout name
-        :init
-        (persp-add-buffer (projectile-project-buffers project)
-                          (persp-get-by-name name) nil nil))
+        (spacemacs||switch-layout name
+          :init
+          (persp-add-buffer (projectile-project-buffers project)
+                            (persp-get-by-name name) nil nil))
       (message "Current buffer does not belong to a project"))))
 
 (defmacro spacemacs||switch-project-persp (name &rest body)
