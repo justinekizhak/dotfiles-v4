@@ -12,17 +12,15 @@
 # Dotfiles
 - - -
 
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [Dotfiles](#dotfiles)
-    - [Introduction](#introduction)
-    - [Features](#features)
-    - [Get Started](#get-started)
-    - [Full Documentation](#full-documentation)
-    - [License](#license)
-
-<!-- markdown-toc end -->
+- [Introduction](#introduction)
+- [Features](#features)
+- [Get Started](#get-started)
+- [Full Documentation](#full-documentation)
+    - [Add modules](#add-modules)
+        - [Add new prompt themes](#add-new-prompt-themes)
+- [License](#license)
 
 
 ## Introduction
@@ -45,33 +43,31 @@ this makes it for easier adoption and exploration.
 
 ## Features
 
-  Contains settings for
-    - Emacs
-      - Spacemacs
-    - Vim
-    - Zsh
-      - Zim framework
-      - Oh my zsh framework
-      - and some other custom plugins and functions
-    - Tmux
-    - Custom bash scripts
-    - Fonts
-    - VSCode (only install instructions for dotfiles)
-    - and some terminal settings
+Contains settings for
+
+- Emacs
+    - Spacemacs
+- Vim
+- Zsh
+    - Zim framework
+- Tmux
+- Custom bash scripts
+- Fonts
+- VSCode (only install instructions for dotfiles)
+- and some terminal settings
 
 **[Back to top](#table-of-contents)**
 
 ## Get Started
 
-    1) `git clone https://gitlab.com/justinekizhak/dotfiles`
 
-    2) Use instructions in `install.yaml` file.
-      Just copy paste lines in the file into terminal.
-      All instructions are bash compatible.
+1) `git clone https://gitlab.com/justinekizhak/dotfiles`
+    
+2) `cd dotfiles & rm -rf .git`
 
-    Instead of cloning I would strongly suggest forking. I make lots of changes
-    to my dotfiles, which you may or may not like.
-    And also forking will help you in experimentation.
+3) Use instructions in `install.yaml` file.
+  Just copy paste lines in the file into terminal.
+  All instructions are bash compatible.
 
 **[Back to top](#table-of-contents)**
 
@@ -79,10 +75,10 @@ this makes it for easier adoption and exploration.
 
 This repo uses [git subrepo] for adding modules.
 
-Adding modules:
+### Add modules
   `git subrepo clone MODULE_URL MODULE_LOCATION`
 
-Add new prompt themes:
+#### Add new prompt themes
 
 - Subrepo clone the module
     `git subrepo clone PROMPT_URL PROMPT_LOCATION`
@@ -90,25 +86,34 @@ Add new prompt themes:
 - Symlink zsh file as `prompt_FILENAME_setup`
 
 Example:
-    `git subrepo clone https://github.com/denysdovhan/spaceship-prompt zsh/zim/modules/prompt/external-themes/spaceship`
-    `ln -s ~/dotfiles/zsh/zim/modules/prompt/external-themes/spaceship/spaceship.zsh ~/dotfiles/zsh/zim/modules/prompt/functions/prompt_spaceship_setup`
 
+```
+git subrepo clone https://github.com/denysdovhan/spaceship-prompt \
+zsh/zim/modules/prompt/external-themes/spaceship
+```
 
-Repo at [Gitlab][website].
+```
+ln -s ~/dotfiles/zsh/zim/modules/prompt/external-themes/spaceship/spaceship.zsh \
+~/dotfiles/zsh/zim/modules/prompt/functions/prompt_spaceship_setup
+```
 
-Read [CHANGELOG], [CODE_OF_CONDUCT], [CONTRIBUTING] guide.
+---
 
-[git subrepo]:
+Repo at [GITLAB][website].
+
+Read [CHANGELOG], [CODE OF CONDUCT], [CONTRIBUTING] guide.
+
+[git subrepo]: https://github.com/ingydotnet/git-subrepo
 [website]: https://gitlab.com/justinekizhak/dotfiles
 [CHANGELOG]: CHANGELOG.md
 [CONTRIBUTING]: CONTRIBUTING.md
-[CODE_OF_CONDUCT]: CODE_OF_CONDUCT.md
+[CODE OF CONDUCT]: CODE_OF_CONDUCT.md
 
 ## License
 
 Licensed under the terms of [MIT License].
 
-[MIT License]: License.txt
+[MIT License]: LICENSE.txt
 
 **[Back to top](#table-of-contents)**
 
