@@ -13,6 +13,7 @@ export LC_ALL=en_US.UTF-8
 export VISUAL=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export PYTHONBREAKPOINT=pudb.set_trace
+export RUST_SRC_PATH="/Users/justine/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
 
 # Alias
 alias emacs-client="emacsclient -c -a '' -n"
@@ -53,6 +54,7 @@ add-to-path $HOME/Library/Python/3.6/bin
 add-to-path $HOME/Library/Python/3.7/bin
 add-to-path $HOME/.cargo/bin
 add-to-path $HOME/flutter/bin
+add-to-path $HOME/.local/bin
 
 source $HOME/git-subrepo/.rc
 
