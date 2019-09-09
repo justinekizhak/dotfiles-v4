@@ -435,6 +435,9 @@ values."
   ;; setup files ending in “.svelte” to open in js2-mode
   (add-to-list 'auto-mode-alist '("\\.svelte\\'" . html-mode))
 
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-to-list 'exec-path "~/.local/bin/")
+
   (setq exec-path (append exec-path '("/Users/justine/.nvm/versions/node/v12.4.0/bin")))
 
   )
