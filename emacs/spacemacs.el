@@ -42,7 +42,6 @@ values."
      debug
      emacs-lisp
      git
-     haskell
      helm
      imenu-list
      javascript
@@ -62,6 +61,9 @@ values."
      vimscript
      web-beautify
      yaml
+     (haskell :variables ;; Or optionally just haskell without the variables.
+              haskell-completion-backend 'ghci
+              haskell-process-type 'stack-ghci)
      (c-c++ :variables c-c++-enable-clang-support t)
      (multiple-cursors :variables multiple-cursors-backend 'evil-mc)
      (rust :variables rust-backend 'lsp)
@@ -94,6 +96,7 @@ values."
                                                               )))
                                       package-build
                                       importmagic
+                                      (lsp-haskell :location (recipe :fetcher github :repo "emacs-lsp/lsp-haskell"))
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -263,10 +266,10 @@ values."
    ;; If non nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup t
+   dotspacemacs-fullscreen-at-startup nil
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
@@ -389,7 +392,8 @@ values."
   (spacemacs|do-after-display-system-init
    (spacemacs-modeline/init-spaceline))
 
-  (add-to-list 'default-frame-alist '(fullscreen . fullboth))
+  (add-to-list 'default-frame-alist '(width . 165))
+  (add-to-list 'default-frame-alist '(height . 25))
 
   (when (string= system-type "darwin")
     (setq dired-use-ls-dired nil))
@@ -440,6 +444,10 @@ values."
 
   (setq exec-path (append exec-path '("/Users/justine/.nvm/versions/node/v12.4.0/bin")))
 
+  (setq lsp-haskell-process-path-hie "hie-wrapper")
+  (require 'lsp-haskell)
+  (add-hook 'haskell-mode-hook #'lsp)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -476,6 +484,7 @@ This function is called at the very end of Spacemacs initialization."
     ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-plus/26.1/libexec/emacs/26.1/x86_64-apple-darwin16.7.0" "/usr/local/bin/")))
  '(header-default-project-name "my personal project.")
  '(importmagic-python-interpreter "/usr/local/bin/python3")
+ '(ns-use-native-fullscreen nil)
  '(package-selected-packages
    (quote
     (yaml-mode intero flycheck-haskell company-ghci company-ghc ghc hlint-refactor hindent helm-hoogle haskell-snippets haskell-mode company-cabal cmm-mode go-guru go-eldoc company-go go-mode org-ref pdf-tools key-chord ivy helm-bibtex biblio parsebib biblio-core tablist insert-shebang fish-mode company-shell disaster company-c-headers cmake-mode clang-format engine-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ diff-hl xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary vimrc-mode dactyl-mode git-gutter yapfify smeargle pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor cython-mode company-anaconda auto-yasnippet anaconda-mode pythonic ac-ispell auto-complete yasnippet company-statistics company mmm-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
