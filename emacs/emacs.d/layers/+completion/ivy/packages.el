@@ -193,7 +193,9 @@
         "a'" 'spacemacs/ivy-available-repls
         "fr" 'counsel-recentf
         "rl" 'ivy-resume
-        "bb" 'ivy-switch-buffer))
+        "bb" 'ivy-switch-buffer)
+      ;; Moved C-k to C-M-k
+      (define-key ivy-switch-buffer-map (kbd "C-M-k") 'ivy-switch-buffer-kill))
 
     :config
     (progn
@@ -329,11 +331,11 @@
            '(("R" (lambda (arg)
                     (interactive)
                     (recentf-cleanup)
-                    (ivy-recentf)) "refresh list")
+                    (counsel-recentf)) "refresh list")
              ("D" (lambda (arg)
                     (interactive)
                     (setq recentf-list (delete arg recentf-list))
-                    (ivy-recentf)) "delete from list"))))
+                    (counsel-recentf)) "delete from list"))))
   ;; merge recentf and bookmarks into buffer switching. If we set this
   (setq ivy-use-virtual-buffers t))
 
