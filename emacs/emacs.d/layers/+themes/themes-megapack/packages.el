@@ -24,6 +24,7 @@
     bubbleberry-theme
     busybee-theme
     cherry-blossom-theme
+    chocolate-theme
     clues-theme
     color-theme-sanityinc-solarized
     color-theme-sanityinc-tomorrow
@@ -36,7 +37,6 @@
     django-theme
     doom-themes
     dracula-theme
-    ewal-spacemacs-themes
     espresso-theme
     exotica-theme
     eziam-theme
