@@ -392,8 +392,8 @@ values."
   (spacemacs|do-after-display-system-init
    (spacemacs-modeline/init-spaceline))
 
-  (add-to-list 'default-frame-alist '(width . 165))
-  (add-to-list 'default-frame-alist '(height . 25))
+  (add-to-list 'default-frame-alist '(width . 160))
+  (add-to-list 'default-frame-alist '(height . 35))
 
   (when (string= system-type "darwin")
     (setq dired-use-ls-dired nil))
@@ -447,6 +447,14 @@ values."
   (setq lsp-haskell-process-path-hie "hie-wrapper")
   (require 'lsp-haskell)
   (add-hook 'haskell-mode-hook #'lsp)
+
+  ;; (defun display-startup-echo-area-message ()
+  ;;   (message "Let the hacking begin!"))
+
+  (defun turn-on-goto-address-mode ()
+    (goto-address-mode 1))
+
+  (add-hook 'term-mode-hook #'turn-on-goto-address-mode)
 
   )
 
