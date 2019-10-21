@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/sindresorhus/pure.git
+	branch = master
+	commit = 2e354b80deae105ea246699c49e65dcd4fe8b759
+	parent = bb29d67dae0274e5d92d5fc57ab4c92cc3107dcb
+	method = merge
+	cmdver = 0.4.0
