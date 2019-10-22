@@ -79,7 +79,7 @@
         endif
 
     "Working directory
-        cd ~/My_Projects    "if your OS is Linux
+        cd ~/my-projects    "if your OS is Linux
 
     "Make Vim deal with case-sensitive search intelligently
         set ignorecase
