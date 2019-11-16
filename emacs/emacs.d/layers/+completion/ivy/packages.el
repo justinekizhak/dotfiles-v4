@@ -62,6 +62,7 @@
         "fL"  'counsel-locate
         ;; help
         "?"   'counsel-descbinds
+        "gff" 'counsel-git
         "hda" 'counsel-apropos
         "hdf" 'counsel-describe-function
         "hdF" 'counsel-describe-face
@@ -191,6 +192,9 @@
       ;; Key bindings
       (spacemacs/set-leader-keys
         "a'" 'spacemacs/ivy-available-repls
+        "Ce" 'counsel-colors-emacs
+        "Cf" 'counsel-faces
+        "Cw" 'counsel-colors-web
         "fr" 'counsel-recentf
         "rl" 'ivy-resume
         "bb" 'ivy-switch-buffer)
