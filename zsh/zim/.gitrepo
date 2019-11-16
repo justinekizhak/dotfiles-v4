@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/zimfw/zimfw
 	branch = master
-	commit = dc6ef566afdf27f64d6f16eafc49ee5a1e3f996c
+	commit = d19c8dde68b338fcc096bbce683c47ad068b46d3
 	parent = ae0e8c05fcb85384e317ff9911d7a4afdfed0364
 	method = merge
 	cmdver = 0.4.0
