@@ -1,5 +1,5 @@
 # Created: Sun 15 Jul 2018 14:58:36 IST
-# Last-Updated: Sun 12 May 2019 21:35:25 IST
+# Last-Updated: Wed 23 Oct 2019 18:19:52 IST
 #
 # zshrc_manager.sh is part of dotfiles
 # URL: https://gitlab.com/justinethomas/dotfiles
@@ -49,5 +49,6 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
 source ~/dotfiles/zsh/custom_functions.sh
 source ~/dotfiles/zsh/keybindings.sh
 source ~/dotfiles/zsh/zshrc.sh
+source ~/dotfiles/zsh/env_var.zsh
 
 # [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc

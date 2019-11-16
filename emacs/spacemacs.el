@@ -30,14 +30,14 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
-     (html :variables web-fmt-tool 'web-beautify)
+   '(rust
+     html
      ;; extra-langs
-     ;; fasd
+     fasd
      auto-completion
      cscope
      csv
-     dap
+     ;; dap
      dart
      debug
      emacs-lisp
@@ -65,8 +65,10 @@ values."
               haskell-completion-backend 'ghci
               haskell-process-type 'stack-ghci)
      (c-c++ :variables c-c++-enable-clang-support t)
+     (elm :variables
+          elm-format-command "elm-format")
      (multiple-cursors :variables multiple-cursors-backend 'evil-mc)
-     (rust :variables rust-backend 'lsp)
+     ;; (rust :variables rust-backend 'lsp)
      (shell :variables shell-default-shell 'ansi-term
             shell-default-term-shell "/bin/zsh"
             shell-default-full-span nil
@@ -88,7 +90,7 @@ values."
                                       ;; header3
                                       (header3 :location (recipe
                                                        :fetcher git
-                                                       :url "/Users/justine/My_Projects/header3"
+                                                       :url "/Users/justine/my-projects/header3"
                                                        :branch "develop"
                                                        :files(
                                                               "*.el"
@@ -96,6 +98,7 @@ values."
                                                               )))
                                       package-build
                                       importmagic
+                                      (tiny :location(recipe :fetcher github :repo "abo-abo/tiny"))
                                       (lsp-haskell :location (recipe :fetcher github :repo "emacs-lsp/lsp-haskell"))
                                       )
    ;; A list of packages that cannot be updated.
@@ -224,7 +227,7 @@ values."
    ;; 'all-the-icons, 'custom, 'vim-powerline or 'vanilla
    ;; or a list with `car' one of the previous values and properties
    ;; one of the following: `:separator' or `:separator-scale'
-   dotspacemacs-mode-line-theme 'doom
+   dotspacemacs-mode-line-theme 'vim-powerline
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
@@ -361,6 +364,10 @@ values."
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
 
+
+  ;; Takes time because some files are missing
+  ;; (byte-recompile-directory (expand-file-name "~/dotfiles/emacs/") 0)
+
   "This is were you can ultimately override default Spacemacs configuration.
   This function is called at the very end of Spacemacs initialization."
   (setq powerline-default-separator 'arrow)
@@ -437,12 +444,13 @@ values."
            (python-indent-line)))))
 
   ;; setup files ending in “.svelte” to open in js2-mode
-  (add-to-list 'auto-mode-alist '("\\.svelte\\'" . html-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
 
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
-
-  (setq exec-path (append exec-path '("/Users/justine/.nvm/versions/node/v12.4.0/bin")))
+  (add-to-list 'exec-path "/usr/local/bin/")
+  (add-to-list 'exec-path "/Users/justine/.nvm/versions/node/v12.4.0/bin")
 
   (setq lsp-haskell-process-path-hie "hie-wrapper")
   (require 'lsp-haskell)
@@ -455,6 +463,25 @@ values."
     (goto-address-mode 1))
 
   (add-hook 'term-mode-hook #'turn-on-goto-address-mode)
+
+  (tiny-setup-default)
+
+  (defun welcome-message (frame)
+    (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green"))))
+
+  (run-with-idle-timer 0 nil #'(lambda ()
+    (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green")))))
+
+  (defun date-timestamp ()
+    "Insert date time stamp"
+    (interactive)
+    (insert (format-time-string "date: \"%Y-%m-%dT%H:%M:%S\"")))
+
+  (add-hook 'after-make-frame-functions #'welcome-message)
+
+  ;; (magit-define-popup-action 'magit-branch-popup
+  ;;   ?o "Checkout new orphan branch" 'magit-branch-orphan)
+
 
   )
 
@@ -491,18 +518,34 @@ This function is called at the very end of Spacemacs initialization."
    (quote
     ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-plus/26.1/libexec/emacs/26.1/x86_64-apple-darwin16.7.0" "/usr/local/bin/")))
  '(header-default-project-name "my personal project.")
+ '(helm-ag-base-command "/usr/local/bin/ag --nocolor --nogroup")
  '(importmagic-python-interpreter "/usr/local/bin/python3")
+ '(insert-shebang-file-types
+   (quote
+    (("py" . "python")
+     ("groovy" . "groovy")
+     ("fish" . "fish")
+     ("robot" . "robot")
+     ("rb" . "ruby")
+     ("lua" . "lua")
+     ("php" . "php")
+     ("sh" . "bash")
+     ("pl" . "perl")
+     ("bash" . "bash")
+     ("zsh" . "zsh"))))
  '(ns-use-native-fullscreen nil)
  '(package-selected-packages
    (quote
-    (yaml-mode intero flycheck-haskell company-ghci company-ghc ghc hlint-refactor hindent helm-hoogle haskell-snippets haskell-mode company-cabal cmm-mode go-guru go-eldoc company-go go-mode org-ref pdf-tools key-chord ivy helm-bibtex biblio parsebib biblio-core tablist insert-shebang fish-mode company-shell disaster company-c-headers cmake-mode clang-format engine-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ diff-hl xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary vimrc-mode dactyl-mode git-gutter yapfify smeargle pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor cython-mode company-anaconda auto-yasnippet anaconda-mode pythonic ac-ispell auto-complete yasnippet company-statistics company mmm-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (lsp-java yaml-mode intero flycheck-haskell company-ghci company-ghc ghc hlint-refactor hindent helm-hoogle haskell-snippets haskell-mode company-cabal cmm-mode go-guru go-eldoc company-go go-mode org-ref pdf-tools key-chord ivy helm-bibtex biblio parsebib biblio-core tablist insert-shebang fish-mode company-shell disaster company-c-headers cmake-mode clang-format engine-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ diff-hl xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary vimrc-mode dactyl-mode git-gutter yapfify smeargle pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor cython-mode company-anaconda auto-yasnippet anaconda-mode pythonic ac-ispell auto-complete yasnippet company-statistics company mmm-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(paradox-github-token t)
+ '(prettier-js-command "/Users/justine/.nvm/versions/node/v12.4.0/bin/prettier")
  '(pytest-cmd-flags "--pdb")
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(rust-format-on-save t)
  '(rust-rustfmt-bin "/Users/justine/.cargo/bin/rustfmt")
  '(undo-tree-auto-save-history t)
- '(undo-tree-history-directory-alist (quote (("." . "~/.emacs-undo")))))
+ '(undo-tree-history-directory-alist (quote (("." . "~/.emacs-undo"))))
+ '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
