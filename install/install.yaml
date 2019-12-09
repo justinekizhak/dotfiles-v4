@@ -12,13 +12,9 @@ Emacs:
   - brew install emacs-plus aspell
   - mkdir -p ~/.emacs-saves ~/.emacs-undo
   - Spacemacs:
-      - rm -rf ~/.emacs.d && ln -sf ~/dotfiles/emacs/spacemacs/emacs_d ~/.emacs.d
-      - rm -rf ~/.spacemacs && ln -sf ~/dotfiles/emacs/spacemacs/spacemacs.el ~/.spacemacs
-  - Doom:
-      - rm -rf ~/.emacs.d && ln -sf ~/dotfiles/emacs/doom/emacs_d ~/.emacs.d
-      - mkdir -p ~/.doom.d && ln -sf ~/dotfiles/emacs/doom/doom.d/init.el ~/.doom.d/init.el
-  - cp ~/dotfiles/emacs/apps/* /Applications/
-
+      - rm -rf ~/.emacs.d && ln -sf ~/dotfiles/emacs/emacs.d ~/.emacs.d
+      - rm -rf ~/.spacemacs && ln -sf ~/dotfiles/emacs/spacemacs.el ~/.spacemacs
+  
 Zsh:
   - brew install zsh
   - sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells' && chsh -s $(which zsh)
