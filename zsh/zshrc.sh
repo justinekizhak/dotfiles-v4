@@ -17,13 +17,8 @@ export RUST_SRC_PATH="/Users/justine/.rustup/toolchains/stable-x86_64-apple-darw
 export GPG_TTY=$(tty)
 
 # Alias
-alias emacs-client="emacsclient -c -a '' -n"
-# alias fed='f -e "emacsclient -n -c"'
-# alias ls="colorls -A --sort-dirs --git-status"
-alias pip="pip3"
+alias emacsclient="emacsclient -c -a '' -n"
 alias psg="ps ax | ag"
-alias python="python3"
-# alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 alias gs="git status"
 alias kill-last="kill %1"
 alias reload="source ~/.zshrc"
@@ -50,15 +45,19 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export GIT_SUBREPO_VERBOSE=True
 
 # Add to path
-add-to-path $HOME/dotfiles/scripts
-add-to-path $HOME/Library/Python/3.6/bin
-add-to-path $HOME/Library/Python/3.7/bin
 add-to-path $HOME/.cargo/bin
-add-to-path $HOME/flutter/bin
 add-to-path $HOME/.local/bin
+add-to-path $HOME/.nvm/versions/node/v12.4.0/bin
+add-to-path $HOME/dotfiles/scripts
+add-to-path $HOME/flutter/bin
+add-to-path /usr/local/bin
 
 source $HOME/git-subrepo/.rc
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(fasd --init auto)"
+# if [ /usr/local/bin/kubectl ]; then source < (kubectl completion zsh); fi
+eval "$(pipenv --completion)"
