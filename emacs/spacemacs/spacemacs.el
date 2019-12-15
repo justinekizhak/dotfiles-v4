@@ -29,6 +29,7 @@ values."
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
+
    dotspacemacs-configuration-layers
    '(rust
      html
@@ -44,7 +45,7 @@ values."
      git
      helm
      imenu-list
-     javascript
+     import-js
      json
      lsp
      markdown
@@ -61,12 +62,14 @@ values."
      vimscript
      web-beautify
      yaml
-     (haskell :variables ;; Or optionally just haskell without the variables.
-              haskell-completion-backend 'ghci
-              haskell-process-type 'stack-ghci)
+     javascript
+     ;; (javascript :variables
+     ;;             javascript-backend 'tern
+     ;;             tern-command '("node" "/Users/justinkizhakkinedath/.nvm/versions/node/v12.13.1/bin/tern")
+     ;;             javascript-disable-tern-port-files nil
+     ;;             ;; javascript-import-tool 'import-js
+     ;;             )
      (c-c++ :variables c-c++-enable-clang-support t)
-     (elm :variables
-          elm-format-command "elm-format")
      (multiple-cursors :variables multiple-cursors-backend 'evil-mc)
      ;; (rust :variables rust-backend 'lsp)
      (shell :variables shell-default-shell 'ansi-term
@@ -78,6 +81,7 @@ values."
              pytest-global-name "python3 -m pytest")
      (vue :variables vue-backend 'lsp)
      )
+
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -89,17 +93,12 @@ values."
                                       web-beautify
                                       ;; header3
                                       (header3 :location (recipe
-                                                       :fetcher git
-                                                       :url "/Users/justine/my-projects/header3"
-                                                       :branch "develop"
-                                                       :files(
-                                                              "*.el"
-                                                              ("templates" "templates/*")
-                                                              )))
+                                                       :fetcher github
+                                                       :repo "justinekizhak/header3"))
                                       package-build
                                       importmagic
                                       (tiny :location(recipe :fetcher github :repo "abo-abo/tiny"))
-                                      (lsp-haskell :location (recipe :fetcher github :repo "emacs-lsp/lsp-haskell"))
+                                      ;; exec-path-from-shell
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -331,7 +330,7 @@ values."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("rg", "ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -352,141 +351,163 @@ values."
   before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  (setq exec-path-from-shell-arguments '("-l"))
-
+  ;; (setq exec-path-from-shell-arguments '("-l"))
   )
 
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-  This function is called at the very end of Spacemacs initialization after
-  layers configuration.
-  This is the place where most of your configurations should be done. Unless it is
-  explicitly specified that a variable should be set before a package is loaded,
-  you should place your code here."
+;;   "Configuration function for user code.
+;;   This function is called at the very end of Spacemacs initialization after
+;;   layers configuration.
+;;   This is the place where most of your configurations should be done. Unless it is
+;;   explicitly specified that a variable should be set before a package is loaded,
+;;   you should place your code here."
 
 
-  ;; Takes time because some files are missing
-  ;; (byte-recompile-directory (expand-file-name "~/dotfiles/emacs/") 0)
+;;   ;; Takes time because some files are missing
+;;   ;; (byte-recompile-directory (expand-file-name "~/dotfiles/emacs/") 0)
 
-  "This is were you can ultimately override default Spacemacs configuration.
-  This function is called at the very end of Spacemacs initialization."
-  (setq powerline-default-separator 'arrow)
+;;   "This is were you can ultimately override default Spacemacs configuration.
+;;   This function is called at the very end of Spacemacs initialization."
+;;   (setq powerline-default-separator 'arrow)
 
-  ;; Use Emacs terminfo, not system terminfo
-  (setq system-uses-terminfo nil)
+;;   (exec-path-from-shell-initialize)
 
-  ;; (setq undo-tree-auto-save-history t
-  ;;       undo-tree-history-directory-alist
-  ;;       `(("." . ,(concat spacemacs-cache-directory "undo"))))
-  ;; (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
-  ;;   (make-directory (concat spacemacs-cache-directory "undo")))
+;;   ;; Use Emacs terminfo, not system terminfo
+;;   (setq system-uses-terminfo nil)
 
-  (setq
-   backup-directory-alist '(("." . "~/.emacs-saves/"))    ; don't litter my fs tree
-        )
+;;   ;; (setq undo-tree-auto-save-history t
+;;   ;;       undo-tree-history-directory-alist
+;;   ;;       `(("." . ,(concat spacemacs-cache-directory "undo"))))
+;;   ;; (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
+;;   ;;   (make-directory (concat spacemacs-cache-directory "undo")))
 
-  (setq ispell-program-name "/usr/local/bin/aspell")
 
-  (spacemacs/toggle-display-time-on)
+;;   (add-to-list 'exec-path "/usr/local/bin/")
+;;   (add-to-list 'exec-path "~/.nvm/versions/node/v12.13.1/bin" t)
 
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-anaconda))
 
-  (add-hook 'python-mode-hook 'importmagic-mode)
 
-  (global-company-mode)
+;;   (setq
+;;    backup-directory-alist '(("." . "~/.emacs-saves/"))    ; don't litter my fs tree
+;;         )
 
-  (spacemacs|do-after-display-system-init
-   (spacemacs-modeline/init-spaceline))
+;;   (setq ispell-program-name "/usr/local/bin/aspell")
 
-  (add-to-list 'default-frame-alist '(width . 160))
-  (add-to-list 'default-frame-alist '(height . 35))
+;;   (spacemacs/toggle-display-time-on)
 
-  (when (string= system-type "darwin")
-    (setq dired-use-ls-dired nil))
+;;   (eval-after-load "company"
+;;     '(add-to-list 'company-backends 'company-anaconda))
 
-  ;; (spaceline-compile)
+;;   (add-hook 'python-mode-hook 'importmagic-mode)
 
-  (setq gud-pdb-command-name "python3 -m pdb ")
+;;   (global-company-mode)
 
-  ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+;;   (setq web-beautify-js-program "~/.nvm/versions/node/v12.13.1/bin/js-beautify")
 
-  ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;;   (spacemacs|do-after-display-system-init
+;;    (spacemacs-modeline/init-spaceline))
 
-  (setq-default dotspacemacs-configuration-layers
-                '((python :variables
-                          python-formatter 'yapf
-                          python-format-on-save t
-                          python-sort-imports-on-save t
-                          )))
+;;   (add-to-list 'default-frame-alist '(width . 160))
+;;   (add-to-list 'default-frame-alist '(height . 35))
 
-  (defun spacemacs/python-toggle-breakpoint ()
-     "Add a break point, highlight it."
-     (interactive)
-     (let ((trace (cond ((spacemacs/pyenv-executable-find "trepan3k") "import trepan.api; trepan.api.debug()")
-                        ((spacemacs/pyenv-executable-find "wdb") "import wdb; wdb.set_trace()")
-                        ((spacemacs/pyenv-executable-find "ipdb") "import ipdb; ipdb.set_trace()")
-                        ((spacemacs/pyenv-executable-find "pudb") "import pudb; pudb.set_trace()")
-                        ((spacemacs/pyenv-executable-find "ipdb3") "import ipdb; ipdb.set_trace()")
-                        ((spacemacs/pyenv-executable-find "pudb3")
-                         (if (string= (getenv "PYTHONBREAKPOINT") "pudb.set_trace")
-                             "breakpoint()" "import pudb; pudb.set_trace()"))
-                        ((spacemacs/pyenv-executable-find "python3.7") "breakpoint()")
-                        ((spacemacs/pyenv-executable-find "python3.8") "breakpoint()")
-                        (t "breakpoint()")))
-           (line (thing-at-point 'line)))
-       (if (and line (string-match trace line))
-           (kill-whole-line)
-         (progn
-           (back-to-indentation)
-           (insert trace)
-           (insert "\n")
-           (python-indent-line)))))
+;;   (when (string= system-type "darwin")
+;;     (setq dired-use-ls-dired nil))
 
-  ;; setup files ending in “.svelte” to open in js2-mode
-  ;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+;;   ;; (spaceline-compile)
 
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  (add-to-list 'exec-path "~/.local/bin/")
-  (add-to-list 'exec-path "/usr/local/bin/")
-  (add-to-list 'exec-path "/Users/justine/.nvm/versions/node/v12.4.0/bin")
+;;   (setq gud-pdb-command-name "python3 -m pdb ")
 
-  (setq lsp-haskell-process-path-hie "hie-wrapper")
-  (require 'lsp-haskell)
-  (add-hook 'haskell-mode-hook #'lsp)
+;;   ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-  ;; (defun display-startup-echo-area-message ()
-  ;;   (message "Let the hacking begin!"))
+;;   ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-  (defun turn-on-goto-address-mode ()
-    (goto-address-mode 1))
+;;   (setq-default dotspacemacs-configuration-layers
+;;                 '((python :variables
+;;                           python-formatter 'yapf
+;;                           python-format-on-save t
+;;                           python-sort-imports-on-save t
+;;                           )))
 
-  (add-hook 'term-mode-hook #'turn-on-goto-address-mode)
+;;   (defun spacemacs/python-toggle-breakpoint ()
+;;      "Add a break point, highlight it."
+;;      (interactive)
+;;      (let ((trace (cond ((spacemacs/pyenv-executable-find "trepan3k") "import trepan.api; trepan.api.debug()")
+;;                         ((spacemacs/pyenv-executable-find "wdb") "import wdb; wdb.set_trace()")
+;;                         ((spacemacs/pyenv-executable-find "ipdb") "import ipdb; ipdb.set_trace()")
+;;                         ((spacemacs/pyenv-executable-find "pudb") "import pudb; pudb.set_trace()")
+;;                         ((spacemacs/pyenv-executable-find "ipdb3") "import ipdb; ipdb.set_trace()")
+;;                         ((spacemacs/pyenv-executable-find "pudb3")
+;;                          (if (string= (getenv "PYTHONBREAKPOINT") "pudb.set_trace")
+;;                              "breakpoint()" "import pudb; pudb.set_trace()"))
+;;                         ((spacemacs/pyenv-executable-find "python3.7") "breakpoint()")
+;;                         ((spacemacs/pyenv-executable-find "python3.8") "breakpoint()")
+;;                         (t "breakpoint()")))
+;;            (line (thing-at-point 'line)))
+;;        (if (and line (string-match trace line))
+;;            (kill-whole-line)
+;;          (progn
+;;            (back-to-indentation)
+;;            (insert trace)
+;;            (insert "\n")
+;;            (python-indent-line)))))
 
-  (tiny-setup-default)
+;;   ;; setup files ending in “.svelte” to open in js2-mode
+;;   ;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
+;;   (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
 
-  (defun welcome-message (frame)
-    (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green"))))
+;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-  (run-with-idle-timer 0 nil #'(lambda ()
-    (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green")))))
+;;   (setq lsp-haskell-process-path-hie "hie-wrapper")
+;;   (require 'lsp-haskell)
+;;   (add-hook 'haskell-mode-hook #'lsp)
 
-  (defun date-timestamp ()
-    "Insert date time stamp"
-    (interactive)
-    (insert (format-time-string "date: \"%Y-%m-%dT%H:%M:%S\"")))
+;;   ;; (defun display-startup-echo-area-message ()
+;;   ;;   (message "Let the hacking begin!"))
 
-  (add-hook 'after-make-frame-functions #'welcome-message)
+;;   (run-with-timer
+;;    3 nil
+;;    (lambda ()
+;;      (select-frame-set-input-focus (new-frame))))
 
-  ;; (magit-define-popup-action 'magit-branch-popup
-  ;;   ?o "Checkout new orphan branch" 'magit-branch-orphan)
+;;   (defun turn-on-goto-address-mode ()
+;;     (goto-address-mode 1))
+
+;;   (add-hook 'term-mode-hook #'turn-on-goto-address-mode)
+
+;;   ;; (tiny-setup-default)
+
+
+
+
+;;   (defun welcome-message (frame)
+;;     (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green"))))
+
+;;   (run-with-idle-timer 0 nil #'(lambda ()
+;;     (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green")))))
+
+;;   (defun date-timestamp ()
+;;     "Insert date time stamp"
+;;     (interactive)
+;;     (insert (format-time-string "date: \"%Y-%m-%dT%H:%M:%S\"")))
+
+;;   (add-hook 'after-make-frame-functions #'welcome-message)
+
+;;   (ranger-override-dired-mode t)
+
+;;   ;; (tern-disable-port-files nil)
+
+;;   (define-key ranger-normal-mode-map (kbd "+") #'dired-create-directory)
+
+
+;;   ;; (magit-define-popup-action 'magit-branch-popup
+;;   ;;   ?o "Checkout new orphan branch" 'magit-branch-orphan)
 
 
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -517,6 +538,8 @@ This function is called at the very end of Spacemacs initialization."
  '(exec-path
    (quote
     ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs-plus/26.1/libexec/emacs/26.1/x86_64-apple-darwin16.7.0" "/usr/local/bin/")))
+ '(fasd-enable-initial-prompt nil)
+ '(fasd-file-manager (quote ranger))
  '(header-default-project-name "my personal project.")
  '(helm-ag-base-command "/usr/local/bin/ag --nocolor --nogroup")
  '(importmagic-python-interpreter "/usr/local/bin/python3")
@@ -536,13 +559,22 @@ This function is called at the very end of Spacemacs initialization."
  '(ns-use-native-fullscreen nil)
  '(package-selected-packages
    (quote
-    (lsp-java yaml-mode intero flycheck-haskell company-ghci company-ghc ghc hlint-refactor hindent helm-hoogle haskell-snippets haskell-mode company-cabal cmm-mode go-guru go-eldoc company-go go-mode org-ref pdf-tools key-chord ivy helm-bibtex biblio parsebib biblio-core tablist insert-shebang fish-mode company-shell disaster company-c-headers cmake-mode clang-format engine-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ diff-hl xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary vimrc-mode dactyl-mode git-gutter yapfify smeargle pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor cython-mode company-anaconda auto-yasnippet anaconda-mode pythonic ac-ispell auto-complete yasnippet company-statistics company mmm-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (yaml-mode intero flycheck-haskell company-ghci company-ghc ghc hlint-refactor hindent helm-hoogle haskell-snippets haskell-mode company-cabal cmm-mode go-guru go-eldoc company-go go-mode org-ref pdf-tools key-chord ivy helm-bibtex biblio parsebib biblio-core tablist insert-shebang fish-mode company-shell disaster company-c-headers cmake-mode clang-format engine-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ diff-hl xterm-color shell-pop multi-term flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary vimrc-mode dactyl-mode git-gutter yapfify smeargle pyvenv pytest pyenv-mode py-isort pip-requirements orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download markdown-toc markdown-mode magit-gitflow live-py-mode hy-mode dash-functional htmlize helm-pydoc helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor cython-mode company-anaconda auto-yasnippet anaconda-mode pythonic ac-ispell auto-complete yasnippet company-statistics company mmm-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(paradox-github-token t)
  '(prettier-js-command "/Users/justine/.nvm/versions/node/v12.4.0/bin/prettier")
  '(pytest-cmd-flags "--pdb")
  '(python-shell-interpreter "/usr/local/bin/python3")
+ '(ranger-override-dired (quote ranger))
  '(rust-format-on-save t)
  '(rust-rustfmt-bin "/Users/justine/.cargo/bin/rustfmt")
+ '(safe-local-variable-values
+   (quote
+    ((checkdoc-minor-mode . t)
+     (header-auto-update-enabled)
+     (typescript-backend . tide)
+     (typescript-backend . lsp)
+     (javascript-backend . tern)
+     (javascript-backend . lsp))))
  '(undo-tree-auto-save-history t)
  '(undo-tree-history-directory-alist (quote (("." . "~/.emacs-undo"))))
  '(vc-follow-symlinks t))
