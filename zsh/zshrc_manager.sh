@@ -52,3 +52,7 @@ source ~/dotfiles/zsh/zshrc.sh
 source ~/dotfiles/zsh/env_var.zsh
 
 # [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
