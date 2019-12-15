@@ -6,23 +6,13 @@
 # See LICENSE file in the project root for full information.
 # -----------------------------------------------------------------------------
 
-# Settings
-export TERM="xterm-256color"
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export VISUAL=vim
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export PYTHONBREAKPOINT=pudb.set_trace
-export RUST_SRC_PATH="/Users/justine/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
-export GPG_TTY=$(tty)
-
 # Alias
 alias emacs-client="emacsclient -c -a '' -n"
 # alias fed='f -e "emacsclient -n -c"'
 # alias ls="colorls -A --sort-dirs --git-status"
 alias pip="pip3"
 alias psg="ps ax | ag"
-alias python="python3"
+# alias python="python3"
 # alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 alias gs="git status"
 alias kill-last="kill %1"
@@ -48,17 +38,3 @@ fi
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 export GIT_SUBREPO_VERBOSE=True
-
-# Add to path
-add-to-path $HOME/dotfiles/scripts
-add-to-path $HOME/Library/Python/3.6/bin
-add-to-path $HOME/Library/Python/3.7/bin
-add-to-path $HOME/.cargo/bin
-add-to-path $HOME/flutter/bin
-add-to-path $HOME/.local/bin
-
-source $HOME/git-subrepo/.rc
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
