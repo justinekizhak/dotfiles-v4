@@ -49,7 +49,7 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
 . "$HOME/dotfiles/zsh/custom_functions.sh"
 . "$HOME/dotfiles/zsh/keybindings.sh"
 . "$HOME/dotfiles/zsh/zshrc.sh"
-. "$HOME/dotfiles/zsh/env_var.zsh"
+. "$HOME/dotfiles/zsh/private_env_var.sh"
 
 # [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc
 
