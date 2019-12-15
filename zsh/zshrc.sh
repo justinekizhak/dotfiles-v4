@@ -7,13 +7,8 @@
 # -----------------------------------------------------------------------------
 
 # Alias
-alias emacs-client="emacsclient -c -a '' -n"
-# alias fed='f -e "emacsclient -n -c"'
-# alias ls="colorls -A --sort-dirs --git-status"
-alias pip="pip3"
+alias emacsclient="emacsclient -c -a '' -n"
 alias psg="ps ax | ag"
-# alias python="python3"
-# alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 alias gs="git status"
 alias kill-last="kill %1"
 alias reload="source ~/.zshrc"
