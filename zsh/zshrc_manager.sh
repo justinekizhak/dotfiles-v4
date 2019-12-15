@@ -38,18 +38,18 @@
 
 # Run tmux if exists
 if command -v tmux>/dev/null; then
- [ -z $TMUX ] && exec tmux
+ [ -z "$TMUX" ] && exec tmux
 else
  echo "tmux not installed."
 fi
 
 export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
-[[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
+[ -s "${ZIM_HOME}/init.zsh" ] && . "${ZIM_HOME}/init.zsh"
 
-source ~/dotfiles/zsh/custom_functions.sh
-source ~/dotfiles/zsh/keybindings.sh
-source ~/dotfiles/zsh/zshrc.sh
-source ~/dotfiles/zsh/env_var.zsh
+. "$HOME/dotfiles/zsh/custom_functions.sh"
+. "$HOME/dotfiles/zsh/keybindings.sh"
+. "$HOME/dotfiles/zsh/zshrc.sh"
+. "$HOME/dotfiles/zsh/env_var.zsh"
 
 # [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc
 

@@ -13,10 +13,10 @@ export LC_ALL=en_US.UTF-8
 export VISUAL=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export PYTHONBREAKPOINT=pudb.set_trace
-export RUST_SRC_PATH="/Users/justine/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
-add-to-path () {
+add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
         export PATH="$PATH:$1"
     fi
@@ -24,15 +24,14 @@ add-to-path () {
 
 
 # Add to path
-add-to-path $HOME/dotfiles/scripts
-add-to-path $HOME/Library/Python/3.6/bin
-add-to-path $HOME/Library/Python/3.7/bin
-add-to-path $HOME/.cargo/bin
-add-to-path $HOME/flutter/bin
-add-to-path $HOME/.local/bin
-add-to-path $HOME/.emacs.d/bin
+add_to_path "$HOME/dotfiles/scripts"
+add_to_path "$HOME/Library/Python/3.7/bin"
+add_to_path "$HOME/.cargo/bin"
+add_to_path "$HOME/flutter/bin"
+add_to_path "$HOME/.local/bin"
+add_to_path "$HOME/.emacs.d/bin"
 
-source $HOME/git-subrepo/.rc
+. ../../git-subrepo/.rc
 
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"

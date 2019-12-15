@@ -18,18 +18,19 @@ alias reload="source ~/.zshrc"
 
 # Fix for arrow-key searching
 # start typing + [Up-Arrow] - fuzzy find history forward
-if [[ "${terminfo[kcuu1]}" != "" ]]; then
+if [ "${terminfo[kcuu1]}" != "" ]; then
   autoload -U up-line-or-beginning-search
   zle -N up-line-or-beginning-search
   bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 fi
 # start typing + [Down-Arrow] - fuzzy find history backward
-if [[ "${terminfo[kcud1]}" != "" ]]; then
+if [ "${terminfo[kcud1]}" != "" ]; then
   autoload -U down-line-or-beginning-search
   zle -N down-line-or-beginning-search
   bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE
 
 export GIT_SUBREPO_VERBOSE=True
