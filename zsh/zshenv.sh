@@ -31,7 +31,7 @@ add_to_path "$HOME/flutter/bin"
 add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/.emacs.d/bin"
 
-. ../../git-subrepo/.rc
+. "$HOME/git-subrepo/.rc"
 
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"
