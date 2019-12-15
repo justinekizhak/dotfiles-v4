@@ -24,26 +24,26 @@
 (add-hook! 'org-capture-mode-hook (company-mode -1))
 
 (setq
- doom-font (font-spec :family "Fira Code" :size 12)
+ doom-font (font-spec :family "Fira Code")
 ;;  doom-big-font (font-spec :family "SF Mono" :size 36)
 ;;  doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
- ;; web-mode-markup-indent-offset 2
- ;; web-mode-code-indent-offset 2
- ;; web-mode-css-indent-offset 2
+ web-mode-markup-indent-offset 2
+ web-mode-code-indent-offset 2
+ web-mode-css-indent-offset 2
  mac-command-modifier 'meta
- ;; org-agenda-skip-scheduled-if-done t
- ;; js-indent-level 2
- ;; typescript-indent-level 2
- ;; json-reformat:indent-width 2
- ;; prettier-js-args '("--single-quote")
+ org-agenda-skip-scheduled-if-done t
+ js-indent-level 2
+ typescript-indent-level 2
+ json-reformat:indent-width 2
+ prettier-js-args '("--single-quote")
  projectile-project-search-path '("~/projects")
  dired-dwim-target t
  org-ellipsis " ▾ "
- ;; org-bullets-bullet-list '("·")
+ org-bullets-bullet-list '("·")
  org-tags-column -80
  org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
  org-log-done 'time
- ;; css-indent-offset 2
+ css-indent-offset 2
  org-refile-targets (quote ((nil :maxlevel . 1)))
  org-capture-templates '(("x" "Note" entry
                           (file+olp+datetree "journal.org")
@@ -53,19 +53,19 @@
                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
  +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
  +org-capture-todo-file "tasks.org"
- ;; org-super-agenda-groups '((:name "Today"
- ;;                                  :time-grid t
- ;;                                  :scheduled today)
- ;;                           (:name "Due today"
- ;;                                  :deadline today)
- ;;                           (:name "Important"
- ;;                                  :priority "A")
- ;;                           (:name "Overdue"
- ;;                                  :deadline past)
- ;;                           (:name "Due soon"
- ;;                                  :deadline future)
- ;;                           (:name "Big Outcomes"
- ;;                                  :tag "bo")))
+ org-super-agenda-groups '((:name "Today"
+                                  :time-grid t
+                                  :scheduled today)
+                           (:name "Due today"
+                                  :deadline today)
+                           (:name "Important"
+                                  :priority "A")
+                           (:name "Overdue"
+                                  :deadline past)
+                           (:name "Due soon"
+                                  :deadline future)
+                           (:name "Big Outcomes"
+                                  :tag "bo"))
 )
 
 (add-hook!
@@ -73,7 +73,11 @@
   ;; (add-hook 'before-save-hook #'refmt-before-save nil t)
   )
 
-(map! :ne "C-;" #'comment-or-uncomment-region)
+;; (map! :ne "C-;" #'comment-or-uncomment-region)
+(map! :v "J" #'move-text-region-down)
+(map! :v "K" #'move-text-region-up)
+(map! :n "J" #'move-text-line-down)
+(map! :n "K" #'move-text-line-up)
 (map! :ne "SPC / r" #'deadgrep)
 (map! :ne "SPC n b" #'org-brain-visualize)
 
