@@ -18,4 +18,5 @@
 (package! deadgrep)
 (package! org-brain)
 (package! ascii-art-to-unicode)
+(package! browse-kill-ring)
 ;; (package! wakatime-mode)

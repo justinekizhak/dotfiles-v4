@@ -18,15 +18,13 @@
 ;;     (let (org-hierarchical-todo-statistics)
 ;;       (org-update-parent-todo-statistics))))
 
-;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
+(advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
 
 (setq
  doom-font (font-spec :family "Fira Code")
-;;  doom-big-font (font-spec :family "SF Mono" :size 36)
-;;  doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
  web-mode-markup-indent-offset 2
  web-mode-code-indent-offset 2
  web-mode-css-indent-offset 2
@@ -70,16 +68,14 @@
 
 (add-hook!
   js2-mode 'prettier-js-mode
-  ;; (add-hook 'before-save-hook #'refmt-before-save nil t)
+  (add-hook 'before-save-hook #'refmt-before-save nil t)
   )
 
-;; (map! :ne "C-;" #'comment-or-uncomment-region)
-(map! :v "J" #'move-text-region-down)
-(map! :v "K" #'move-text-region-up)
-(map! :n "J" #'move-text-line-down)
-(map! :n "K" #'move-text-line-up)
 (map! :ne "SPC / r" #'deadgrep)
 (map! :ne "SPC n b" #'org-brain-visualize)
+(map! :map browse-kill-ring-mode-map "j" #'browse-kill-ring-forward)
+(map! :map browse-kill-ring-mode-map "k" #'browse-kill-ring-previous)
+(map! "M-v" #'browse-kill-ring)
 
 ;; (def-package! parinfer ; to configure it
 ;;   :bind (("C-," . parinfer-toggle-mode)
@@ -132,14 +128,14 @@
 (after! web-mode
   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
 
-(defun +data-hideshow-forward-sexp (arg)
-  (let ((start (current-indentation)))
-    (forward-line)
-    (unless (= start (current-indentation))
-      (require 'evil-indent-plus)
-      (let ((range (evil-indent-plus--same-indent-range)))
-        (goto-char (cadr range))
-        (end-of-line)))))
+;; (defun +data-hideshow-forward-sexp (arg)
+;;   (let ((start (current-indentation)))
+;;     (forward-line)
+;;     (unless (= start (current-indentation))
+;;       (require 'evil-indent-plus)
+;;       (let ((range (evil-indent-plus--same-indent-range)))
+;;         (goto-char (cadr range))
+;;         (end-of-line)))))
 
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
@@ -153,3 +149,5 @@
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+
+;; (require 'browse-kill-ring+)
