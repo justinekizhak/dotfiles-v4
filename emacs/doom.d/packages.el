@@ -19,4 +19,9 @@
 (package! org-brain)
 (package! ascii-art-to-unicode)
 (package! browse-kill-ring)
-;; (package! wakatime-mode)
+(package! wgrep)  ;; Add support for project wide search and replace
+(package! dart-mode)  ;; Support for Dart language
+(package! flutter)  ;; Support for Flutter SDK
+(package! company-dart :recipe (:host github :repo "sid-kurias/company-dart")) ;; Company completion for Dart
+(package! company-lsp)  ;; Company frontend for lsp
+(package! lsp-mode)  ;; lsp support
