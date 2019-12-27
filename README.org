@@ -18,18 +18,18 @@
 -----
 
 #+CUSTOM_ID: table-of-contents
-* Table of Contents
+** Table of Contents
 
-- [[#introduction][Introduction]]
-- [[#features][Features]]
-- [[#get-started][Get started]]
-- [[#full-documentation][Full Documentation]]
-  - [[#add-modules][Add modules]]
-    - [[#add-new-prompt-themes][Add new prompt themes]]
-- [[#license][License]]
+- [[#Introduction][Introduction]]
+- [[Features]]
+- [[Get Started]]
+- [[Full Documentation]]
+    - [[Add modules]]
+        - [[Add new prompt themes]]
+- [[License]]
 
 
-* Introduction
+** Introduction
 
 They say your dotfiles will most likely be the longest project you ever work on.
 So for this reason, your dotfiles must be organized in a disciplined manner for
@@ -45,7 +45,9 @@ housing more dotfiles.
 One thing you may notice is that my workflow consists of diverse toolkit,
 this makes it for easier adoption and exploration.
 
-*  Features
+**[Back to top](#table-of-contents)**
+
+**  Features
 
 Contains settings for
 
@@ -60,9 +62,9 @@ Contains settings for
 - VSCode (only install instructions for dotfiles)
 - and some terminal settings
 
-[[#table-of-contents][back to top]]
+/[[#table-of-contents][back to top]]/
 
-* Get Started
+** Get Started
 
 
 1) ~git clone https://gitlab.com/justinekizhak/dotfiles~
@@ -73,16 +75,16 @@ Contains settings for
   Just copy paste lines in the file into terminal.
   All instructions are bash compatible.
 
-  [[#table-of-contents][back to top]]
+**[Back to top](#table-of-contents)**
 
-* Full Documentation
+** Full Documentation
 
 This repo uses [git subrepo] for adding modules.
 
-** Add modules
+*** Add modules
   ~git subrepo clone MODULE_URL MODULE_LOCATION~
 
-*** Add new prompt themes
+**** Add new prompt themes
 
 - Subrepo clone the module
     ~git subrepo clone PROMPT_URL PROMPT_LOCATION~
@@ -114,13 +116,14 @@ Read [CHANGELOG], [CODE OF CONDUCT], [CONTRIBUTING] guide.
 [CONTRIBUTING]: CONTRIBUTING.md
 [CODE OF CONDUCT]: CODE_OF_CONDUCT.md
 
+** License
 
-[[#table-of-contents][back to top]]
-* License
+Licensed under the terms of [MIT License].
 
-Licensed under the terms of [[License.txt][MIT License]]
+[MIT License]: LICENSE.txt
 
-[[#table-of-contents][back to top]]
+**[Back to top](#table-of-contents)**
+
 
 -----
 [[https://forthebadge.com][https://forthebadge.com/images/badges/compatibility-betamax.svg]]
