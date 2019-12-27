@@ -17,9 +17,10 @@
 * Dotfiles
 -----
 
+#+CUSTOM_ID: table-of-contents
 ** Table of Contents
 
-- [[Introduction]]
+- [[#Introduction][Introduction]]
 - [[Features]]
 - [[Get Started]]
 - [[Full Documentation]]
@@ -61,7 +62,7 @@ Contains settings for
 - VSCode (only install instructions for dotfiles)
 - and some terminal settings
 
-/[[#Table of Contents][back to top]]/
+/[[#table-of-contents][back to top]]/
 
 ** Get Started
 
