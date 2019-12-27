@@ -43,7 +43,7 @@
  org-log-done 'time
  css-indent-offset 2
  org-refile-targets (quote ((nil :maxlevel . 1)))
- org-capture-templates '(("x" "Note" entry
+ org-capture-templates '(("n" "Note" entry
                           (file+olp+datetree "journal.org")
                           "**** [ ] %U %?" :prepend t :kill-buffer t)
                          ("t" "Task" entry
@@ -64,12 +64,11 @@
                                   :deadline future)
                            (:name "Big Outcomes"
                                   :tag "bo"))
-)
+ )
 
 (add-hook!
-  js2-mode 'prettier-js-mode
-  (add-hook 'before-save-hook #'refmt-before-save nil t)
-  )
+ js2-mode 'prettier-js-mode
+ (add-hook 'before-save-hook #'refmt-before-save nil t))
 
 (map! :ne "SPC / r" #'deadgrep)
 (map! :ne "SPC n b" #'org-brain-visualize)
@@ -153,3 +152,5 @@
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
+
+(setq delete-selection-mode 't)
