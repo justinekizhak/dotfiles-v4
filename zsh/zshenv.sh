@@ -15,7 +15,10 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export PYTHONBREAKPOINT=pudb.set_trace
 GPG_TTY=$(tty)
 export GPG_TTY
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE
 
+export GIT_SUBREPO_VERBOSE=True
 add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
         export PATH="$PATH:$1"

@@ -30,9 +30,5 @@ if [ "${terminfo[kcud1]}" != "" ]; then
   bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE
-
-export GIT_SUBREPO_VERBOSE=True
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"
