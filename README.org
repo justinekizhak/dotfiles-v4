@@ -8,11 +8,11 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 <!-- {Put your badges here} -->
 
-- - -
-# Dotfiles
-- - -
+-----
+* Dotfiles
+-----
 
-**Table of Contents**
+/Table of Contents/
 
 - [Introduction](#introduction)
 - [Features](#features)
@@ -23,7 +23,7 @@
 - [License](#license)
 
 
-## Introduction
+** Introduction
 
 They say your dotfiles will most likely be the longest project you ever work on.
 So for this reason, your dotfiles must be organized in a disciplined manner for
@@ -41,7 +41,7 @@ this makes it for easier adoption and exploration.
 
 **[Back to top](#table-of-contents)**
 
-## Features
+**  Features
 
 Contains settings for
 
@@ -58,12 +58,12 @@ Contains settings for
 
 **[Back to top](#table-of-contents)**
 
-## Get Started
+** Get Started
 
 
-1) `git clone https://gitlab.com/justinekizhak/dotfiles`
+1) ~git clone https://gitlab.com/justinekizhak/dotfiles~
     
-2) `cd dotfiles & rm -rf .git`
+2) ~cd dotfiles & rm -rf .git~
 
 3) Use instructions in `install.yaml` file.
   Just copy paste lines in the file into terminal.
@@ -71,33 +71,34 @@ Contains settings for
 
 **[Back to top](#table-of-contents)**
 
-## Full Documentation
+** Full Documentation
 
 This repo uses [git subrepo] for adding modules.
 
-### Add modules
-  `git subrepo clone MODULE_URL MODULE_LOCATION`
+*** Add modules
+  ~git subrepo clone MODULE_URL MODULE_LOCATION~
 
-#### Add new prompt themes
+**** Add new prompt themes
 
 - Subrepo clone the module
-    `git subrepo clone PROMPT_URL PROMPT_LOCATION`
+    ~git subrepo clone PROMPT_URL PROMPT_LOCATION~
 
-- Symlink zsh file as `prompt_FILENAME_setup`
+- Symlink zsh file as ~prompt_FILENAME_setup~
 
 Example:
 
-```
+#+BEGIN_SRC shell
 git subrepo clone https://github.com/denysdovhan/spaceship-prompt \
 zsh/zim/modules/prompt/external-themes/spaceship
-```
+#+END_SRC
 
-```
+
+#+BEGIN_SRC shell
 ln -s ~/dotfiles/zsh/zim/modules/prompt/external-themes/spaceship/spaceship.zsh \
 ~/dotfiles/zsh/zim/modules/prompt/functions/prompt_spaceship_setup
-```
+#+END_SRC
 
----
+-----
 
 Repo at [GITLAB][website].
 
@@ -109,7 +110,7 @@ Read [CHANGELOG], [CODE OF CONDUCT], [CONTRIBUTING] guide.
 [CONTRIBUTING]: CONTRIBUTING.md
 [CODE OF CONDUCT]: CODE_OF_CONDUCT.md
 
-## License
+** License
 
 Licensed under the terms of [MIT License].
 
@@ -118,8 +119,8 @@ Licensed under the terms of [MIT License].
 **[Back to top](#table-of-contents)**
 
 
-- - -
+-----
 [![forthebadge](https://forthebadge.com/images/badges/compatibility-betamax.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-water.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-- - -
+-----
