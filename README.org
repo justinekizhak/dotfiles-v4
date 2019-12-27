@@ -1,12 +1,11 @@
-<a name="top"></a>
-[![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
-<a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
+#+CAPTION: Instagram
+#+ATTR_HTML: :alt Instagram image :title Instagram Image :align right
+[[https://www.instagram.com/justinekizhak][https://i.imgur.com/G9YJUZI.png]]
 <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
 <a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
-<br>
 -----
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
-<!-- {Put your badges here} -->
+[[https://lbesson.mit-license.org/][https://img.shields.io/badge/License-MIT-blue.svg]]
+# {Put your badges here}
 
 -----
 * Dotfiles
@@ -120,7 +119,7 @@ Licensed under the terms of [MIT License].
 
 
 -----
-[![forthebadge](https://forthebadge.com/images/badges/compatibility-betamax.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/powered-by-water.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[[https://forthebadge.com][https://forthebadge.com/images/badges/compatibility-betamax.svg]]
+[[https://forthebadge.com][https://forthebadge.com/images/badges/powered-by-water.svg]]
+[[https://forthebadge.com][https://forthebadge.com/images/badges/built-with-love.svg]]
 -----
