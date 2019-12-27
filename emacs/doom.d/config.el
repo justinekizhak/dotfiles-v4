@@ -150,4 +150,6 @@
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
 
-;; (require 'browse-kill-ring+)
+(add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+
+(add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
