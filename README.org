@@ -4,7 +4,7 @@
 <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
 <a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
 <br>
-- - -
+-----
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 <!-- {Put your badges here} -->
 
@@ -65,7 +65,7 @@ Contains settings for
     
 2) ~cd dotfiles & rm -rf .git~
 
-3) Use instructions in `install.yaml` file.
+3) Use instructions in ~install.yaml~ file.
   Just copy paste lines in the file into terminal.
   All instructions are bash compatible.
 
