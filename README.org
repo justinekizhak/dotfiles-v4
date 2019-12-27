@@ -1,8 +1,14 @@
 #+CAPTION: Instagram
 #+ATTR_HTML: :alt Instagram image :title Instagram Image :align right
 [[https://www.instagram.com/justinekizhak][https://i.imgur.com/G9YJUZI.png]]
-<a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-<a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
+#+CAPTION: Twitter
+#+ATTR_HTML: :alt Twitter image :title Twitter Image: align right
+[[https://twitter.com/justinekizhak][http://i.imgur.com/tXSoThF.png]]
+#+CAPTION: Twitter
+#+ATTR_HTML: :alt Twitter image :title Twitter Image: align right
+#+CAPTION: Facebook
+#+ATTR_HTML: :alt Facebook image :title Facebook Image: align right
+[[https://www.facebook.com/justinekizhak][http://i.imgur.com/P3YfQoD.png]]
 -----
 [[https://lbesson.mit-license.org/][https://img.shields.io/badge/License-MIT-blue.svg]]
 # {Put your badges here}
@@ -11,15 +17,15 @@
 * Dotfiles
 -----
 
-/Table of Contents/
+/<<Table of Contents>>/
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Get Started](#get-started)
-- [Full Documentation](#full-documentation)
-    - [Add modules](#add-modules)
-        - [Add new prompt themes](#add-new-prompt-themes)
-- [License](#license)
+- [[Introduction]]
+- [[Features]]
+- [[Get Started]]
+- [[Full Documentation]]
+    - [[Add modules]]
+        - [[Add new prompt themes]]
+- [[License]]
 
 
 ** Introduction
@@ -55,7 +61,7 @@ Contains settings for
 - VSCode (only install instructions for dotfiles)
 - and some terminal settings
 
-**[Back to top](#table-of-contents)**
+/[[Back to top]]/
 
 ** Get Started
 
