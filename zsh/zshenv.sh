@@ -33,9 +33,6 @@ add_to_path "$HOME/.emacs.d/bin"
 
 . "$HOME/git-subrepo/.rc"
 
-eval "$(fasd --init auto)"
-eval "$(pipenv --completion)"
-
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/justinkizhakkinedath/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/justinkizhakkinedath/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
