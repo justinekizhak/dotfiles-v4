@@ -197,10 +197,11 @@
         )
   )
 
-(require 'zone)
-(with-eval-after-load 'zone
-  (zone-when-idle 30)
-
+(use-package! zone
+  :ensure nil
+  :defer 5
+  :config
+  (zone-when-idle 30) ; in seconds
   (defun zone-choose (pgm)
     "Choose a PGM to run for `zone'."
     (interactive
@@ -209,14 +210,17 @@
        "Program: "
        (mapcar 'symbol-name zone-programs))))
     (let ((zone-programs (list (intern pgm))))
-      (zone)))
+      (zone))))
 
-  (load "~/dotfiles/emacs/packages/end-of-buffer.el")
+;; (use-package! zone-end-of-buffer
+;;   )
 
-  (unless (memq 'zone-end-of-buffer (append zone-programs nil))
-    (setq zone-programs
-          (vconcat zone-programs [zone-end-of-buffer])))
-  )
+;; TODO Fix zone-end-of-buffer
+;; (with-eval-after-load 'zone-end-of-buffer
+;;   (unless (memq 'zone-end-of-buffer (append zone-programs nil))
+;;     (setq zone-programs
+;;           (vconcat zone-programs [zone-end-of-buffer])))
+;;   )
 
 (use-package! company-lsp
   :defer t
@@ -377,8 +381,8 @@
                (seq-take candidates-lsp 6))))))
 
 ;; Adding company-tabnine to emacs lisp mode hook
-(add-hook 'emacs-lisp-mode-hook (lambda ()
-                                  (add-to-list 'company-backends #'company-tabnine)))
+;; (add-hook 'emacs-lisp-mode-hook (lambda ()
+;;                                   (add-to-list 'company-backends #'company-tabnine)))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -408,3 +412,7 @@
 
 (use-package 2048-game
   :commands (2048-game))
+
+(after! lentic
+  (global-lentic-mode)
+  )
