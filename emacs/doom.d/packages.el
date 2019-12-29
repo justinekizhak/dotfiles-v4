@@ -25,3 +25,15 @@
 (package! company-dart :recipe (:host github :repo "sid-kurias/company-dart")) ;; Company completion for Dart
 (package! company-lsp)  ;; Company frontend for lsp
 (package! lsp-mode)  ;; lsp support
+(package! goto-line-preview)  ;; Go to line (M-g g) with preview option
+(package! tiny)  ;; Number ranges
+(package! lentic)  ;; Same buffer multiple mode for literate programming
+(package! ialign)  ;; Aligning content
+(package! clipmon)  ;; Clipboard monitor
+(package! zone)  ;; Screensaver emacs
+(package! header3 :recipe (:host github :repo "justinekizhak/header3"))
+(package! company-tabnine)  ;; Autocomplete using deep learing
+;; (package! esup)
+(package! company-box)  ;; Icons for auto complete popup
+(package! treemacs-magit)
+(package! 2048-game)
