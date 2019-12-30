@@ -1,4 +1,3 @@
-;;; .doom.d/config.el -*- lexical-binding: t; -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
 (setq package-enable-at-startup nil)
@@ -10,9 +9,6 @@
   (push '(menu-bar-lines . 0) default-frame-alist))
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-(eval-and-compile
-  (setq gc-cons-threshold 402653184
-        gc-cons-percentage 0.6))
 (defvar better-gc-cons-threshold 67108864 ; 64mb
   "The default value to use for `gc-cons-threshold'.
 
@@ -31,6 +27,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                                 (unless (frame-focus-state)
                                   (garbage-collect))))
               (add-hook 'after-focus-change-function 'garbage-collect))
+            ;; Avoid garbage collection when using minibuffer
                 (defun gc-minibuffer-setup-hook ()
                 (setq gc-cons-threshold (* better-gc-cons-threshold 2)))
 
