@@ -112,21 +112,10 @@ pays off.
 
 * About my config
 
-  M-EMACS is a custom GNU Emacs setup and configurations that aims not only to
-  enhance the default Emacs experience, and hopefully be a sample that everyone
-  can easily navigate and reference through a highly detailed README that
-  contains 99% of the *entire* configuration code.
+This Emacs config is a work of many hours of banging my head on a wall.
+My Emacs config has gone through many phase. This phase seems to the most
+pleasent one
 
-  As a young EMACSer, I have experienced the struggle to find a detailed
-  configuration that is loosely coupled and highly readable. This mostly due to
-  the nature of source codes, sometimes comments are harder to notice or simply
-  not enough. Therefore I decided to construct this README and present any
-  human-readable explanation in a much more human-friendly way. Anyone,
-  particularly Emacs beginners who have no idea where to start with their
-  personal config, is more than welcome to read through this document and
-  copy/paste any part to use it on their own.
-
-  This configuration is designed and tested for *GNU Emacs 26.3*.
 
 ** Screenshot
    # [[file:images/Sample.png]]
@@ -181,10 +170,6 @@ a feature, mostly by accident, common to old lisp dialects. While dynamic
 scope has some selective uses, it’s widely regarded as a mistake for local
 variables, and virtually no other languages have adopted it.
 #+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-;;; .doom.d/config.el -*- lexical-binding: t; -*-
-#+END_SRC
 
 * Personal Information
 Let's set some variables with basic user information.
@@ -242,7 +227,7 @@ We're going to increase the gc-cons-threshold to a very high number to decrease 
 We'll lower this value significantly after initialization has completed. We don't want to keep this value
 too high or it will result in long GC pauses during normal usage.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (eval-and-compile
   (setq gc-cons-threshold 402653184
         gc-cons-percentage 0.6))
@@ -265,8 +250,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 
 *** Garbage collect when Emacs is out of focus
 
-and avoid garbage collection when using minibuffer
-
 #+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -276,6 +259,7 @@ and avoid garbage collection when using minibuffer
                                 (unless (frame-focus-state)
                                   (garbage-collect))))
               (add-hook 'after-focus-change-function 'garbage-collect))
+            ;; Avoid garbage collection when using minibuffer
                 (defun gc-minibuffer-setup-hook ()
                 (setq gc-cons-threshold (* better-gc-cons-threshold 2)))
 
