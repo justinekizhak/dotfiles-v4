@@ -1,18 +1,256 @@
+#+TITLE: My Doom Emacs config
+#+AUTHOR: Justine Kizhakkinedath
+#+EMAIL: justine@kizhak.com
+#+LANGUAGE: en
+#+STARTUP: inlineimages
+#+PROPERTY: header-args :tangle yes :cache yes :results silent :padline no
+#+OPTIONS: toc:nil
+#+EXPORT_FILE_NAME: README
+
+* Configuration
+:PROPERTIES:
+:VISIBILITY: children
+:END:
+
+* Table of Contents                                               :TOC_3_gh:
+- [[#configuration][Configuration]]
+- [[#about-emacs][About EMACS]]
+- [[#about-my-config][About my config]]
+  - [[#screenshot][Screenshot]]
+  - [[#about-readme][About README]]
+  - [[#installation][Installation]]
+  - [[#modification][Modification]]
+  - [[#contribution][Contribution]]
+  - [[#special-thanks][Special Thanks]]
+- [[#lexical-binding][Lexical Binding]]
+- [[#personal-information][Personal Information]]
+- [[#improve-boot-up-speed][Improve boot up speed]]
+  - [[#disable-package-enable-at-startup][Disable =package-enable-at-startup=]]
+  - [[#unset-file-name-handler-alist][Unset =file-name-handler-alist=]]
+  - [[#disable-site-run-file][Disable =site-run-file=]]
+  - [[#disable-unnecessary-interface][Disable Unnecessary Interface]]
+  - [[#setting-up-garbage-collection-for-speedy-startup][Setting up garbage collection for speedy startup]]
+    - [[#better-garbage-threshold-limit][Better garbage threshold limit]]
+    - [[#garbage-collect-when-emacs-is-out-of-focus][Garbage collect when Emacs is out of focus]]
+- [[#use-package-settings][Use-Package Settings]]
+- [[#defining-constants][Defining constants]]
+- [[#setting-up-variables][Setting up variables]]
+- [[#appearance][Appearance]]
+- [[#packages][Packages]]
+  - [[#org-mode][Org mode]]
+  - [[#projectile][Projectile]]
+  - [[#javascriptweb-mode][Javascript/Web mode]]
+  - [[#ripgrep][Ripgrep]]
+  - [[#browse-kill-ring][Browse kill ring]]
+  - [[#magit][Magit]]
+  - [[#go-to-line-preview][Go to line preview]]
+  - [[#clipmon][Clipmon]]
+  - [[#dart-lang][Dart lang]]
+  - [[#company][Company]]
+    - [[#company-lsp][Company-lsp]]
+    - [[#commpany-box][Commpany-box]]
+    - [[#company-tabnine][Company-tabnine]]
+  - [[#dired][Dired]]
+  - [[#zone][Zone]]
+  - [[#drag-lines][Drag lines]]
+  - [[#undo-visualizer][Undo visualizer]]
+  - [[#yasnippet][Yasnippet]]
+  - [[#treemacs-magit][Treemacs magit]]
+  - [[#2048-game][2048 game]]
+  - [[#lentic-mode][Lentic mode]]
+- [[#languages][Languages]]
+  - [[#rust][Rust]]
+- [[#other-config][Other config]]
+
+* About EMACS
+  Emacs changes how you /think/ about programming.
+
+  Emacs is *totally introspectable*. You can always find out 'what code runs
+  when I press this button?'.
+
+  Emacs is an *incremental programming environment*. There's no edit-compile-run
+ cycle.
+ There isn't even an edit-run cycle. You can execute snippets of code and
+ gradually turn them into a finished project. There's no distinction between
+ your editor and your interpreter.
+
+  Emacs is a *mutable environment*. You can set variables, tweak functions
+  with advice, or redefine entire functions. Nothing is off-limits.
+
+  Emacs provides *functionality without applications*. Rather than separate
+  applications, functionality is all integrated into your Emacs instance.
+  Amazingly, this works. Ever wanted to use the same snippet tool for writing
+  C++ classes as well as emails?
+
+  Emacs is full of *incredible software concepts that haven't hit the mainstream
+  yet*. For example:
+  - Many platforms have a single item clipboard. Emacs has an *infinite clipboard*.
+  - If you undo a change, and then continue editing, you can't redo the original
+    change. Emacs allows *undoing to any historical state*, even allowing
+    tree-based exploration of history.
+  - Emacs supports a *reverse variable search*: you can find variables with
+    a given value.
+  - You can perform *structural editing* of code, allowing you to make changes
+    without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
+  - Many applications use a modal GUI: for example, you can't do other edits
+    during a find-and-replace operation. Emacs provides *recursive editing* that
+    allow you to suspend what you're currently doing, perform other edits, then
+    continue the original task.
+  Emacs has a *documentation culture*. Emacs includes a usage manual, a lisp
+  programming manual, pervasive docstrings and even an interactive tutorial.
+
+  Emacs has a *broad ecosystem*. If you want to edit code in a niche language,
+  there's probably an Emacs package for it.
+
+  Emacs doesn't have a monopoly on good ideas, and there are other great tools
+out there.
+Nonetheless, we believe the
+[[https://i.stack.imgur.com/7Cu9Z.jpg][Emacs learning curve]]
+pays off.
+
+  /This beautifully written *About EMACS* section credits to [[https://github.com/remacs/remacs][Remacs]]./
+
+* About my config
+
+  M-EMACS is a custom GNU Emacs setup and configurations that aims not only to
+  enhance the default Emacs experience, and hopefully be a sample that everyone
+  can easily navigate and reference through a highly detailed README that
+  contains 99% of the *entire* configuration code.
+
+  As a young EMACSer, I have experienced the struggle to find a detailed
+  configuration that is loosely coupled and highly readable. This mostly due to
+  the nature of source codes, sometimes comments are harder to notice or simply
+  not enough. Therefore I decided to construct this README and present any
+  human-readable explanation in a much more human-friendly way. Anyone,
+  particularly Emacs beginners who have no idea where to start with their
+  personal config, is more than welcome to read through this document and
+  copy/paste any part to use it on their own.
+
+  This configuration is designed and tested for *GNU Emacs 26.3*.
+
+** Screenshot
+   # [[file:images/Sample.png]]
+   
+** About README
+   This README is originated from =config.org= that is generated using
+   =M-x org-gfm-export-to-markdown=.
+    Every block of code is generated through this function - it exports sections of
+    code from the =elisp/= directory.
+    You will not see their presence in =init.org=.
+
+** Installation
+
+Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom Emacs]].
+
+** Modification
+   You have the permission to use, modify, distribute in any way you want.
+
+   However, what is /free/ stays /free/. After all, this is [[file:LICENSE][GPL]].
+
+   *Remember* you must manually sync this README with all the new changes you made by:
+   1. Please do *NOT* edit this =README.md= file, edit =config.org= instead!
+   2. Add =#+INCLUDE: "~/.emacs.d/elisp/<place-holder>.el" src emacs-lisp :range-begin "<start-line-wrapper-exclusive>" :range-end "<end-line-wrapper-exclusive>"= in the appropriate section in =init.org=.
+   3. Enter =C-x C-s= to save and update =:lines=. (if you don't see the updated effect, run =M-x save-and-update-includes= manually)
+   4. Call =M-x org-gfm-export-to-markdown= to update =README.md= automatically.
+** Contribution
+If you spotted a bug or you have any suggestions, please fill in an issue.
+If you have something to fix, feel free to create a pull request.
+** Special Thanks
+Everyone starts somewhere, and I started here.
+[[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
+
+
+# * Startup
+# ** Garbage Collection
+
+# *** Garbage Collect When Emacs is Out of Focus
+
+# #+INCLUDE: "~/dotfiles/emacs/doom.d/config.el" src emacs-lisp :range-begin "AutoGC" :range-end "-AutoGC" :lines "69-77"
+
+# *** Avoid Garbage Collect When Using Minibuffer
+
+# #+INCLUDE: "~/.emacs.d/init.el" src emacs-lisp :range-begin "MinibufferGC" :range-end "-MinibufferGC" :lines "78-87"
+
+* Lexical Binding
+
+Use lexical-binding. [[https://nullprogram.com/blog/2016/12/22/][Why?]]
+
+#+BEGIN_QUOTE
+Until Emacs 24.1 (June 2012), Elisp only had dynamically scoped variables,
+a feature, mostly by accident, common to old lisp dialects. While dynamic
+scope has some selective uses, it’s widely regarded as a mistake for local
+variables, and virtually no other languages have adopted it.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
+#+END_SRC
+
+* Personal Information
+Let's set some variables with basic user information.
+
+#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
+#+END_SRC
+
+* Improve boot up speed
+
+** Disable =package-enable-at-startup=
+
+Package initialize occurs automatically, before =user-init-file= is loaded,
+but after =early-init-file=. We handle package initialization, so we must
+prevent Emacs from doing it early!
+
+#+BEGIN_SRC emacs-lisp
 (setq package-enable-at-startup nil)
+#+END_SRC
+
+** Unset =file-name-handler-alist=
+
+Every file opened and loaded by Emacs will run through this list to check
+for a proper handler for the file, but during startup, it won’t need any of
+them.
+
+#+BEGIN_SRC emacs-lisp
 (defvar file-name-handler-alist-original file-name-handler-alist)
 (setq file-name-handler-alist nil)
+#+END_SRC
+
+** Disable =site-run-file=
+
+#+BEGIN_SRC emacs-lisp
 (setq site-run-file nil)
+#+END_SRC
+
+** Disable Unnecessary Interface
+
+It will be faster to disable them here before they've been initialized.
+
+#+BEGIN_SRC emacs-lisp
 (menu-bar-mode -1)
 (unless (and (display-graphic-p) (eq system-type 'darwin))
   (push '(menu-bar-lines . 0) default-frame-alist))
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
+
+#+END_SRC
+
+** Setting up garbage collection for speedy startup
+
+We're going to increase the gc-cons-threshold to a very high number to decrease the load and compile time.
+We'll lower this value significantly after initialization has completed. We don't want to keep this value
+too high or it will result in long GC pauses during normal usage.
+
+#+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (setq gc-cons-threshold 402653184
         gc-cons-percentage 0.6))
+#+END_SRC
+
+*** Better garbage threshold limit
+
+#+BEGIN_SRC emacs-lisp
 (defvar better-gc-cons-threshold 67108864 ; 64mb
   "The default value to use for `gc-cons-threshold'.
 
@@ -23,6 +261,13 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
             (setq gc-cons-threshold better-gc-cons-threshold)
             (setq file-name-handler-alist file-name-handler-alist-original)
             (makunbound 'file-name-handler-alist-original)))
+#+END_SRC
+
+*** Garbage collect when Emacs is out of focus
+
+and avoid garbage collection when using minibuffer
+
+#+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-startup-hook
           (lambda ()
             (if (boundp 'after-focus-change-function)
@@ -40,8 +285,21 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 
                 (add-hook 'minibuffer-setup-hook #'gc-minibuffer-setup-hook)
                 (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
-(setq use-package-always-defer t
-      use-package-verbose t)
+#+END_SRC
+
+* Use-Package Settings
+
+Tell =use-package= to always defer loading packages unless explicitly told otherwise. This speeds up
+initialization significantly as many packages are only loaded later when they are explicitly used.
+
+#+BEGIN_SRC emacs-lisp
+  (setq use-package-always-defer t
+        use-package-verbose t)
+#+END_SRC
+
+* Defining constants
+
+#+BEGIN_SRC emacs-lisp
 (defconst *sys/gui*
   (display-graphic-p)
   "Are we running on a GUI Emacs?")
@@ -104,11 +362,21 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
        (executable-find "pip")
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") "")))
   "Check basic requirements for EAF to run.")
+#+END_SRC
+
+* Setting up variables
+
+#+BEGIN_SRC emacs-lisp
 (setq
  mac-command-modifier 'meta
  ;; +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
  delete-selection-mode 't
  )
+#+END_SRC
+
+* Appearance
+
+#+BEGIN_SRC emacs-lisp
 (setq
  doom-font (font-spec :family "Fira Code")
  )
@@ -118,6 +386,12 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
              '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist
              '(ns-appearance . dark))
+#+END_SRC
+
+* Packages
+** Org mode
+
+#+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
 ;; (defun +org*update-cookies ()
@@ -159,6 +433,9 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                            (:name "Big Outcomes"
                                   :tag "bo"))
  )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (after! org
   (set-face-attribute 'org-link nil
                       :weight 'normal
@@ -199,14 +476,27 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                       :height 1.75
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (map! :ne "SPC n b" #'org-brain-visualize)
 
 (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
 (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
+#+END_SRC
+
+** Projectile
+
+#+BEGIN_SRC emacs-lisp
 (setq
  projectile-project-search-path '("~/projects")
  )
+#+END_SRC
+
+** Javascript/Web mode
+
+#+BEGIN_SRC emacs-lisp
 (add-hook!
  js2-mode 'prettier-js-mode
  (add-hook 'before-save-hook #'refmt-before-save nil t))
@@ -224,7 +514,17 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
  typescript-indent-level 2
  css-indent-offset 2
  )
+#+END_SRC
+
+** Ripgrep
+
+#+BEGIN_SRC emacs-lisp
 (map! :ne "SPC / r" #'deadgrep)
+#+END_SRC
+
+** Browse kill ring
+
+#+BEGIN_SRC emacs-lisp
 ;; (define-key browse-kill-ring-mode-map (kbd "n") nil)
 (map! :map browse-kill-ring-mode-map
       "j" #'browse-kill-ring-forward
@@ -236,10 +536,35 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
               (browse-kill-ring-search-backward ""))
       )
 (map! "M-v" #'browse-kill-ring)
+#+END_SRC
+
+** Magit
+
+#+BEGIN_SRC emacs-lisp
 (setq +magit-hub-features t)
+#+END_SRC
+
+** Go to line preview
+
+#+BEGIN_SRC emacs-lisp
 (global-set-key [remap goto-line] 'goto-line-preview)
+#+END_SRC
+
+** Clipmon
+
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'after-init-hook 'clipmon-mode-start)
+#+END_SRC
+
+** Dart lang
+
+#+BEGIN_SRC emacs-lisp
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+#+END_SRC
+
+** Company
+
+#+BEGIN_SRC emacs-lisp
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
@@ -282,9 +607,18 @@ If failed try to complete the common part with `company-complete-common'"
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+#+END_SRC
+
+*** Company-lsp
+
+#+BEGIN_SRC emacs-lisp
 (use-package! company-lsp
   :defer t
   :custom (company-lsp-cache-candidates 'auto))
+#+END_SRC
+
+*** Commpany-box
+#+BEGIN_SRC emacs-lisp
 (use-package company-box
   :diminish
   :functions (my-company-box--make-line
@@ -375,6 +709,11 @@ If failed try to complete the common part with `company-complete-common'"
             (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.8 :v-adjust -0.05))
             (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
           company-box-icons-alist 'company-box-icons-all-the-icons)))
+#+END_SRC
+
+*** Company-tabnine
+
+#+BEGIN_SRC emacs-lisp
 (use-package! company-tabnine
   :defer 1
   :custom
@@ -418,6 +757,11 @@ If failed try to complete the common part with `company-complete-common'"
         (setq candidates-tabnine (nreverse candidates-tabnine))
         (nconc (seq-take candidates-tabnine 3)
                (seq-take candidates-lsp 6))))))
+#+END_SRC
+
+** Dired
+
+#+BEGIN_SRC emacs-lisp
 (after! dired
   ;; Always delete and copy recursively
   (setq dired-recursive-deletes 'always)
@@ -450,6 +794,11 @@ If failed try to complete the common part with `company-complete-common'"
                    (find-alternate-file ".."))
         )
   )
+#+END_SRC
+
+** Zone
+
+#+BEGIN_SRC emacs-lisp
 (use-package! zone
   :ensure nil
   :defer 5
@@ -474,14 +823,28 @@ If failed try to complete the common part with `company-complete-common'"
 ;;     (setq zone-programs
 ;;           (vconcat zone-programs [zone-end-of-buffer])))
 ;;   )
+#+END_SRC
+
+** Drag lines
+
+#+BEGIN_SRC emacs-lisp
 (map!
  :n "M-j" #'drag-stuff-down
  :n "M-k" #'drag-stuff-up
  )
+#+END_SRC
+
+** Undo visualizer
+#+BEGIN_SRC emacs-lisp
 (map! :leader
         (:prefix-map ("a" . "applications")
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize
       ))
+#+END_SRC
+
+** Yasnippet
+
+#+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :diminish yas-minor-mode
   :init
@@ -503,18 +866,51 @@ If failed try to complete the common part with `company-complete-common'"
       (when (and (eq old-point (point))
                  (eq old-tick (buffer-chars-modified-tick)))
         (ignore-errors (yas-next-field))))))
+#+END_SRC
+
+** Treemacs magit
+#+BEGIN_SRC emacs-lisp
 (use-package treemacs-magit
   :defer t
   :after (treemacs magit))
+#+END_SRC
+
+** 2048 game
+#+BEGIN_SRC emacs-lisp
 (use-package 2048-game
   :commands (2048-game))
+#+END_SRC
+
+** Lentic mode
+#+BEGIN_SRC emacs-lisp
 (after! lentic
   (global-lentic-mode))
+#+END_SRC
+
+* Languages
+
+** Rust
+
+#+BEGIN_SRC emacs-lisp
 ;; Adding company-tabnine to emacs lisp mode hook
 (add-hook 'rustic-mode-hook (lambda ()
                               (add-to-list 'company-backends #'company-tabnine)))
+#+END_SRC
+
+* Other config
+
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
 
 (global-auto-revert-mode t)
+#+END_SRC
+
+# * Post Initialization
+# Let's lower our GC thresholds back down to a sane level.
+
+# #+BEGIN_SRC emacs-lisp
+# (setq gc-cons-threshold 16777216
+#       gc-cons-percentage 0.1)
+# #+END_SRC
