@@ -1,5 +1,5 @@
 #+TITLE: My Doom Emacs config
-#+AUTHOR: Justine Kizhakkinedath
+#+AUTHOR: Justine Kizhakkinedath                      
 #+EMAIL: justine@kizhak.com
 #+LANGUAGE: en
 #+STARTUP: inlineimages
@@ -25,6 +25,7 @@
 - [[#lexical-binding][Lexical Binding]]
 - [[#personal-information][Personal Information]]
 - [[#improve-boot-up-speed][Improve boot up speed]]
+  - [[#omit-default-startup-screen][Omit default startup screen]]
   - [[#disable-package-enable-at-startup][Disable =package-enable-at-startup=]]
   - [[#unset-file-name-handler-alist][Unset =file-name-handler-alist=]]
   - [[#disable-site-run-file][Disable =site-run-file=]]
@@ -34,8 +35,15 @@
     - [[#garbage-collect-when-emacs-is-out-of-focus][Garbage collect when Emacs is out of focus]]
 - [[#use-package-settings][Use-Package Settings]]
 - [[#defining-constants][Defining constants]]
-- [[#setting-up-variables][Setting up variables]]
-- [[#appearance][Appearance]]
+- [[#some-emacs-defaults][Some Emacs defaults]]
+- [[#better-editing-experience][Better editing experience]]
+  - [[#modernize-selection-behavior][Modernize selection behavior]]
+  - [[#disable-scroll-bar][Disable scroll bar]]
+  - [[#confirm-kill-process][Confirm kill process]]
+  - [[#automatically-refreshes-the-buffer-for-changes-outside-of-emacs][Automatically refreshes the buffer for changes outside of Emacs]]
+  - [[#mouse-wheel-track-pad-scroll-speed][Mouse wheel (track-pad) scroll speed]]
+  - [[#show-matching-parentheses][Show matching parentheses]]
+  - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
 - [[#packages][Packages]]
   - [[#org-mode][Org mode]]
   - [[#projectile][Projectile]]
@@ -61,6 +69,7 @@
 - [[#languages][Languages]]
   - [[#rust][Rust]]
 - [[#other-config][Other config]]
+- [[#post-initialization][Post Initialization]]
 
 * About EMACS
   Emacs changes how you /think/ about programming.
@@ -181,6 +190,14 @@ Let's set some variables with basic user information.
 
 * Improve boot up speed
 
+** Omit default startup screen
+
+#+BEGIN_SRC emacs-lisp
+(use-package "startup"
+  :ensure nil
+  :config (setq inhibit-startup-screen t))
+#+END_SRC
+
 ** Disable =package-enable-at-startup=
 
 Package initialize occurs automatically, before =user-init-file= is loaded,
@@ -277,8 +294,11 @@ Tell =use-package= to always defer loading packages unless explicitly told other
 initialization significantly as many packages are only loaded later when they are explicitly used.
 
 #+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'use-package
   (setq use-package-always-defer t
-        use-package-verbose t)
+        use-package-verbose t))
+(eval-and-compile
+  (setq use-package-compute-statistics t))
 #+END_SRC
 
 * Defining constants
@@ -348,31 +368,121 @@ initialization significantly as many packages are only loaded later when they ar
   "Check basic requirements for EAF to run.")
 #+END_SRC
 
-* Setting up variables
+* Some Emacs defaults
 
 #+BEGIN_SRC emacs-lisp
-(setq
- mac-command-modifier 'meta
- ;; +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
- delete-selection-mode 't
- )
+  (use-package emacs
+    :preface
+    (defvar ian/indent-width 4) ; change this value to your preferred width
+    :config
+    (setq frame-title-format '("Yay-Evil") ; Yayyyyy Evil!
+          ring-bell-function 'ignore       ; minimise distraction
+          frame-resize-pixelwise t
+          default-directory "~/")
+
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+
+    ;; better scrolling experience
+    (setq scroll-margin 0
+          scroll-conservatively 10000
+          scroll-preserve-screen-position t
+          auto-window-vscroll nil)
+
+    ;; increase line space for better readability
+    (setq-default line-spacing 3)
+
+    ;; Always use spaces for indentation
+    (setq-default indent-tabs-mode nil
+                  tab-width ian/indent-width))
 #+END_SRC
 
-* Appearance
+* Better editing experience
+
+** Modernize selection behavior
+
+Replace the active region just by typing text, just like modern editors
 
 #+BEGIN_SRC emacs-lisp
-(setq
- doom-font (font-spec :family "Fira Code")
- )
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(use-package delsel
+  :ensure nil
+  :config (delete-selection-mode +1))
+#+END_SRC
 
-(add-to-list 'default-frame-alist
-             '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist
-             '(ns-appearance . dark))
+** Disable scroll bar
+
+#+BEGIN_SRC emacs-lisp
+(use-package scroll-bar
+  :ensure nil
+  :config (scroll-bar-mode -1))
+#+END_SRC
+
+** Confirm kill process
+
+Don’t bother confirming killing processes
+
+#+BEGIN_SRC emacs-lisp
+(use-package files
+  :ensure nil
+  :config
+  (setq confirm-kill-processes nil))
+#+END_SRC
+
+** Automatically refreshes the buffer for changes outside of Emacs
+
+Auto refreshes every 2 seconds. Don’t forget to refresh the version control status as well.
+
+#+BEGIN_SRC emacs-lisp
+(use-package autorevert
+  :ensure nil
+  :config
+  (global-auto-revert-mode +1)
+  (setq auto-revert-interval 2
+        auto-revert-check-vc-info t
+        auto-revert-verbose nil))
+#+END_SRC
+
+** Mouse wheel (track-pad) scroll speed
+
+By default, the scrolling is way too fast to be precise and helpful, let’s tune it down a little bit.
+
+#+BEGIN_SRC emacs-lisp
+(use-package mwheel
+  :ensure nil
+  :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+                mouse-wheel-progressive-speed nil))
+#+END_SRC
+
+** Show matching parentheses
+
+Reduce the highlight delay to instantly.
+
+#+BEGIN_SRC emacs-lisp
+(use-package paren
+  :ensure nil
+  :init (setq show-paren-delay 0)
+  :config (show-paren-mode +1))
+#+END_SRC
+
+** Setting up some frame defaults
+
+Maximize the frame by default on start-up. Set the font to Menlo size 13, if Menlo is installed.
+
+#+BEGIN_SRC emacs-lisp
+(use-package frame
+  :ensure nil
+  :config
+  (setq initial-frame-alist (quote ((fullscreen . maximized))))
+  ;; (add-to-list 'default-frame-alist
+  ;;              '(ns-transparent-titlebar . t))
+  ;; (add-to-list 'default-frame-alist
+  ;;              '(ns-appearance . dark))
+  (when (member "Fira Code" (font-family-list))
+    (set-frame-font "Fira Code" t t)))
 #+END_SRC
 
 * Packages
+
 ** Org mode
 
 #+BEGIN_SRC emacs-lisp
@@ -383,7 +493,7 @@ initialization significantly as many packages are only loaded later when they ar
 ;;     (let (org-hierarchical-todo-statistics)
 ;;       (org-update-parent-todo-statistics))))
 
-(advice-add #'+org|update-cookies :override #'+org*update-cookies)
+;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
@@ -393,7 +503,7 @@ initialization significantly as many packages are only loaded later when they ar
  org-ellipsis " ▾ "
  org-bullets-bullet-list '("·")
  org-tags-column -80
- org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
+ ;; org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
  org-log-done 'time
  org-refile-targets (quote ((nil :maxlevel . 1)))
  org-capture-templates '(("n" "Note" entry
@@ -509,16 +619,14 @@ initialization significantly as many packages are only loaded later when they ar
 ** Browse kill ring
 
 #+BEGIN_SRC emacs-lisp
-;; (define-key browse-kill-ring-mode-map (kbd "n") nil)
 (map! :map browse-kill-ring-mode-map
-      "j" #'browse-kill-ring-forward
-      "k" #'browse-kill-ring-previous
-      "/" #'browse-kill-ring-search-forward
-      "?" #'browse-kill-ring-search-backward
-      "N" #'(lambda ()
-              (interactive)
-              (browse-kill-ring-search-backward ""))
-      )
+        "j" #'browse-kill-ring-forward
+        "k" #'browse-kill-ring-previous
+        "/" #'browse-kill-ring-search-forward
+        "?" #'browse-kill-ring-search-backward
+        "N" #'(lambda ()
+                (interactive)
+                (browse-kill-ring-search-backward "")))
 (map! "M-v" #'browse-kill-ring)
 #+END_SRC
 
@@ -888,13 +996,19 @@ If failed try to complete the common part with `company-complete-common'"
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
 
-(global-auto-revert-mode t)
+(setq mac-command-modifier 'meta)
 #+END_SRC
 
-# * Post Initialization
-# Let's lower our GC thresholds back down to a sane level.
+* Post Initialization
+Let's lower our GC thresholds back down to a sane level.
 
-# #+BEGIN_SRC emacs-lisp
-# (setq gc-cons-threshold 16777216
-#       gc-cons-percentage 0.1)
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp
+;; (defun autocompile nil
+;;   (interactive)
+;;   (if (and
+;;        (string-equal buffer-file-name (expand-file-name "~/dotfiles/emacs/doom.d/config.org"))
+;;        (file-newer-than-file-p "~/dotfiles/emacs/doom.d/config.el" "~/dotfiles/emacs/doom.d/config.elc"))
+;;       (byte-compile-file "~/dotfiles/emacs/doom.d/config.el")))
+
+;; (add-hook 'after-save-hook 'autocompile)
+#+END_SRC

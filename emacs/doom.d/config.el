@@ -1,5 +1,8 @@
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
+(use-package "startup"
+  :ensure nil
+  :config (setq inhibit-startup-screen t))
 (setq package-enable-at-startup nil)
 (defvar file-name-handler-alist-original file-name-handler-alist)
 (setq file-name-handler-alist nil)
@@ -37,8 +40,11 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 
                 (add-hook 'minibuffer-setup-hook #'gc-minibuffer-setup-hook)
                 (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
-(setq use-package-always-defer t
-      use-package-verbose t)
+(with-eval-after-load 'use-package
+  (setq use-package-always-defer t
+        use-package-verbose t))
+(eval-and-compile
+  (setq use-package-compute-statistics t))
 (defconst *sys/gui*
   (display-graphic-p)
   "Are we running on a GUI Emacs?")
@@ -101,20 +107,65 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
        (executable-find "pip")
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") "")))
   "Check basic requirements for EAF to run.")
-(setq
- mac-command-modifier 'meta
- ;; +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
- delete-selection-mode 't
- )
-(setq
- doom-font (font-spec :family "Fira Code")
- )
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(use-package emacs
+  :preface
+  (defvar ian/indent-width 4) ; change this value to your preferred width
+  :config
+  (setq frame-title-format '("Yay-Evil") ; Yayyyyy Evil!
+        ring-bell-function 'ignore       ; minimise distraction
+        frame-resize-pixelwise t
+        default-directory "~/")
 
-(add-to-list 'default-frame-alist
-             '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist
-             '(ns-appearance . dark))
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
+  ;; better scrolling experience
+  (setq scroll-margin 0
+        scroll-conservatively 10000
+        scroll-preserve-screen-position t
+        auto-window-vscroll nil)
+
+  ;; increase line space for better readability
+  (setq-default line-spacing 3)
+
+  ;; Always use spaces for indentation
+  (setq-default indent-tabs-mode nil
+                tab-width ian/indent-width))
+(use-package delsel
+  :ensure nil
+  :config (delete-selection-mode +1))
+(use-package scroll-bar
+  :ensure nil
+  :config (scroll-bar-mode -1))
+(use-package files
+  :ensure nil
+  :config
+  (setq confirm-kill-processes nil))
+(use-package autorevert
+  :ensure nil
+  :config
+  (global-auto-revert-mode +1)
+  (setq auto-revert-interval 2
+        auto-revert-check-vc-info t
+        auto-revert-verbose nil))
+(use-package mwheel
+  :ensure nil
+  :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+                mouse-wheel-progressive-speed nil))
+(use-package paren
+  :ensure nil
+  :init (setq show-paren-delay 0)
+  :config (show-paren-mode +1))
+(use-package frame
+  :ensure nil
+  :config
+  (setq initial-frame-alist (quote ((fullscreen . maximized))))
+  ;; (add-to-list 'default-frame-alist
+  ;;              '(ns-transparent-titlebar . t))
+  ;; (add-to-list 'default-frame-alist
+  ;;              '(ns-appearance . dark))
+  (when (member "Fira Code" (font-family-list))
+    (set-frame-font "Fira Code" t t)))
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
 ;; (defun +org*update-cookies ()
@@ -122,7 +173,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;;     (let (org-hierarchical-todo-statistics)
 ;;       (org-update-parent-todo-statistics))))
 
-(advice-add #'+org|update-cookies :override #'+org*update-cookies)
+;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
@@ -132,7 +183,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
  org-ellipsis " ▾ "
  org-bullets-bullet-list '("·")
  org-tags-column -80
- org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
+ ;; org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
  org-log-done 'time
  org-refile-targets (quote ((nil :maxlevel . 1)))
  org-capture-templates '(("n" "Note" entry
@@ -222,16 +273,14 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
  css-indent-offset 2
  )
 (map! :ne "SPC / r" #'deadgrep)
-;; (define-key browse-kill-ring-mode-map (kbd "n") nil)
 (map! :map browse-kill-ring-mode-map
-      "j" #'browse-kill-ring-forward
-      "k" #'browse-kill-ring-previous
-      "/" #'browse-kill-ring-search-forward
-      "?" #'browse-kill-ring-search-backward
-      "N" #'(lambda ()
-              (interactive)
-              (browse-kill-ring-search-backward ""))
-      )
+        "j" #'browse-kill-ring-forward
+        "k" #'browse-kill-ring-previous
+        "/" #'browse-kill-ring-search-forward
+        "?" #'browse-kill-ring-search-backward
+        "N" #'(lambda ()
+                (interactive)
+                (browse-kill-ring-search-backward "")))
 (map! "M-v" #'browse-kill-ring)
 (setq +magit-hub-features t)
 (global-set-key [remap goto-line] 'goto-line-preview)
@@ -514,4 +563,12 @@ If failed try to complete the common part with `company-complete-common'"
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
 
-(global-auto-revert-mode t)
+(setq mac-command-modifier 'meta)
+;; (defun autocompile nil
+;;   (interactive)
+;;   (if (and
+;;        (string-equal buffer-file-name (expand-file-name "~/dotfiles/emacs/doom.d/config.org"))
+;;        (file-newer-than-file-p "~/dotfiles/emacs/doom.d/config.el" "~/dotfiles/emacs/doom.d/config.elc"))
+;;       (byte-compile-file "~/dotfiles/emacs/doom.d/config.el")))
+
+;; (add-hook 'after-save-hook 'autocompile)
