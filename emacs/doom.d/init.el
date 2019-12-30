@@ -177,5 +177,5 @@
        write             ; emacs for writers (fiction, notes, papers, etc.)
 
        :config
-       ;;literate
+       literate
        (default +bindings +smartparens +snippets +evil-commands))
