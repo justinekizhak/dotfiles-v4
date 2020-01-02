@@ -166,6 +166,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;;              '(ns-appearance . dark))
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
+(map! "M-s" #'save-buffer)
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
 ;; (defun +org*update-cookies ()
@@ -520,6 +521,28 @@ If failed try to complete the common part with `company-complete-common'"
 ;;     (setq zone-programs
 ;;           (vconcat zone-programs [zone-end-of-buffer])))
 ;;   )
+(defun zone-pgm-md5 ()
+    "MD5 the buffer, then recursively checksum each hash."
+    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
+                     (point-min) (point-max))))
+      ;; Whitespace-fill the window.
+      (zone-fill-out-screen (window-width) (window-height))
+      (random t)
+      (goto-char (point-min))
+      (while (not (input-pending-p))
+        (when (eobp)
+          (goto-char (point-min)))
+        (while (not (eobp))
+          (delete-region (point) (line-end-position))
+          (let ((next-md5 (md5 prev-md5)))
+            (insert next-md5)
+            (setq prev-md5 next-md5))
+          (forward-line 1)
+          (zone-park/sit-for (point-min) 0.1)))))
+(eval-after-load "zone"
+  '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+     (setq zone-programs
+           (vconcat zone-programs [zone-pgm-md5]))))
 (map!
  :n "M-j" #'drag-stuff-down
  :n "M-k" #'drag-stuff-up
@@ -556,9 +579,10 @@ If failed try to complete the common part with `company-complete-common'"
   :commands (2048-game))
 (after! lentic
   (global-lentic-mode))
-;; Adding company-tabnine to emacs lisp mode hook
 (add-hook 'rustic-mode-hook (lambda ()
-                              (add-to-list 'company-backends #'company-tabnine)))
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
+(add-hook 'python-mode-hook (lambda ()
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
