@@ -36,12 +36,12 @@
 # # Profiling
 # zmodload zsh/zprof
 
-# Run tmux if exists
-if command -v tmux>/dev/null; then
- [ -z "$TMUX" ] && exec tmux
-else
- echo "tmux not installed."
-fi
+# # Run tmux if exists
+# if command -v tmux>/dev/null; then
+#  [ -z "$TMUX" ] && exec tmux
+# else
+#  echo "tmux not installed."
+# fi
 
 export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
 [ -s "${ZIM_HOME}/init.zsh" ] && . "${ZIM_HOME}/init.zsh"
