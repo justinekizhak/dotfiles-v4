@@ -579,9 +579,10 @@ If failed try to complete the common part with `company-complete-common'"
   :commands (2048-game))
 (after! lentic
   (global-lentic-mode))
-;; Adding company-tabnine to emacs lisp mode hook
 (add-hook 'rustic-mode-hook (lambda ()
-                              (add-to-list 'company-backends #'company-tabnine)))
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
+(add-hook 'python-mode-hook (lambda ()
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
