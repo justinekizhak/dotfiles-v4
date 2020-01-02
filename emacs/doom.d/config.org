@@ -44,6 +44,7 @@
   - [[#mouse-wheel-track-pad-scroll-speed][Mouse wheel (track-pad) scroll speed]]
   - [[#show-matching-parentheses][Show matching parentheses]]
   - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
+- [[#custom-keybinding][Custom Keybinding]]
 - [[#packages][Packages]]
   - [[#org-mode][Org mode]]
   - [[#projectile][Projectile]]
@@ -60,6 +61,7 @@
     - [[#company-tabnine][Company-tabnine]]
   - [[#dired][Dired]]
   - [[#zone][Zone]]
+    - [[#zone-md5][Zone md5]]
   - [[#drag-lines][Drag lines]]
   - [[#undo-visualizer][Undo visualizer]]
   - [[#yasnippet][Yasnippet]]
@@ -68,6 +70,7 @@
   - [[#lentic-mode][Lentic mode]]
 - [[#languages][Languages]]
   - [[#rust][Rust]]
+  - [[#python][Python]]
 - [[#other-config][Other config]]
 - [[#post-initialization][Post Initialization]]
 
@@ -479,6 +482,12 @@ Maximize the frame by default on start-up. Set the font to Menlo size 13, if Men
   ;;              '(ns-appearance . dark))
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
+#+END_SRC
+
+* Custom Keybinding
+
+#+BEGIN_SRC emacs-lisp
+(map! "M-s" #'save-buffer)
 #+END_SRC
 
 * Packages
@@ -917,6 +926,36 @@ If failed try to complete the common part with `company-complete-common'"
 ;;   )
 #+END_SRC
 
+*** Zone md5
+
+#+BEGIN_SRC emacs-lisp
+(defun zone-pgm-md5 ()
+    "MD5 the buffer, then recursively checksum each hash."
+    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
+                     (point-min) (point-max))))
+      ;; Whitespace-fill the window.
+      (zone-fill-out-screen (window-width) (window-height))
+      (random t)
+      (goto-char (point-min))
+      (while (not (input-pending-p))
+        (when (eobp)
+          (goto-char (point-min)))
+        (while (not (eobp))
+          (delete-region (point) (line-end-position))
+          (let ((next-md5 (md5 prev-md5)))
+            (insert next-md5)
+            (setq prev-md5 next-md5))
+          (forward-line 1)
+          (zone-park/sit-for (point-min) 0.1)))))
+          #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "zone"
+    '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+       (setq zone-programs
+             (vconcat zone-programs [zone-pgm-md5]))))
+#+END_SRC
+
 ** Drag lines
 
 #+BEGIN_SRC emacs-lisp
@@ -984,9 +1023,17 @@ If failed try to complete the common part with `company-complete-common'"
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
-;; Adding company-tabnine to emacs lisp mode hook
 (add-hook 'rustic-mode-hook (lambda ()
-                              (add-to-list 'company-backends #'company-tabnine)))
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
+#+END_SRC
+
+** Python
+
+Adding TabNine completion to buffer
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook (lambda ()
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
 #+END_SRC
 
 * Other config
