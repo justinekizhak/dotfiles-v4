@@ -166,6 +166,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;;              '(ns-appearance . dark))
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
+(map! "M-s" #'save-buffer)
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
 ;; (defun +org*update-cookies ()
