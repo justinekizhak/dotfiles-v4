@@ -492,7 +492,8 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 #+BEGIN_SRC emacs-lisp
 (add-hook! '(+doom-dashboard-mode-hook)
-  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/pheonix.jpg"))
+  ;(setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/apexLegends.jpg") ;; Apex Legends banner
+  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 #+END_SRC
 
 * Custom Keybinding
