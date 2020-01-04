@@ -33,6 +33,7 @@
 (package! zone)  ;; Screensaver emacs
 (package! header3 :recipe (:host github :repo "justinekizhak/header3"))
 (package! zone-end-of-buffer :recipe (:host gitlab :repo "justinekizhak/zone-end-of-buffer"))
+(package! apex-legends-quotes :recipe (:host gitlab :repo "justinekizhak/apex-legends-quotes"))
 (package! company-tabnine)  ;; Autocomplete using deep learing
 (package! esup)
 (package! company-box)  ;; Icons for auto complete popup
