@@ -111,10 +111,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :preface
   (defvar ian/indent-width 4) ; change this value to your preferred width
   :config
-  (setq frame-title-format '("Yay-Evil") ; Yayyyyy Evil!
-        ring-bell-function 'ignore       ; minimise distraction
-        frame-resize-pixelwise t
-        default-directory "~/")
+  (setq
+   ring-bell-function 'ignore       ; minimise distraction
+   frame-resize-pixelwise t
+   default-directory "~/")
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -166,6 +166,8 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;;              '(ns-appearance . dark))
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
+(add-hook! '(+doom-dashboard-mode-hook)
+  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/pheonix.jpg"))
 (map! "M-s" #'save-buffer)
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
@@ -579,6 +581,10 @@ If failed try to complete the common part with `company-complete-common'"
   :commands (2048-game))
 (after! lentic
   (global-lentic-mode))
+(use-package apex-legends-quotes
+  :config
+    (setq frame-title-format (get-random-apex-legends-quote)  ; get random quote from Apex Legends character
+))
 (add-hook 'rustic-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
 (add-hook 'python-mode-hook (lambda ()
