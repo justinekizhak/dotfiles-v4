@@ -44,6 +44,7 @@
   - [[#mouse-wheel-track-pad-scroll-speed][Mouse wheel (track-pad) scroll speed]]
   - [[#show-matching-parentheses][Show matching parentheses]]
   - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
+  - [[#dashboard-with-images][Dashboard with images]]
 - [[#custom-keybinding][Custom Keybinding]]
 - [[#packages][Packages]]
   - [[#org-mode][Org mode]]
@@ -482,6 +483,15 @@ Maximize the frame by default on start-up. Set the font to Menlo size 13, if Men
   ;;              '(ns-appearance . dark))
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
+#+END_SRC
+
+** Dashboard with images
+
+Use the image in the dotfiles folder as the dashboard splash image
+
+#+BEGIN_SRC emacs-lisp
+(add-hook! '(+doom-dashboard-mode-hook)
+  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/pheonix.jpg"))
 #+END_SRC
 
 * Custom Keybinding
