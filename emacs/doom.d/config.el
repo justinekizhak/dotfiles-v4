@@ -167,7 +167,8 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
 (add-hook! '(+doom-dashboard-mode-hook)
-  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/pheonix.jpg"))
+  ;(setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/apexLegends.jpg") ;; Apex Legends banner
+  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 (map! "M-s" #'save-buffer)
 (add-hook 'org-mode-hook #'auto-fill-mode)
 
@@ -581,6 +582,7 @@ If failed try to complete the common part with `company-complete-common'"
   :commands (2048-game))
 (after! lentic
   (global-lentic-mode))
+(load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
   :config
     (setq frame-title-format (get-random-apex-legends-quote)  ; get random quote from Apex Legends character
