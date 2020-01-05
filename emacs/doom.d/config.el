@@ -167,7 +167,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
 (add-hook! '(+doom-dashboard-mode-hook)
-  ;(setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/apexLegends.jpg") ;; Apex Legends banner
+  ;; Crypto logo
   (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 (map! "M-s" #'save-buffer)
 (add-hook 'org-mode-hook #'auto-fill-mode)
@@ -289,7 +289,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (setq +magit-hub-features t)
 (global-set-key [remap goto-line] 'goto-line-preview)
 (add-to-list 'after-init-hook 'clipmon-mode-start)
-(add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
@@ -500,52 +499,6 @@ If failed try to complete the common part with `company-complete-common'"
                    (find-alternate-file ".."))
         )
   )
-(use-package! zone
-  :ensure nil
-  :defer 5
-  :config
-  (zone-when-idle 30) ; in seconds
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (zone))))
-
-;; (use-package! zone-end-of-buffer
-;;   )
-
-;; TODO Fix zone-end-of-buffer
-;; (with-eval-after-load 'zone-end-of-buffer
-;;   (unless (memq 'zone-end-of-buffer (append zone-programs nil))
-;;     (setq zone-programs
-;;           (vconcat zone-programs [zone-end-of-buffer])))
-;;   )
-(defun zone-pgm-md5 ()
-    "MD5 the buffer, then recursively checksum each hash."
-    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-                     (point-min) (point-max))))
-      ;; Whitespace-fill the window.
-      (zone-fill-out-screen (window-width) (window-height))
-      (random t)
-      (goto-char (point-min))
-      (while (not (input-pending-p))
-        (when (eobp)
-          (goto-char (point-min)))
-        (while (not (eobp))
-          (delete-region (point) (line-end-position))
-          (let ((next-md5 (md5 prev-md5)))
-            (insert next-md5)
-            (setq prev-md5 next-md5))
-          (forward-line 1)
-          (zone-park/sit-for (point-min) 0.1)))))
-(eval-after-load "zone"
-  '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-     (setq zone-programs
-           (vconcat zone-programs [zone-pgm-md5]))))
 (map!
  :n "M-j" #'drag-stuff-down
  :n "M-k" #'drag-stuff-up
@@ -580,17 +533,61 @@ If failed try to complete the common part with `company-complete-common'"
   :after (treemacs magit))
 (use-package 2048-game
   :commands (2048-game))
-(after! lentic
-  (global-lentic-mode))
+;(after! lentic
+  ;(global-lentic-mode))
 (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
   :config
     (setq frame-title-format (get-random-apex-legends-quote)  ; get random quote from Apex Legends character
 ))
+(use-package! zone
+  :ensure nil
+  :defer 5
+  :config
+  (zone-when-idle 30) ; in seconds
+  (defun zone-choose (pgm)
+    "Choose a PGM to run for `zone'."
+    (interactive
+     (list
+      (completing-read
+       "Program: "
+       (mapcar 'symbol-name zone-programs))))
+    (let ((zone-programs (list (intern pgm))))
+      (zone))))
+(defun zone-pgm-md5 ()
+    "MD5 the buffer, then recursively checksum each hash."
+    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
+                     (point-min) (point-max))))
+      ;; Whitespace-fill the window.
+      (zone-fill-out-screen (window-width) (window-height))
+      (random t)
+      (goto-char (point-min))
+      (while (not (input-pending-p))
+        (when (eobp)
+          (goto-char (point-min)))
+        (while (not (eobp))
+          (delete-region (point) (line-end-position))
+          (let ((next-md5 (md5 prev-md5)))
+            (insert next-md5)
+            (setq prev-md5 next-md5))
+          (forward-line 1)
+          (zone-park/sit-for (point-min) 0.1)))))
+(eval-after-load "zone"
+  '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+     (setq zone-programs
+           (vconcat zone-programs [zone-pgm-md5]))))
 (add-hook 'rustic-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
 (add-hook 'python-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
+(add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+(add-hook 'gfm-mode-hook
+          (lambda () (when buffer-file-name
+                       (add-hook 'before-save-hook
+                                 'markdown-toc-refresh-toc))))
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))))
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
@@ -604,3 +601,17 @@ If failed try to complete the common part with `company-complete-common'"
 ;;       (byte-compile-file "~/dotfiles/emacs/doom.d/config.el")))
 
 ;; (add-hook 'after-save-hook 'autocompile)
+(defun async-shell-command-no-window (command)
+  (interactive)
+  (let
+      ((display-buffer-alist
+        (list
+         (cons
+          "\\*Async Shell Command\\*.*"
+          (cons #'display-buffer-no-window nil)))))
+    (async-shell-command
+     command)))
+
+(run-with-idle-timer 0 nil '(lambda ()
+    (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")
+))
