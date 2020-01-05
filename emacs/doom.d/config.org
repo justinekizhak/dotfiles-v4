@@ -43,6 +43,7 @@
   - [[#automatically-refreshes-the-buffer-for-changes-outside-of-emacs][Automatically refreshes the buffer for changes outside of Emacs]]
   - [[#mouse-wheel-track-pad-scroll-speed][Mouse wheel (track-pad) scroll speed]]
   - [[#show-matching-parentheses][Show matching parentheses]]
+- [[#appearance][Appearance]]
   - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
   - [[#dashboard-with-images][Dashboard with images]]
 - [[#custom-keybinding][Custom Keybinding]]
@@ -55,14 +56,11 @@
   - [[#magit][Magit]]
   - [[#go-to-line-preview][Go to line preview]]
   - [[#clipmon][Clipmon]]
-  - [[#dart-lang][Dart lang]]
   - [[#company][Company]]
     - [[#company-lsp][Company-lsp]]
     - [[#commpany-box][Commpany-box]]
     - [[#company-tabnine][Company-tabnine]]
   - [[#dired][Dired]]
-  - [[#zone][Zone]]
-    - [[#zone-md5][Zone md5]]
   - [[#drag-lines][Drag lines]]
   - [[#undo-visualizer][Undo visualizer]]
   - [[#yasnippet][Yasnippet]]
@@ -70,11 +68,17 @@
   - [[#2048-game][2048 game]]
   - [[#lentic-mode][Lentic mode]]
   - [[#apex-legends-quotes][Apex Legends quotes]]
+  - [[#zone][Zone]]
+    - [[#zone-md5][Zone md5]]
 - [[#languages][Languages]]
   - [[#rust][Rust]]
   - [[#python][Python]]
+  - [[#dart][Dart]]
+  - [[#markdown][Markdown]]
+  - [[#emacs-lisp][Emacs lisp]]
 - [[#other-config][Other config]]
 - [[#post-initialization][Post Initialization]]
+  - [[#lets-lower-our-gc-thresholds-back-down-to-a-sane-level][Let's lower our GC thresholds back down to a sane level.]]
   - [[#play-startup-music][Play startup music]]
 
 * About EMACS
@@ -470,6 +474,8 @@ Reduce the highlight delay to instantly.
   :config (show-paren-mode +1))
 #+END_SRC
 
+* Appearance
+
 ** Setting up some frame defaults
 
 Maximize the frame by default on start-up. Set the font to Fira code, if Fira code is installed.
@@ -668,12 +674,6 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'after-init-hook 'clipmon-mode-start)
-#+END_SRC
-
-** Dart lang
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 #+END_SRC
 
 ** Company
@@ -910,65 +910,6 @@ If failed try to complete the common part with `company-complete-common'"
   )
 #+END_SRC
 
-** Zone
-
-#+BEGIN_SRC emacs-lisp
-(use-package! zone
-  :ensure nil
-  :defer 5
-  :config
-  (zone-when-idle 30) ; in seconds
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (zone))))
-
-;; (use-package! zone-end-of-buffer
-;;   )
-
-;; TODO Fix zone-end-of-buffer
-;; (with-eval-after-load 'zone-end-of-buffer
-;;   (unless (memq 'zone-end-of-buffer (append zone-programs nil))
-;;     (setq zone-programs
-;;           (vconcat zone-programs [zone-end-of-buffer])))
-;;   )
-#+END_SRC
-
-*** Zone md5
-
-#+BEGIN_SRC emacs-lisp
-(defun zone-pgm-md5 ()
-    "MD5 the buffer, then recursively checksum each hash."
-    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-                     (point-min) (point-max))))
-      ;; Whitespace-fill the window.
-      (zone-fill-out-screen (window-width) (window-height))
-      (random t)
-      (goto-char (point-min))
-      (while (not (input-pending-p))
-        (when (eobp)
-          (goto-char (point-min)))
-        (while (not (eobp))
-          (delete-region (point) (line-end-position))
-          (let ((next-md5 (md5 prev-md5)))
-            (insert next-md5)
-            (setq prev-md5 next-md5))
-          (forward-line 1)
-          (zone-park/sit-for (point-min) 0.1)))))
-          #+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load "zone"
-    '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-       (setq zone-programs
-             (vconcat zone-programs [zone-pgm-md5]))))
-#+END_SRC
-
 ** Drag lines
 
 #+BEGIN_SRC emacs-lisp
@@ -1042,6 +983,66 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
 ))
 #+END_SRC
 
+** Zone
+
+#+BEGIN_SRC emacs-lisp
+(use-package! zone
+  :ensure nil
+  :defer 5
+  :config
+  (zone-when-idle 30) ; in seconds
+  (defun zone-choose (pgm)
+    "Choose a PGM to run for `zone'."
+    (interactive
+     (list
+      (completing-read
+       "Program: "
+       (mapcar 'symbol-name zone-programs))))
+    (let ((zone-programs (list (intern pgm))))
+      (zone))))
+#+END_SRC
+
+*** Zone md5
+
+#+BEGIN_SRC emacs-lisp
+(defun zone-pgm-md5 ()
+    "MD5 the buffer, then recursively checksum each hash."
+    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
+                     (point-min) (point-max))))
+      ;; Whitespace-fill the window.
+      (zone-fill-out-screen (window-width) (window-height))
+      (random t)
+      (goto-char (point-min))
+      (while (not (input-pending-p))
+        (when (eobp)
+          (goto-char (point-min)))
+        (while (not (eobp))
+          (delete-region (point) (line-end-position))
+          (let ((next-md5 (md5 prev-md5)))
+            (insert next-md5)
+            (setq prev-md5 next-md5))
+          (forward-line 1)
+          (zone-park/sit-for (point-min) 0.1)))))
+          #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "zone"
+    '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+       (setq zone-programs
+             (vconcat zone-programs [zone-pgm-md5]))))
+#+END_SRC
+
+# *** Zone end of buffer
+
+# #+BEGIN_SRC emacs-lisp
+# (with-eval-after-load 'zone
+# (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
+# (require 'zone-end-of-buffer)
+#     (unless (memq 'zone-pgm-end-of-buffer (append zone-programs nil))
+#         (setq zone-programs
+#             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
+# #+END_SRC
+
 * Languages
 
 ** Rust
@@ -1060,6 +1061,31 @@ Adding TabNine completion to buffer
               (set (make-local-variable 'company-backends) '(company-tabnine))))
 #+END_SRC
 
+** Dart
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+#+END_SRC
+
+** Markdown
+
+On save refresh markdown table of contents.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'gfm-mode-hook
+          (lambda () (when buffer-file-name
+                       (add-hook 'before-save-hook
+                                 'markdown-toc-refresh-toc))))
+#+END_SRC
+
+** Emacs lisp
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))))
+#+END_SRC
+
 * Other config
 
 #+BEGIN_SRC emacs-lisp
@@ -1071,7 +1097,7 @@ Adding TabNine completion to buffer
 #+END_SRC
 
 * Post Initialization
-Let's lower our GC thresholds back down to a sane level.
+** Let's lower our GC thresholds back down to a sane level.
 
 #+BEGIN_SRC emacs-lisp
 ;; (defun autocompile nil
