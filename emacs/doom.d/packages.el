@@ -27,7 +27,7 @@
 (package! lsp-mode)  ;; lsp support
 (package! goto-line-preview)  ;; Go to line (M-g g) with preview option
 (package! tiny)  ;; Number ranges
-(package! lentic)  ;; Same buffer multiple mode for literate programming
+;; (package! lentic)  ;; Same buffer multiple mode for literate programming
 (package! ialign)  ;; Aligning content
 (package! clipmon)  ;; Clipboard monitor
 (package! zone)  ;; Screensaver emacs

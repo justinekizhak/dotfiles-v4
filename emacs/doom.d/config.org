@@ -499,7 +499,7 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 #+BEGIN_SRC emacs-lisp
 (add-hook! '(+doom-dashboard-mode-hook)
-  ;(setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/apexLegends.jpg") ;; Apex Legends banner
+  ;; Crypto logo
   (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 #+END_SRC
 
@@ -968,8 +968,8 @@ If failed try to complete the common part with `company-complete-common'"
 
 ** Lentic mode
 #+BEGIN_SRC emacs-lisp
-(after! lentic
-  (global-lentic-mode))
+;(after! lentic
+  ;(global-lentic-mode))
 #+END_SRC
 
 ** Apex Legends quotes
