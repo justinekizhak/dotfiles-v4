@@ -75,6 +75,7 @@
   - [[#python][Python]]
 - [[#other-config][Other config]]
 - [[#post-initialization][Post Initialization]]
+  - [[#play-startup-music][Play startup music]]
 
 * About EMACS
   Emacs changes how you /think/ about programming.
@@ -1081,4 +1082,24 @@ Let's lower our GC thresholds back down to a sane level.
 ;;       (byte-compile-file "~/dotfiles/emacs/doom.d/config.el")))
 
 ;; (add-hook 'after-save-hook 'autocompile)
+#+END_SRC
+** Play startup music
+
+Play a Apex Legends music when booting up Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(defun async-shell-command-no-window (command)
+  (interactive)
+  (let
+      ((display-buffer-alist
+        (list
+         (cons
+          "\\*Async Shell Command\\*.*"
+          (cons #'display-buffer-no-window nil)))))
+    (async-shell-command
+     command)))
+
+(run-with-idle-timer 0 nil '(lambda ()
+    (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")
+))
 #+END_SRC
