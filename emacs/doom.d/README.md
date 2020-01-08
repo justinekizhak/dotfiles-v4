@@ -16,7 +16,7 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
 ======================================================================
 
 -   [Configuration](#configuration)
--   [About EMACS](#about-emacs)
+-   [About Emacs](#about-emacs)
 -   [About my config](#about-my-config)
     -   [Screenshot](#screenshot)
     -   [About README](#about-readme)
@@ -56,9 +56,10 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
     -   [Setting up some frame
         defaults](#setting-up-some-frame-defaults)
     -   [Dashboard with images](#dashboard-with-images)
--   [Custom Keybinding](#custom-keybinding)
 -   [Packages](#packages)
     -   [Org mode](#org-mode)
+        -   [Ox-gfm](#ox-gfm)
+        -   [Org-toc](#org-toc)
     -   [Projectile](#projectile)
     -   [Javascript/Web mode](#javascriptweb-mode)
     -   [Ripgrep](#ripgrep)
@@ -92,7 +93,7 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
         level.](#lets-lower-our-gc-thresholds-back-down-to-a-sane-level)
     -   [Play startup music](#play-startup-music)
 
-About EMACS
+About Emacs
 ===========
 
 Emacs changes how you *think* about programming.
@@ -162,7 +163,7 @@ most pleasent one
 Screenshot
 ----------
 
-[My Doom Emacs screenshot](images/screenshot.png)
+![](images/screenshot.png)
 
 About README
 ------------
@@ -562,12 +563,11 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 ``` {.commonlisp org-language="emacs-lisp"}
 (add-hook! '(+doom-dashboard-mode-hook)
-  ;; Crypto logo
-  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
+           ;; Crypto logo
+           (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 ```
 
 Custom Keybinding
-=================
 
 ``` {.commonlisp org-language="emacs-lisp"}
 (map! "M-s" #'save-buffer)
@@ -580,14 +580,54 @@ Org mode
 --------
 
 ``` {.commonlisp org-language="emacs-lisp"}
+;; (use-package org
+;;   :ensure nil
+;;   :defer t
+;;   :bind
+;;   ("C-c l" . org-store-link)
+;;   ("C-c a" . org-agenda)
+;;   ("C-c c" . org-capture)
+;;   ("C-c b" . org-switch)
+;;   (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
+;;   :custom
+;;   (org-log-done 'time)
+;;   (org-export-backends (quote (ascii html icalendar latex md odt)))
+;;   (org-use-speed-commands t)
+;;   (org-confirm-babel-evaluate 'nil)
+;;   (org-todo-keywords
+;;    '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
+;;   (org-agenda-window-setup 'other-window)
+;;   :config
+;;   (unless (version< org-version "9.2")
+;;     (require 'org-tempo))
+;;   (when (file-directory-p "~/org/agenda/")
+;;     (setq org-agenda-files (list "~/org/agenda/")))
+
+;;   (defun org-export-turn-on-syntax-highlight ()
+;;     "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
+;;     (interactive)
+;;     (setq org-latex-listings 'minted
+;;           org-latex-packages-alist '(("" "minted"))
+;;           org-latex-pdf-process
+;;           '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
+;;             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+
+;;   (defun org-export-as-pdf-and-open ()
+;;     "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+;;     (interactive)
+;;     (save-buffer)
+;;     (let* ((pdf-path (org-latex-export-to-pdf))
+;;            (pdf-name (file-name-nondirectory pdf-path)))
+;;       (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+;;           (progn
+;;             (kill-matching-buffers (concat "^" pdf-name) t t)
+;;             (find-file-other-window pdf-name))
+;;         (find-file-other-window pdf-name))
+;;       (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
+```
+
+``` {.commonlisp org-language="emacs-lisp"}
 (add-hook 'org-mode-hook #'auto-fill-mode)
-
-;; (defun +org*update-cookies ()
-;;   (when (and buffer-file-name (file-exists-p buffer-file-name))
-;;     (let (org-hierarchical-todo-statistics)
-;;       (org-update-parent-todo-statistics))))
-
-;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
@@ -674,13 +714,26 @@ Org mode
 (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
 ```
 
+### Ox-gfm
+
+Github Flavored Markdown exporter for Org Mode
+
+``` {.commonlisp org-language="emacs-lisp"}
+(use-package ox-gfm :defer t)
+```
+
+### Org-toc
+
+``` {.commonlisp org-language="emacs-lisp"}
+(use-package toc-org
+  :hook (org-mode . toc-org-mode))
+```
+
 Projectile
 ----------
 
 ``` {.commonlisp org-language="emacs-lisp"}
-(setq
- projectile-project-search-path '("~/projects")
- )
+(setq  projectile-project-search-path '("~/projects"))
 ```
 
 Javascript/Web mode
