@@ -181,6 +181,10 @@ scope has some selective uses, it’s widely regarded as a mistake for local
 variables, and virtually no other languages have adopted it.
 #+END_QUOTE
 
+#+BEGIN_SRC emacs-lisp
+;;; config.el --- -*- lexical-binding: t -*-
+#+END_SRC
+
 * Personal Information
 Let's set some variables with basic user information.
 
@@ -970,8 +974,12 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
 #+BEGIN_SRC emacs-lisp
 (use-package apex-legends-quotes
   :config
-    (setq frame-title-format (get-random-apex-legends-quote)  ; get random quote from Apex Legends character
-))
+  ; get random quote from Apex Legends character
+  (setq frame-title-format (get-random-apex-legends-quote))
+  ; interactive function to change title
+  (defun change-emacs-title--apex-legends-quote ()
+    (interactive)
+    (setq frame-title-format (get-random-apex-legends-quote))))
 #+END_SRC
 
 ** Zone
