@@ -129,6 +129,8 @@ pays off.
 
   /This beautifully written *About EMACS* section credits to [[https://github.com/remacs/remacs][Remacs]]./
 
+  Also if you want to read more about Emacs, checkout [[https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform][Why You Should Buy Into the Emacs Platform]].
+
 * About my config
 
 This Emacs config is a work of many hours of banging my head on a wall.
@@ -137,7 +139,7 @@ pleasent one
 
 
 ** Screenshot
-   # [[file:images/Sample.png]]
+[[file:images/screenshot.png][My Doom Emacs screenshot]]
    
 ** About README
    This README is originated from =config.org= that is generated using
@@ -166,18 +168,7 @@ If you have something to fix, feel free to create a pull request.
 ** Special Thanks
 Everyone starts somewhere, and I started here.
 [[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
-
-
-# * Startup
-# ** Garbage Collection
-
-# *** Garbage Collect When Emacs is Out of Focus
-
-# #+INCLUDE: "~/dotfiles/emacs/doom.d/config.el" src emacs-lisp :range-begin "AutoGC" :range-end "-AutoGC" :lines "69-77"
-
-# *** Avoid Garbage Collect When Using Minibuffer
-
-# #+INCLUDE: "~/.emacs.d/init.el" src emacs-lisp :range-begin "MinibufferGC" :range-end "-MinibufferGC" :lines "78-87"
+[[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
 
 * Lexical Binding
 
