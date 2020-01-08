@@ -139,7 +139,7 @@ pleasent one
 
 
 ** Screenshot
-[[file:images/screenshot.png][My Doom Emacs screenshot]]
+[[file:images/screenshot.png]]
    
 ** About README
    This README is originated from =config.org= that is generated using
