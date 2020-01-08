@@ -1,3 +1,4 @@
+;;; config.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
 (use-package "startup"
@@ -538,8 +539,12 @@ If failed try to complete the common part with `company-complete-common'"
 (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
   :config
-    (setq frame-title-format (get-random-apex-legends-quote)  ; get random quote from Apex Legends character
-))
+  ; get random quote from Apex Legends character
+  (setq frame-title-format (get-random-apex-legends-quote))
+  ; interactive function to change title
+  (defun change-emacs-title--apex-legends-quote ()
+    (interactive)
+    (setq frame-title-format (get-random-apex-legends-quote))))
 (use-package! zone
   :ensure nil
   :defer 5
