@@ -47,67 +47,38 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (eval-and-compile
   (setq use-package-compute-statistics t))
 (defconst *sys/gui*
-  (display-graphic-p)
-  "Are we running on a GUI Emacs?")
-
+  (display-graphic-p))
 (defconst *sys/win32*
-  (eq system-type 'windows-nt)
-  "Are we running on a WinTel system?")
-
+  (eq system-type 'windows-nt))
 (defconst *sys/linux*
-  (eq system-type 'gnu/linux)
-  "Are we running on a GNU/Linux system?")
-
+  (eq system-type 'gnu/linux))
 (defconst *sys/mac*
-  (eq system-type 'darwin)
-  "Are we running on a Mac system?")
-
+  (eq system-type 'darwin))
 (defconst *sys/root*
-  (string-equal "root" (getenv "USER"))
-  "Are you a ROOT user?")
-
+  (string-equal "root" (getenv "USER")))
 (defconst *rg*
-  (executable-find "rg")
-  "Do we have ripgrep?")
-
+  (executable-find "rg"))
 (defconst *python*
-  (executable-find "python")
-  "Do we have python?")
-
+  (executable-find "python"))
 (defconst *python3*
-  (executable-find "python3")
-  "Do we have python3?")
-
+  (executable-find "python3"))
 (defconst *tr*
-  (executable-find "tr")
-  "Do we have tr?")
-
+  (executable-find "tr"))
 (defconst *mvn*
-  (executable-find "mvn")
-  "Do we have Maven?")
-
+  (executable-find "mvn"))
 (defconst *clangd*
   (or (executable-find "clangd")  ;; usually
-      (executable-find "/usr/local/opt/llvm/bin/clangd"))  ;; macOS
-  "Do we have clangd?")
-
+      (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
 (defconst *gcc*
-  (executable-find "gcc")
-  "Do we have gcc?")
-
+  (executable-find "gcc"))
 (defconst *git*
-  (executable-find "git")
-  "Do we have git?")
-
+  (executable-find "git"))
 (defconst *pdflatex*
-  (executable-find "pdflatex")
-  "Do we have pdflatex?")
-
+  (executable-find "pdflatex"))
 (defconst *eaf-env*
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
-       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") "")))
-  "Check basic requirements for EAF to run.")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 (use-package emacs
   :preface
   (defvar ian/indent-width 4) ; change this value to your preferred width
@@ -157,6 +128,9 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :ensure nil
   :init (setq show-paren-delay 0)
   :config (show-paren-mode +1))
+;; (add-hook 'after-change-major-mode-hook
+;;           (lambda ()
+;;             (modify-syntax-entry ?_ "w")))
 (use-package frame
   :ensure nil
   :config
@@ -168,17 +142,54 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (when (member "Fira Code" (font-family-list))
     (set-frame-font "Fira Code" t t)))
 (add-hook! '(+doom-dashboard-mode-hook)
-  ;; Crypto logo
-  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
+           ;; Crypto logo
+           (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 (map! "M-s" #'save-buffer)
+(use-package org
+  :ensure nil
+  :defer t
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+  ("C-c b" . org-switch)
+  (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
+  :custom
+  (org-log-done 'time)
+  (org-export-backends (quote (ascii html icalendar latex md odt)))
+  (org-use-speed-commands t)
+  (org-confirm-babel-evaluate 'nil)
+  (org-todo-keywords
+   '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
+  (org-agenda-window-setup 'other-window)
+  :config
+  (unless (version< org-version "9.2")
+    (require 'org-tempo))
+  (when (file-directory-p "~/org/agenda/")
+    (setq org-agenda-files (list "~/org/agenda/")))
+
+  (defun org-export-turn-on-syntax-highlight ()
+    "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
+    (interactive)
+    (setq org-latex-listings 'minted
+          org-latex-packages-alist '(("" "minted"))
+          org-latex-pdf-process
+          '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+
+  (defun org-export-as-pdf-and-open ()
+    "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+    (interactive)
+    (save-buffer)
+    (let* ((pdf-path (org-latex-export-to-pdf))
+           (pdf-name (file-name-nondirectory pdf-path)))
+      (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+          (progn
+            (kill-matching-buffers (concat "^" pdf-name) t t)
+            (find-file-other-window pdf-name))
+        (find-file-other-window pdf-name))
+      (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
 (add-hook 'org-mode-hook #'auto-fill-mode)
-
-;; (defun +org*update-cookies ()
-;;   (when (and buffer-file-name (file-exists-p buffer-file-name))
-;;     (let (org-hierarchical-todo-statistics)
-;;       (org-update-parent-todo-statistics))))
-
-;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
@@ -210,8 +221,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                            (:name "Due soon"
                                   :deadline future)
                            (:name "Big Outcomes"
-                                  :tag "bo"))
- )
+                                  :tag "bo")))
 (after! org
   (set-face-attribute 'org-link nil
                       :weight 'normal
@@ -257,9 +267,19 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
 (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-(setq
- projectile-project-search-path '("~/projects")
- )
+(use-package ox-gfm :defer t)
+(use-package toc-org
+  :hook (org-mode . toc-org-mode))
+(use-package ox-reveal
+    :defer t
+    :config
+    (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
+    (setq org-reveal-mathjax t))
+
+
+(use-package htmlize
+  :defer t)
+(setq  projectile-project-search-path '("~/projects"))
 (add-hook!
  js2-mode 'prettier-js-mode
  (add-hook 'before-save-hook #'refmt-before-save nil t))
@@ -275,8 +295,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
  web-mode-code-indent-offset 2
  web-mode-css-indent-offset 2
  typescript-indent-level 2
- css-indent-offset 2
- )
+ css-indent-offset 2)
 (map! :ne "SPC / r" #'deadgrep)
 (map! :map browse-kill-ring-mode-map
         "j" #'browse-kill-ring-forward
@@ -327,7 +346,6 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common))))
-
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
@@ -486,9 +504,7 @@ If failed try to complete the common part with `company-complete-common'"
   ;; Auto revert every 3 sec
   (setq auto-revert-interval 3)
 
-  (setq
- dired-dwim-target t
-   )
+  (setq dired-dwim-target t)
 
   ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
   (put 'dired-find-alternate-file 'disabled nil)
@@ -497,17 +513,13 @@ If failed try to complete the common part with `company-complete-common'"
         :n "RET" #'dired-find-alternate-file
         :n "^" #'(lambda ()
                    (interactive)
-                   (find-alternate-file ".."))
-        )
-  )
+                   (find-alternate-file ".."))))
 (map!
  :n "M-j" #'drag-stuff-down
- :n "M-k" #'drag-stuff-up
- )
+ :n "M-k" #'drag-stuff-up)
 (map! :leader
-        (:prefix-map ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize
-      ))
+      (:prefix-map ("a" . "applications")
+        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 (use-package yasnippet
   :diminish yas-minor-mode
   :init
@@ -596,7 +608,6 @@ If failed try to complete the common part with `company-complete-common'"
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
-
 (setq mac-command-modifier 'meta)
 ;; (defun autocompile nil
 ;;   (interactive)
@@ -618,5 +629,4 @@ If failed try to complete the common part with `company-complete-common'"
      command)))
 
 (run-with-idle-timer 0 nil '(lambda ()
-    (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")
-))
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))

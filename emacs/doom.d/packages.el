@@ -32,11 +32,16 @@
 (package! clipmon)  ;; Clipboard monitor
 (package! zone)  ;; Screensaver emacs
 (package! header3 :recipe (:host github :repo "justinekizhak/header3"))
-(package! zone-end-of-buffer :recipe (:host gitlab :repo "justinekizhak/zone-end-of-buffer"))
-(package! apex-legends-quotes :recipe (:host gitlab :repo "justinekizhak/apex-legends-quotes"))
+;; (package! zone-end-of-buffer :recipe (:host gitlab :repo "justinekizhak/zone-end-of-buffer"))
+;; (package! apex-legends-quotes :recipe (:host gitlab :repo "justinekizhak/apex-legends-quotes"))
 (package! company-tabnine)  ;; Autocomplete using deep learing
 (package! esup)
 (package! company-box)  ;; Icons for auto complete popup
 (package! treemacs-magit)  ;; Magit Treemacs
 (package! 2048-game)  ;; TP
 (package! yasnippet-snippets)  ;; Snippets for yas
+(package! ox-gfm)  ;;Github Flavored Markdown exporter for Org Mode
+(package! paren)  ;; Show matching parentheses
+(package! toc-org)  ;; TOC for org mode
+(package! ox-reveal)  ;; Create beautiful org presentations
+(package! htmlize)    ; Syntax highlighting for codeblocks within org reveal presentations

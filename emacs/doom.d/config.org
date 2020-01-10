@@ -14,7 +14,7 @@
 
 * Table of Contents                                               :TOC_3_gh:
 - [[#configuration][Configuration]]
-- [[#about-emacs][About EMACS]]
+- [[#about-emacs][About Emacs]]
 - [[#about-my-config][About my config]]
   - [[#screenshot][Screenshot]]
   - [[#about-readme][About README]]
@@ -35,6 +35,21 @@
     - [[#garbage-collect-when-emacs-is-out-of-focus][Garbage collect when Emacs is out of focus]]
 - [[#use-package-settings][Use-Package Settings]]
 - [[#defining-constants][Defining constants]]
+  - [[#are-we-running-on-a-gui-emacs][Are we running on a GUI Emacs?]]
+  - [[#are-we-running-on-a-wintel-system][Are we running on a WinTel system?]]
+  - [[#are-we-running-on-a-gnulinux-system][Are we running on a GNU/Linux system?]]
+  - [[#are-we-running-on-a-mac-system][Are we running on a Mac system?]]
+  - [[#are-you-a-root-user][Are you a ROOT user?]]
+  - [[#do-we-have-ripgrep][Do we have ripgrep?]]
+  - [[#do-we-have-python][Do we have python?]]
+  - [[#do-we-have-python3][Do we have python3?]]
+  - [[#do-we-have-tr][Do we have tr?]]
+  - [[#do-we-have-maven][Do we have Maven?]]
+  - [[#do-we-have-clangd][Do we have clangd?]]
+  - [[#do-we-have-gcc][Do we have gcc?]]
+  - [[#do-we-have-git][Do we have git?]]
+  - [[#do-we-have-pdflatex][Do we have pdflatex?]]
+  - [[#check-basic-requirements-for-eaf-to-run][Check basic requirements for EAF to run.]]
 - [[#some-emacs-defaults][Some Emacs defaults]]
 - [[#better-editing-experience][Better editing experience]]
   - [[#modernize-selection-behavior][Modernize selection behavior]]
@@ -43,12 +58,15 @@
   - [[#automatically-refreshes-the-buffer-for-changes-outside-of-emacs][Automatically refreshes the buffer for changes outside of Emacs]]
   - [[#mouse-wheel-track-pad-scroll-speed][Mouse wheel (track-pad) scroll speed]]
   - [[#show-matching-parentheses][Show matching parentheses]]
+  - [[#treat-underscore-as-part-of-the-word][Treat underscore as part of the word]]
 - [[#appearance][Appearance]]
   - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
   - [[#dashboard-with-images][Dashboard with images]]
-- [[#custom-keybinding][Custom Keybinding]]
 - [[#packages][Packages]]
   - [[#org-mode][Org mode]]
+    - [[#ox-gfm][Ox-gfm]]
+    - [[#org-toc][Org-toc]]
+    - [[#org-reveal][Org Reveal]]
   - [[#projectile][Projectile]]
   - [[#javascriptweb-mode][Javascript/Web mode]]
   - [[#ripgrep][Ripgrep]]
@@ -77,11 +95,12 @@
   - [[#markdown][Markdown]]
   - [[#emacs-lisp][Emacs lisp]]
 - [[#other-config][Other config]]
+  - [[#use-command-key-as-meta-key-only-on-macos][Use Command key as meta key (Only on MacOS)]]
 - [[#post-initialization][Post Initialization]]
   - [[#lets-lower-our-gc-thresholds-back-down-to-a-sane-level][Let's lower our GC thresholds back down to a sane level.]]
   - [[#play-startup-music][Play startup music]]
 
-* About EMACS
+* About Emacs
   Emacs changes how you /think/ about programming.
 
   Emacs is *totally introspectable*. You can always find out 'what code runs
@@ -135,18 +154,21 @@ pays off.
 
 This Emacs config is a work of many hours of banging my head on a wall.
 My Emacs config has gone through many phase. This phase seems to the most
-pleasent one
+pleasent one.
 
 
 ** Screenshot
 [[file:images/screenshot.png]]
    
 ** About README
-   This README is originated from =config.org= that is generated using
-   =M-x org-gfm-export-to-markdown=.
-    Every block of code is generated through this function - it exports sections of
-    code from the =elisp/= directory.
-    You will not see their presence in =init.org=.
+
+#REVIEW
+
+This README is originated from =config.org= that is generated using
+=M-x org-gfm-export-to-markdown=.
+Every block of code is generated through this function - it exports sections of
+code from the =elisp/= directory.
+You will not see their presence in =init.org=.
 
 ** Installation
 
@@ -157,6 +179,8 @@ Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom E
 
    However, what is /free/ stays /free/. After all, this is [[file:LICENSE][GPL]].
 
+   #REVIEW
+
    *Remember* you must manually sync this README with all the new changes you made by:
    1. Please do *NOT* edit this =README.md= file, edit =config.org= instead!
    2. Add =#+INCLUDE: "~/.emacs.d/elisp/<place-holder>.el" src emacs-lisp :range-begin "<start-line-wrapper-exclusive>" :range-end "<end-line-wrapper-exclusive>"= in the appropriate section in =init.org=.
@@ -166,7 +190,9 @@ Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom E
 If you spotted a bug or you have any suggestions, please fill in an issue.
 If you have something to fix, feel free to create a pull request.
 ** Special Thanks
+
 Everyone starts somewhere, and I started here.
+
 [[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
 [[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
 
@@ -240,7 +266,6 @@ It will be faster to disable them here before they've been initialized.
   (push '(menu-bar-lines . 0) default-frame-alist))
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-
 #+END_SRC
 
 ** Setting up garbage collection for speedy startup
@@ -308,69 +333,111 @@ initialization significantly as many packages are only loaded later when they ar
 
 * Defining constants
 
+** Are we running on a GUI Emacs?
+
 #+BEGIN_SRC emacs-lisp
 (defconst *sys/gui*
-  (display-graphic-p)
-  "Are we running on a GUI Emacs?")
+  (display-graphic-p))
+#+END_SRC
 
+** Are we running on a WinTel system?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *sys/win32*
-  (eq system-type 'windows-nt)
-  "Are we running on a WinTel system?")
+  (eq system-type 'windows-nt))
+#+END_SRC
 
+** Are we running on a GNU/Linux system?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *sys/linux*
-  (eq system-type 'gnu/linux)
-  "Are we running on a GNU/Linux system?")
+  (eq system-type 'gnu/linux))
+#+END_SRC
+** Are we running on a Mac system?
 
+#+BEGIN_SRC emacs-lisp
 (defconst *sys/mac*
-  (eq system-type 'darwin)
-  "Are we running on a Mac system?")
+  (eq system-type 'darwin))
+#+END_SRC
 
+** Are you a ROOT user?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *sys/root*
-  (string-equal "root" (getenv "USER"))
-  "Are you a ROOT user?")
+  (string-equal "root" (getenv "USER")))
+#+END_SRC
 
+** Do we have ripgrep?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *rg*
-  (executable-find "rg")
-  "Do we have ripgrep?")
+  (executable-find "rg"))
+#+END_SRC
 
+** Do we have python?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *python*
-  (executable-find "python")
-  "Do we have python?")
+  (executable-find "python"))
+#+END_SRC
 
+** Do we have python3?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *python3*
-  (executable-find "python3")
-  "Do we have python3?")
+  (executable-find "python3"))
+#+END_SRC
 
+** Do we have tr?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *tr*
-  (executable-find "tr")
-  "Do we have tr?")
+  (executable-find "tr"))
+#+END_SRC
 
+** Do we have Maven?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *mvn*
-  (executable-find "mvn")
-  "Do we have Maven?")
+  (executable-find "mvn"))
+#+END_SRC
 
+** Do we have clangd?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *clangd*
   (or (executable-find "clangd")  ;; usually
-      (executable-find "/usr/local/opt/llvm/bin/clangd"))  ;; macOS
-  "Do we have clangd?")
+      (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
+#+END_SRC
 
+** Do we have gcc?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *gcc*
-  (executable-find "gcc")
-  "Do we have gcc?")
+  (executable-find "gcc"))
+#+END_SRC
 
+** Do we have git?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *git*
-  (executable-find "git")
-  "Do we have git?")
+  (executable-find "git"))
+#+END_SRC
 
+** Do we have pdflatex?
+
+#+BEGIN_SRC emacs-lisp
 (defconst *pdflatex*
-  (executable-find "pdflatex")
-  "Do we have pdflatex?")
+  (executable-find "pdflatex"))
+#+END_SRC
 
+** Check basic requirements for EAF to run.
+
+#+BEGIN_SRC emacs-lisp
 (defconst *eaf-env*
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
-       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") "")))
-  "Check basic requirements for EAF to run.")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 #+END_SRC
 
 * Some Emacs defaults
@@ -469,6 +536,14 @@ Reduce the highlight delay to instantly.
   :config (show-paren-mode +1))
 #+END_SRC
 
+** Treat underscore as part of the word
+
+#+BEGIN_SRC emacs-lisp
+;; (add-hook 'after-change-major-mode-hook
+;;           (lambda ()
+;;             (modify-syntax-entry ?_ "w")))
+#+END_SRC
+
 * Appearance
 
 ** Setting up some frame defaults
@@ -494,11 +569,11 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 #+BEGIN_SRC emacs-lisp
 (add-hook! '(+doom-dashboard-mode-hook)
-  ;; Crypto logo
-  (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
+           ;; Crypto logo
+           (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 #+END_SRC
 
-* Custom Keybinding
+Custom Keybinding
 
 #+BEGIN_SRC emacs-lisp
 (map! "M-s" #'save-buffer)
@@ -509,14 +584,54 @@ Use the image in the dotfiles folder as the dashboard splash image
 ** Org mode
 
 #+BEGIN_SRC emacs-lisp
+(use-package org
+  :ensure nil
+  :defer t
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+  ("C-c b" . org-switch)
+  (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
+  :custom
+  (org-log-done 'time)
+  (org-export-backends (quote (ascii html icalendar latex md odt)))
+  (org-use-speed-commands t)
+  (org-confirm-babel-evaluate 'nil)
+  (org-todo-keywords
+   '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
+  (org-agenda-window-setup 'other-window)
+  :config
+  (unless (version< org-version "9.2")
+    (require 'org-tempo))
+  (when (file-directory-p "~/org/agenda/")
+    (setq org-agenda-files (list "~/org/agenda/")))
+
+  (defun org-export-turn-on-syntax-highlight ()
+    "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
+    (interactive)
+    (setq org-latex-listings 'minted
+          org-latex-packages-alist '(("" "minted"))
+          org-latex-pdf-process
+          '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+
+  (defun org-export-as-pdf-and-open ()
+    "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+    (interactive)
+    (save-buffer)
+    (let* ((pdf-path (org-latex-export-to-pdf))
+           (pdf-name (file-name-nondirectory pdf-path)))
+      (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+          (progn
+            (kill-matching-buffers (concat "^" pdf-name) t t)
+            (find-file-other-window pdf-name))
+        (find-file-other-window pdf-name))
+      (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook #'auto-fill-mode)
-
-;; (defun +org*update-cookies ()
-;;   (when (and buffer-file-name (file-exists-p buffer-file-name))
-;;     (let (org-hierarchical-todo-statistics)
-;;       (org-update-parent-todo-statistics))))
-
-;; (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
@@ -548,8 +663,7 @@ Use the image in the dotfiles folder as the dashboard splash image
                            (:name "Due soon"
                                   :deadline future)
                            (:name "Big Outcomes"
-                                  :tag "bo"))
- )
+                                  :tag "bo")))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -603,12 +717,37 @@ Use the image in the dotfiles folder as the dashboard splash image
 (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
 #+END_SRC
 
+*** Ox-gfm
+
+Github Flavored Markdown exporter for Org Mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-gfm :defer t)
+#+END_SRC
+
+*** Org-toc
+
+#+BEGIN_SRC emacs-lisp
+(use-package toc-org
+  :hook (org-mode . toc-org-mode))
+#+END_SRC
+
+*** Org Reveal
+#+BEGIN_SRC emacs-lisp
+(use-package ox-reveal
+    :defer t
+    :config
+    (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
+    (setq org-reveal-mathjax t))
+
+
+(use-package htmlize
+  :defer t)
+#+END_SRC
 ** Projectile
 
 #+BEGIN_SRC emacs-lisp
-(setq
- projectile-project-search-path '("~/projects")
- )
+(setq  projectile-project-search-path '("~/projects"))
 #+END_SRC
 
 ** Javascript/Web mode
@@ -629,8 +768,7 @@ Use the image in the dotfiles folder as the dashboard splash image
  web-mode-code-indent-offset 2
  web-mode-css-indent-offset 2
  typescript-indent-level 2
- css-indent-offset 2
- )
+ css-indent-offset 2)
 #+END_SRC
 
 ** Ripgrep
@@ -711,7 +849,11 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common))))
+#+END_SRC
 
+Setting up keybindings for completion selection
+
+#+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
@@ -889,9 +1031,7 @@ If failed try to complete the common part with `company-complete-common'"
   ;; Auto revert every 3 sec
   (setq auto-revert-interval 3)
 
-  (setq
- dired-dwim-target t
-   )
+  (setq dired-dwim-target t)
 
   ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
   (put 'dired-find-alternate-file 'disabled nil)
@@ -900,9 +1040,7 @@ If failed try to complete the common part with `company-complete-common'"
         :n "RET" #'dired-find-alternate-file
         :n "^" #'(lambda ()
                    (interactive)
-                   (find-alternate-file ".."))
-        )
-  )
+                   (find-alternate-file ".."))))
 #+END_SRC
 
 ** Drag lines
@@ -910,16 +1048,14 @@ If failed try to complete the common part with `company-complete-common'"
 #+BEGIN_SRC emacs-lisp
 (map!
  :n "M-j" #'drag-stuff-down
- :n "M-k" #'drag-stuff-up
- )
+ :n "M-k" #'drag-stuff-up)
 #+END_SRC
 
 ** Undo visualizer
 #+BEGIN_SRC emacs-lisp
 (map! :leader
-        (:prefix-map ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize
-      ))
+      (:prefix-map ("a" . "applications")
+        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 #+END_SRC
 
 ** Yasnippet
@@ -972,6 +1108,7 @@ If failed try to complete the common part with `company-complete-common'"
 Use a random quote of a character from [[https://www.ea.com/games/apex-legends/play-now-for-free][Apex Legends]] as your frame title.
 
 #+BEGIN_SRC emacs-lisp
+(load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
   :config
   ; get random quote from Apex Legends character
@@ -1042,6 +1179,44 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
 #             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
 # #+END_SRC
 
+# ** God mode
+
+# #+BEGIN_SRC emacs-lisp
+# ;; (global-set-key (kbd "`-<escape>") 'god-local-mode)
+# ;; (global-set-key (kbd "<escape>") 'god-mode-all)
+
+# (map! "S-<escape>" #'god-mode-all)
+# #+END_SRC
+
+# *** Cursor style to indicate mode
+
+# You can change the cursor style indicate whether you're in God mode or not.
+
+# #+BEGIN_SRC emacs-lisp
+# (defun my-update-cursor ()
+#   (setq cursor-type (if (or god-local-mode buffer-read-only)
+#                         'box
+#                       'bar)))
+
+# (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+# (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+# #+END_SRC
+
+# *** Change modeline color
+
+# You can use the following function to switch the entire modeline's foreground and background:
+
+# #+BEGIN_SRC emacs-lisp
+# (defun c/god-mode-update-cursor ()
+#   (let ((limited-colors-p (> 257 (length (defined-colors)))))
+#     (cond (god-local-mode (progn
+#                             (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+#                             (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+#           (t (progn
+#                (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
+#                (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
+# #+END_SRC
+
 * Languages
 
 ** Rust
@@ -1091,7 +1266,11 @@ On save refresh markdown table of contents.
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
+#+END_SRC
 
+** Use Command key as meta key (Only on MacOS)
+
+#+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'meta)
 #+END_SRC
 
@@ -1110,7 +1289,7 @@ On save refresh markdown table of contents.
 #+END_SRC
 ** Play startup music
 
-Play a Apex Legends music when booting up Emacs.
+Play Apex Legends music when booting up Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defun async-shell-command-no-window (command)
@@ -1125,6 +1304,5 @@ Play a Apex Legends music when booting up Emacs.
      command)))
 
 (run-with-idle-timer 0 nil '(lambda ()
-    (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")
-))
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
 #+END_SRC

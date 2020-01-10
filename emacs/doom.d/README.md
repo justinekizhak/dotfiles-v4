@@ -42,6 +42,25 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
             focus](#garbage-collect-when-emacs-is-out-of-focus)
 -   [Use-Package Settings](#use-package-settings)
 -   [Defining constants](#defining-constants)
+    -   [Are we running on a GUI Emacs?](#are-we-running-on-a-gui-emacs)
+    -   [Are we running on a WinTel
+        system?](#are-we-running-on-a-wintel-system)
+    -   [Are we running on a GNU/Linux
+        system?](#are-we-running-on-a-gnulinux-system)
+    -   [Are we running on a Mac
+        system?](#are-we-running-on-a-mac-system)
+    -   [Are you a ROOT user?](#are-you-a-root-user)
+    -   [Do we have ripgrep?](#do-we-have-ripgrep)
+    -   [Do we have python?](#do-we-have-python)
+    -   [Do we have python3?](#do-we-have-python3)
+    -   [Do we have tr?](#do-we-have-tr)
+    -   [Do we have Maven?](#do-we-have-maven)
+    -   [Do we have clangd?](#do-we-have-clangd)
+    -   [Do we have gcc?](#do-we-have-gcc)
+    -   [Do we have git?](#do-we-have-git)
+    -   [Do we have pdflatex?](#do-we-have-pdflatex)
+    -   [Check basic requirements for EAF to
+        run.](#check-basic-requirements-for-eaf-to-run)
 -   [Some Emacs defaults](#some-emacs-defaults)
 -   [Better editing experience](#better-editing-experience)
     -   [Modernize selection behavior](#modernize-selection-behavior)
@@ -52,6 +71,8 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
     -   [Mouse wheel (track-pad) scroll
         speed](#mouse-wheel-track-pad-scroll-speed)
     -   [Show matching parentheses](#show-matching-parentheses)
+    -   [Treat underscore as part of the
+        word](#treat-underscore-as-part-of-the-word)
 -   [Appearance](#appearance)
     -   [Setting up some frame
         defaults](#setting-up-some-frame-defaults)
@@ -60,6 +81,7 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
     -   [Org mode](#org-mode)
         -   [Ox-gfm](#ox-gfm)
         -   [Org-toc](#org-toc)
+        -   [Org Reveal](#org-reveal)
     -   [Projectile](#projectile)
     -   [Javascript/Web mode](#javascriptweb-mode)
     -   [Ripgrep](#ripgrep)
@@ -88,6 +110,8 @@ Table of Contents [[TOC\_3\_gh]{.smallcaps}]{.tag tag-name="TOC_3_gh"} {#table-o
     -   [Markdown](#markdown)
     -   [Emacs lisp](#emacs-lisp)
 -   [Other config](#other-config)
+    -   [Use Command key as meta key (Only on
+        MacOS)](#use-command-key-as-meta-key-only-on-macos)
 -   [Post Initialization](#post-initialization)
     -   [Let\'s lower our GC thresholds back down to a sane
         level.](#lets-lower-our-gc-thresholds-back-down-to-a-sane-level)
@@ -158,7 +182,7 @@ About my config
 
 This Emacs config is a work of many hours of banging my head on a wall.
 My Emacs config has gone through many phase. This phase seems to the
-most pleasent one
+most pleasent one.
 
 Screenshot
 ----------
@@ -167,6 +191,8 @@ Screenshot
 
 About README
 ------------
+
+\#REVIEW
 
 This README is originated from `config.org` that is generated using
 `M-x org-gfm-export-to-markdown`. Every block of code is generated
@@ -185,6 +211,8 @@ Modification
 You have the permission to use, modify, distribute in any way you want.
 
 However, what is *free* stays *free*. After all, this is [GPL](LICENSE).
+
+\#REVIEW
 
 **Remember** you must manually sync this README with all the new changes
 you made by:
@@ -209,6 +237,7 @@ Special Thanks
 --------------
 
 Everyone starts somewhere, and I started here.
+
 [MatthewZMD](https://github.com/MatthewZMD/.emacs.d) [Henrik Lissner\'s
 Doom Emacs](https://github.com/hlissner/doom-emacs)
 
@@ -363,69 +392,127 @@ packages are only loaded later when they are explicitly used.
 Defining constants
 ==================
 
+Are we running on a GUI Emacs?
+------------------------------
+
 ``` {.commonlisp org-language="emacs-lisp"}
 (defconst *sys/gui*
-  (display-graphic-p)
-  "Are we running on a GUI Emacs?")
+  (display-graphic-p))
+```
 
+Are we running on a WinTel system?
+----------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *sys/win32*
-  (eq system-type 'windows-nt)
-  "Are we running on a WinTel system?")
+  (eq system-type 'windows-nt))
+```
 
+Are we running on a GNU/Linux system?
+-------------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *sys/linux*
-  (eq system-type 'gnu/linux)
-  "Are we running on a GNU/Linux system?")
+  (eq system-type 'gnu/linux))
+```
 
+Are we running on a Mac system?
+-------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *sys/mac*
-  (eq system-type 'darwin)
-  "Are we running on a Mac system?")
+  (eq system-type 'darwin))
+```
 
+Are you a ROOT user?
+--------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *sys/root*
-  (string-equal "root" (getenv "USER"))
-  "Are you a ROOT user?")
+  (string-equal "root" (getenv "USER")))
+```
 
+Do we have ripgrep?
+-------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *rg*
-  (executable-find "rg")
-  "Do we have ripgrep?")
+  (executable-find "rg"))
+```
 
+Do we have python?
+------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *python*
-  (executable-find "python")
-  "Do we have python?")
+  (executable-find "python"))
+```
 
+Do we have python3?
+-------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *python3*
-  (executable-find "python3")
-  "Do we have python3?")
+  (executable-find "python3"))
+```
 
+Do we have tr?
+--------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *tr*
-  (executable-find "tr")
-  "Do we have tr?")
+  (executable-find "tr"))
+```
 
+Do we have Maven?
+-----------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *mvn*
-  (executable-find "mvn")
-  "Do we have Maven?")
+  (executable-find "mvn"))
+```
 
+Do we have clangd?
+------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *clangd*
   (or (executable-find "clangd")  ;; usually
-      (executable-find "/usr/local/opt/llvm/bin/clangd"))  ;; macOS
-  "Do we have clangd?")
+      (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
+```
 
+Do we have gcc?
+---------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *gcc*
-  (executable-find "gcc")
-  "Do we have gcc?")
+  (executable-find "gcc"))
+```
 
+Do we have git?
+---------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *git*
-  (executable-find "git")
-  "Do we have git?")
+  (executable-find "git"))
+```
 
+Do we have pdflatex?
+--------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *pdflatex*
-  (executable-find "pdflatex")
-  "Do we have pdflatex?")
+  (executable-find "pdflatex"))
+```
 
+Check basic requirements for EAF to run.
+----------------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (defconst *eaf-env*
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
-       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") "")))
-  "Check basic requirements for EAF to run.")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 ```
 
 Some Emacs defaults
@@ -534,6 +621,15 @@ Reduce the highlight delay to instantly.
   :config (show-paren-mode +1))
 ```
 
+Treat underscore as part of the word
+------------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
+;; (add-hook 'after-change-major-mode-hook
+;;           (lambda ()
+;;             (modify-syntax-entry ?_ "w")))
+```
+
 Appearance
 ==========
 
@@ -580,50 +676,50 @@ Org mode
 --------
 
 ``` {.commonlisp org-language="emacs-lisp"}
-;; (use-package org
-;;   :ensure nil
-;;   :defer t
-;;   :bind
-;;   ("C-c l" . org-store-link)
-;;   ("C-c a" . org-agenda)
-;;   ("C-c c" . org-capture)
-;;   ("C-c b" . org-switch)
-;;   (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
-;;   :custom
-;;   (org-log-done 'time)
-;;   (org-export-backends (quote (ascii html icalendar latex md odt)))
-;;   (org-use-speed-commands t)
-;;   (org-confirm-babel-evaluate 'nil)
-;;   (org-todo-keywords
-;;    '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
-;;   (org-agenda-window-setup 'other-window)
-;;   :config
-;;   (unless (version< org-version "9.2")
-;;     (require 'org-tempo))
-;;   (when (file-directory-p "~/org/agenda/")
-;;     (setq org-agenda-files (list "~/org/agenda/")))
+(use-package org
+  :ensure nil
+  :defer t
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+  ("C-c b" . org-switch)
+  (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
+  :custom
+  (org-log-done 'time)
+  (org-export-backends (quote (ascii html icalendar latex md odt)))
+  (org-use-speed-commands t)
+  (org-confirm-babel-evaluate 'nil)
+  (org-todo-keywords
+   '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
+  (org-agenda-window-setup 'other-window)
+  :config
+  (unless (version< org-version "9.2")
+    (require 'org-tempo))
+  (when (file-directory-p "~/org/agenda/")
+    (setq org-agenda-files (list "~/org/agenda/")))
 
-;;   (defun org-export-turn-on-syntax-highlight ()
-;;     "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
-;;     (interactive)
-;;     (setq org-latex-listings 'minted
-;;           org-latex-packages-alist '(("" "minted"))
-;;           org-latex-pdf-process
-;;           '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
-;;             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+  (defun org-export-turn-on-syntax-highlight ()
+    "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
+    (interactive)
+    (setq org-latex-listings 'minted
+          org-latex-packages-alist '(("" "minted"))
+          org-latex-pdf-process
+          '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
-;;   (defun org-export-as-pdf-and-open ()
-;;     "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
-;;     (interactive)
-;;     (save-buffer)
-;;     (let* ((pdf-path (org-latex-export-to-pdf))
-;;            (pdf-name (file-name-nondirectory pdf-path)))
-;;       (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
-;;           (progn
-;;             (kill-matching-buffers (concat "^" pdf-name) t t)
-;;             (find-file-other-window pdf-name))
-;;         (find-file-other-window pdf-name))
-;;       (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
+  (defun org-export-as-pdf-and-open ()
+    "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+    (interactive)
+    (save-buffer)
+    (let* ((pdf-path (org-latex-export-to-pdf))
+           (pdf-name (file-name-nondirectory pdf-path)))
+      (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+          (progn
+            (kill-matching-buffers (concat "^" pdf-name) t t)
+            (find-file-other-window pdf-name))
+        (find-file-other-window pdf-name))
+      (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
 ```
 
 ``` {.commonlisp org-language="emacs-lisp"}
@@ -659,8 +755,7 @@ Org mode
                            (:name "Due soon"
                                   :deadline future)
                            (:name "Big Outcomes"
-                                  :tag "bo"))
- )
+                                  :tag "bo")))
 ```
 
 ``` {.commonlisp org-language="emacs-lisp"}
@@ -729,6 +824,20 @@ Github Flavored Markdown exporter for Org Mode
   :hook (org-mode . toc-org-mode))
 ```
 
+### Org Reveal
+
+``` {.commonlisp org-language="emacs-lisp"}
+(use-package ox-reveal
+    :defer t
+    :config
+    (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
+    (setq org-reveal-mathjax t))
+
+
+(use-package htmlize
+  :defer t)
+```
+
 Projectile
 ----------
 
@@ -755,8 +864,7 @@ Javascript/Web mode
  web-mode-code-indent-offset 2
  web-mode-css-indent-offset 2
  typescript-indent-level 2
- css-indent-offset 2
- )
+ css-indent-offset 2)
 ```
 
 Ripgrep
@@ -843,7 +951,11 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common))))
+```
 
+Setting up keybindings for completion selection
+
+``` {.commonlisp org-language="emacs-lisp"}
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
@@ -1023,9 +1135,7 @@ Dired
   ;; Auto revert every 3 sec
   (setq auto-revert-interval 3)
 
-  (setq
- dired-dwim-target t
-   )
+  (setq dired-dwim-target t)
 
   ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
   (put 'dired-find-alternate-file 'disabled nil)
@@ -1034,9 +1144,7 @@ Dired
         :n "RET" #'dired-find-alternate-file
         :n "^" #'(lambda ()
                    (interactive)
-                   (find-alternate-file ".."))
-        )
-  )
+                   (find-alternate-file ".."))))
 ```
 
 Drag lines
@@ -1045,8 +1153,7 @@ Drag lines
 ``` {.commonlisp org-language="emacs-lisp"}
 (map!
  :n "M-j" #'drag-stuff-down
- :n "M-k" #'drag-stuff-up
- )
+ :n "M-k" #'drag-stuff-up)
 ```
 
 Undo visualizer
@@ -1054,9 +1161,8 @@ Undo visualizer
 
 ``` {.commonlisp org-language="emacs-lisp"}
 (map! :leader
-        (:prefix-map ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize
-      ))
+      (:prefix-map ("a" . "applications")
+        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 ```
 
 Yasnippet
@@ -1236,7 +1342,12 @@ Other config
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 (add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
+```
 
+Use Command key as meta key (Only on MacOS)
+-------------------------------------------
+
+``` {.commonlisp org-language="emacs-lisp"}
 (setq mac-command-modifier 'meta)
 ```
 
@@ -1260,7 +1371,7 @@ Let\'s lower our GC thresholds back down to a sane level.
 Play startup music
 ------------------
 
-Play a Apex Legends music when booting up Emacs.
+Play Apex Legends music when booting up Emacs.
 
 ``` {.commonlisp org-language="emacs-lisp"}
 (defun async-shell-command-no-window (command)
@@ -1275,6 +1386,5 @@ Play a Apex Legends music when booting up Emacs.
      command)))
 
 (run-with-idle-timer 0 nil '(lambda ()
-    (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")
-))
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
 ```
