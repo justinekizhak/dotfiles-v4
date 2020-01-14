@@ -43,9 +43,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                 (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
 (with-eval-after-load 'use-package
   (setq use-package-always-defer t
-        use-package-verbose t))
-(eval-and-compile
-  (setq use-package-compute-statistics t))
+        use-package-verbose t
+        use-package-expand-minimally t
+        use-package-compute-statistics t
+        use-package-enable-imenu-support t))
 (defconst *sys/gui*
   (display-graphic-p))
 (defconst *sys/win32*
@@ -104,13 +105,15 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (setq-default indent-tabs-mode nil
                 tab-width ian/indent-width))
 (use-package delsel
+  :disabled
   :ensure nil
   :config (delete-selection-mode +1))
+(setq delete-selection-mode t)
 (use-package scroll-bar
   :ensure nil
   :config (scroll-bar-mode -1))
 (use-package files
-  :ensure nil
+  :defer t
   :config
   (setq confirm-kill-processes nil))
 (use-package autorevert
@@ -131,6 +134,30 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;; (add-hook 'after-change-major-mode-hook
 ;;           (lambda ()
 ;;             (modify-syntax-entry ?_ "w")))
+(use-package recentf
+  :ensure nil
+  :hook (after-init . recentf-mode)
+  :custom
+  (recentf-auto-cleanup "05:00am")
+  (recentf-max-saved-items 200)
+  (recentf-exclude '((expand-file-name package-user-dir)
+                     ".cache"
+                     ".cask"
+                     ".elfeed"
+                     "bookmarks"
+                     "cache"
+                     "ido.*"
+                     "persp-confs"
+                     "recentf"
+                     "undo-tree-hist"
+                     "url"
+                     "COMMIT_EDITMSG\\'")))
+
+;; When buffer is closed, saves the cursor location
+(save-place-mode 1)
+
+;; Set history-length longer
+(setq-default history-length 500)
 (use-package frame
   :ensure nil
   :config
@@ -145,159 +172,201 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 (map! "M-s" #'save-buffer)
-(use-package org
-  :ensure nil
-  :defer t
-  :bind
-  ("C-c l" . org-store-link)
-  ("C-c a" . org-agenda)
-  ("C-c c" . org-capture)
-  ("C-c b" . org-switch)
-  (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
-  :custom
-  (org-log-done 'time)
-  (org-export-backends (quote (ascii html icalendar latex md odt)))
-  (org-use-speed-commands t)
-  (org-confirm-babel-evaluate 'nil)
-  (org-todo-keywords
-   '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
-  (org-agenda-window-setup 'other-window)
-  :config
-  (unless (version< org-version "9.2")
-    (require 'org-tempo))
-  (when (file-directory-p "~/org/agenda/")
-    (setq org-agenda-files (list "~/org/agenda/")))
+(map! "M-a" #'mark-whole-buffer)
+(map! "M-v" #'counsel-yank-pop)
+;; (use-package org
+;;   :ensure nil
+;;   :defer t
+;;   :bind
+;;   ("C-c l" . org-store-link)
+;;   ("C-c a" . org-agenda)
+;;   ("C-c c" . org-capture)
+;;   ("C-c b" . org-switch)
+;;   (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
+;;   :custom
+;;   (org-log-done 'time)
+;;   (org-export-backends (quote (ascii html icalendar latex md odt)))
+;;   (org-use-speed-commands t)
+;;   (org-confirm-babel-evaluate 'nil)
+;;   (org-todo-keywords
+;;    '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
+;;   (org-agenda-window-setup 'other-window)
+;;   :config
+;;   (unless (version< org-version "9.2")
+;;     (require 'org-tempo))
+;;   (when (file-directory-p "~/org/agenda/")
+;;     (setq org-agenda-files (list "~/org/agenda/")))
 
-  (defun org-export-turn-on-syntax-highlight ()
-    "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
-    (interactive)
-    (setq org-latex-listings 'minted
-          org-latex-packages-alist '(("" "minted"))
-          org-latex-pdf-process
-          '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
-            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+;;   (setq mac-command-modifier 'meta)
 
-  (defun org-export-as-pdf-and-open ()
-    "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
-    (interactive)
-    (save-buffer)
-    (let* ((pdf-path (org-latex-export-to-pdf))
-           (pdf-name (file-name-nondirectory pdf-path)))
-      (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
-          (progn
-            (kill-matching-buffers (concat "^" pdf-name) t t)
-            (find-file-other-window pdf-name))
-        (find-file-other-window pdf-name))
-      (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
-(add-hook 'org-mode-hook #'auto-fill-mode)
+;;   (defun org-export-turn-on-syntax-highlight ()
+;;     "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
+;;     (interactive)
+;;     (setq org-latex-listings 'minted
+;;           org-latex-packages-alist '(("" "minted"))
+;;           org-latex-pdf-process
+;;           '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
+;;             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
-(add-hook! 'org-mode-hook (company-mode -1))
-(add-hook! 'org-capture-mode-hook (company-mode -1))
+;;   (defun org-export-as-pdf-and-open ()
+;;     "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+;;     (interactive)
+;;     (save-buffer)
+;;     (let* ((pdf-path (org-latex-export-to-pdf))
+;;            (pdf-name (file-name-nondirectory pdf-path)))
+;;       (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+;;           (progn
+;;             (kill-matching-buffers (concat "^" pdf-name) t t)
+;;             (find-file-other-window pdf-name))
+;;         (find-file-other-window pdf-name))
+;;       (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
+;; (add-hook 'org-mode-hook #'auto-fill-mode)
 
-(setq
- org-agenda-skip-scheduled-if-done t
- org-ellipsis " ▾ "
- org-bullets-bullet-list '("·")
- org-tags-column -80
- ;; org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
- org-log-done 'time
- org-refile-targets (quote ((nil :maxlevel . 1)))
- org-capture-templates '(("n" "Note" entry
-                          (file+olp+datetree "journal.org")
-                          "**** [ ] %U %?" :prepend t :kill-buffer t)
-                         ("t" "Task" entry
-                          (file+headline "tasks.org" "Inbox")
-                          "* [ ] %?\n%i" :prepend t :kill-buffer t))
- +org-capture-todo-file "tasks.org"
- org-super-agenda-groups '((:name "Today"
-                                  :time-grid t
-                                  :scheduled today)
-                           (:name "Due today"
-                                  :deadline today)
-                           (:name "Important"
-                                  :priority "A")
-                           (:name "Overdue"
-                                  :deadline past)
-                           (:name "Due soon"
-                                  :deadline future)
-                           (:name "Big Outcomes"
-                                  :tag "bo")))
-(after! org
-  (set-face-attribute 'org-link nil
-                      :weight 'normal
-                      :background nil)
-  (set-face-attribute 'org-code nil
-                      :foreground "#a9a1e1"
-                      :background nil)
-  (set-face-attribute 'org-date nil
-                      :foreground "#5B6268"
-                      :background nil)
-  (set-face-attribute 'org-level-1 nil
-                      :foreground "steelblue2"
-                      :background nil
-                      :height 1.2
-                      :weight 'normal)
-  (set-face-attribute 'org-level-2 nil
-                      :foreground "slategray2"
-                      :background nil
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-3 nil
-                      :foreground "SkyBlue2"
-                      :background nil
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-4 nil
-                      :foreground "DodgerBlue2"
-                      :background nil
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-5 nil
-                      :weight 'normal)
-  (set-face-attribute 'org-level-6 nil
-                      :weight 'normal)
-  (set-face-attribute 'org-document-title nil
-                      :foreground "SlateGray1"
-                      :background nil
-                      :height 1.75
-                      :weight 'bold)
-  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
-(map! :ne "SPC n b" #'org-brain-visualize)
+;; (add-hook! 'org-mode-hook (company-mode -1))
+;; (add-hook! 'org-capture-mode-hook (company-mode -1))
 
-(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-(use-package ox-gfm :defer t)
+;; (setq
+;;  org-agenda-skip-scheduled-if-done t
+;;  org-ellipsis " ▾ "
+;;  org-bullets-bullet-list '("·")
+;;  org-tags-column -80
+;;  ;; org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
+;;  org-log-done 'time
+;;  org-refile-targets (quote ((nil :maxlevel . 1)))
+;;  org-capture-templates '(("n" "Note" entry
+;;                           (file+olp+datetree "journal.org")
+;;                           "**** [ ] %U %?" :prepend t :kill-buffer t)
+;;                          ("t" "Task" entry
+;;                           (file+headline "tasks.org" "Inbox")
+;;                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
+;;  +org-capture-todo-file "tasks.org"
+;;  org-super-agenda-groups '((:name "Today"
+;;                                   :time-grid t
+;;                                   :scheduled today)
+;;                            (:name "Due today"
+;;                                   :deadline today)
+;;                            (:name "Important"
+;;                                   :priority "A")
+;;                            (:name "Overdue"
+;;                                   :deadline past)
+;;                            (:name "Due soon"
+;;                                   :deadline future)
+;;                            (:name "Big Outcomes"
+;;                                   :tag "bo")))
+;; (after! org
+;;   (set-face-attribute 'org-link nil
+;;                       :weight 'normal
+;;                       :background nil)
+;;   (set-face-attribute 'org-code nil
+;;                       :foreground "#a9a1e1"
+;;                       :background nil)
+;;   (set-face-attribute 'org-date nil
+;;                       :foreground "#5B6268"
+;;                       :background nil)
+;;   (set-face-attribute 'org-level-1 nil
+;;                       :foreground "steelblue2"
+;;                       :background nil
+;;                       :height 1.2
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-2 nil
+;;                       :foreground "slategray2"
+;;                       :background nil
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-3 nil
+;;                       :foreground "SkyBlue2"
+;;                       :background nil
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-4 nil
+;;                       :foreground "DodgerBlue2"
+;;                       :background nil
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-5 nil
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-6 nil
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-document-title nil
+;;                       :foreground "SlateGray1"
+;;                       :background nil
+;;                       :height 1.75
+;;                       :weight 'bold)
+;;   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+;; (map! :ne "SPC n b" #'org-brain-visualize)
+
+;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
+;; (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
 (use-package toc-org
+  :defer 3
   :hook (org-mode . toc-org-mode))
+(use-package ox-gfm
+  :defer 3)
 (use-package ox-reveal
-    :defer t
+    :defer 3
     :config
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
-
-
-(use-package htmlize
-  :defer t)
-(setq  projectile-project-search-path '("~/projects"))
-(add-hook!
- js2-mode 'prettier-js-mode
- (add-hook 'before-save-hook #'refmt-before-save nil t))
-
-(after! web-mode
-  (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
-
-(setq
- js-indent-level 2
- prettier-js-args '("--single-quote")
- json-reformat:indent-width 2
- web-mode-markup-indent-offset 2
- web-mode-code-indent-offset 2
- web-mode-css-indent-offset 2
- typescript-indent-level 2
- css-indent-offset 2)
-(map! :ne "SPC / r" #'deadgrep)
-(map! :map browse-kill-ring-mode-map
+(use-package projectile
+  :config
+    (setq  projectile-project-search-path '("~/projects")))
+(use-package web-mode
+  :defer 3
+  :custom-face
+  (css-selector ((t (:inherit default :foreground "#66CCFF"))))
+  (font-lock-comment-face ((t (:foreground "#828282"))))
+  :mode
+  ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
+   "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'")
+  :config
+  (setq
+   web-mode-markup-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-css-indent-offset 2))
+(use-package js2-mode
+  :defer 3
+  :mode "\\.js\\'"
+  :interpreter "node")
+(use-package typescript-mode
+  :defer 3
+  :mode "\\.ts\\'"
+  :commands (typescript-mode))
+(use-package prettier-js
+  :defer 3
+  :hook js2-mode
+  :config
+    (setq prettier-js-args '("--single-quote")))
+(use-package emmet-mode
+  :defer 3
+  :hook ((web-mode . emmet-mode)
+         (css-mode . emmet-mode)))
+(use-package instant-rename-tag
+  :defer 3
+  :load-path (lambda () (expand-file-name "~/dotfiles/emacs/packages/instant-rename-tag"))
+  :config
+  (map! :leader
+        (:prefix-map ("m" . "local leader")
+          :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
+(use-package json-mode
+  :defer 3
+  :mode "\\.json\\'")
+;;(setq
+;; js-indent-level 2
+;; json-reformat:indent-width 2
+;; typescript-indent-level 2
+;; css-indent-offset 2)
+(use-package deadgrep
+  :defer 3
+  :config
+    (map! :leader
+      (:prefix-map ("a" . "applications")
+        :desc "Open Ripgrep interface" "r" #'deadgrep)))
+(use-package browse-kill-ring
+  :disabled
+  :defer 3
+  :config
+    (map! :map browse-kill-ring-mode-map
         "j" #'browse-kill-ring-forward
         "k" #'browse-kill-ring-previous
         "/" #'browse-kill-ring-search-forward
@@ -305,11 +374,14 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
         "N" #'(lambda ()
                 (interactive)
                 (browse-kill-ring-search-backward "")))
-(map! "M-v" #'browse-kill-ring)
-(setq +magit-hub-features t)
-(global-set-key [remap goto-line] 'goto-line-preview)
+    (map! "M-v" #'browse-kill-ring))
+(use-package goto-line-preview
+  :defer 3
+  :config
+    (global-set-key [remap goto-line] 'goto-line-preview))
 (add-to-list 'after-init-hook 'clipmon-mode-start)
 (use-package company
+  :defer t
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
   :bind
@@ -346,110 +418,109 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common))))
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
-(use-package! company-lsp
+;; (with-eval-after-load 'company
+;;   (define-key company-active-map (kbd "<return>") nil)
+;;   (define-key company-active-map (kbd "RET") nil)
+;;   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+(use-package company-lsp
   :defer t
   :custom (company-lsp-cache-candidates 'auto))
-(use-package company-box
-  :diminish
-  :functions (my-company-box--make-line
-              my-company-box-icons--elisp)
-  :commands (company-box--get-color
-             company-box--resolve-colors
-             company-box--add-icon
-             company-box--apply-color
-             company-box--make-line
-             company-box-icons--elisp)
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-backends-colors nil)
-  (company-box-show-single-candidate t)
-  (company-box-max-candidates 50)
-  (company-box-doc-delay 0.3)
-  :config
-  ;; Support `company-common'
-  (defun my-company-box--make-line (candidate)
-    (-let* (((candidate annotation len-c len-a backend) candidate)
-            (color (company-box--get-color backend))
-            ((c-color a-color i-color s-color) (company-box--resolve-colors color))
-            (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
-            (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
-                                      (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
-            (align-string (when annotation
-                            (concat " " (and company-tooltip-align-annotations
-                                             (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
-            (space company-box--space)
-            (icon-p company-box-enable-icon)
-            (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
-            (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
-                            (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
-                          (company-box--apply-color icon-string i-color)
-                          (company-box--apply-color candidate-string c-color)
-                          align-string
-                          (company-box--apply-color annotation-string a-color)))
-            (len (length line)))
-      (add-text-properties 0 len (list 'company-box--len (+ len-c len-a)
-                                       'company-box--color s-color)
-                           line)
-      line))
-  (advice-add #'company-box--make-line :override #'my-company-box--make-line)
+;; (use-package company-box
+;;   :defer t
+;;   :diminish
+;;   :functions (my-company-box--make-line
+;;               my-company-box-icons--elisp)
+;;   :commands (company-box--get-color
+;;              company-box--resolve-colors
+;;              company-box--add-icon
+;;              company-box--apply-color
+;;              company-box--make-line
+;;              company-box-icons--elisp)
+;;   :hook (company-mode . company-box-mode)
+;;   :custom
+;;   (company-box-backends-colors nil)
+;;   (company-box-show-single-candidate t)
+;;   (company-box-max-candidates 50)
+;;   (company-box-doc-delay 0.3)
+;;   :config
+;;   ;; Support `company-common'
+;;   (defun my-company-box--make-line (candidate)
+;;     (-let* (((candidate annotation len-c len-a backend) candidate)
+;;             (color (company-box--get-color backend))
+;;             ((c-color a-color i-color s-color) (company-box--resolve-colors color))
+;;             (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
+;;             (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
+;;                                       (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
+;;             (align-string (when annotation
+;;                             (concat " " (and company-tooltip-align-annotations
+;;                                              (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
+;;             (space company-box--space)
+;;             (icon-p company-box-enable-icon)
+;;             (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
+;;             (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
+;;                             (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
+;;                           (company-box--apply-color icon-string i-color)
+;;                           (company-box--apply-color candidate-string c-color)
+;;                           align-string
+;;                           (company-box--apply-color annotation-string a-color)))
+;;             (len (length line)))
+;;       (add-text-properties 0 len (list 'company-box--len (+ len-c len-a)
+;;                                        'company-box--color s-color)
+;;                            line)
+;;       line))
+;;   (advice-add #'company-box--make-line :override #'my-company-box--make-line)
 
-  ;; Prettify icons
-  (defun my-company-box-icons--elisp (candidate)
-    (when (derived-mode-p 'emacs-lisp-mode)
-      (let ((sym (intern candidate)))
-        (cond ((fboundp sym) 'Function)
-              ((featurep sym) 'Module)
-              ((facep sym) 'Color)
-              ((boundp sym) 'Variable)
-              ((symbolp sym) 'Text)
-              (t . nil)))))
-  (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
+;;   ;; Prettify icons
+;;   (defun my-company-box-icons--elisp (candidate)
+;;     (when (derived-mode-p 'emacs-lisp-mode)
+;;       (let ((sym (intern candidate)))
+;;         (cond ((fboundp sym) 'Function)
+;;               ((featurep sym) 'Module)
+;;               ((facep sym) 'Color)
+;;               ((boundp sym) 'Variable)
+;;               ((symbolp sym) 'Text)
+;;               (t . nil)))))
+;;   (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
 
-  (when (and *sys/gui*
-             (require 'all-the-icons nil t))
-    (declare-function all-the-icons-faicon 'all-the-icons)
-    (declare-function all-the-icons-material 'all-the-icons)
-    (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq company-box-icons-all-the-icons
-          `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.85 :v-adjust -0.2))
-            (Text . ,(all-the-icons-faicon "text-width" :height 0.8 :v-adjust -0.05))
-            (Method . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Function . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Constructor . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Field . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Variable . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Class . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Interface . ,(all-the-icons-material "share" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Module . ,(all-the-icons-material "view_module" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Property . ,(all-the-icons-faicon "wrench" :height 0.8 :v-adjust -0.05))
-            (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.85 :v-adjust -0.2))
-            (Value . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Enum . ,(all-the-icons-material "storage" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.85 :v-adjust -0.2))
-            (Snippet . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2))
-            (Color . ,(all-the-icons-material "palette" :height 0.85 :v-adjust -0.2))
-            (File . ,(all-the-icons-faicon "file-o" :height 0.85 :v-adjust -0.05))
-            (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.85 :v-adjust -0.2))
-            (Folder . ,(all-the-icons-faicon "folder-open" :height 0.85 :v-adjust -0.05))
-            (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Constant . ,(all-the-icons-faicon "square-o" :height 0.85 :v-adjust -0.05))
-            (Struct . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Event . ,(all-the-icons-faicon "bolt" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-orange))
-            (Operator . ,(all-the-icons-material "control_point" :height 0.85 :v-adjust -0.2))
-            (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.8 :v-adjust -0.05))
-            (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
-          company-box-icons-alist 'company-box-icons-all-the-icons)))
-(use-package! company-tabnine
+;;   (when (and *sys/gui*
+;;              (require 'all-the-icons nil t))
+;;     (declare-function all-the-icons-faicon 'all-the-icons)
+;;     (declare-function all-the-icons-material 'all-the-icons)
+;;     (declare-function all-the-icons-octicon 'all-the-icons)
+;;     (setq company-box-icons-all-the-icons
+;;           `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.85 :v-adjust -0.2))
+;;             (Text . ,(all-the-icons-faicon "text-width" :height 0.8 :v-adjust -0.05))
+;;             (Method . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;             (Function . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;             (Constructor . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
+;;             (Field . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
+;;             (Variable . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
+;;             (Class . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;             (Interface . ,(all-the-icons-material "share" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;             (Module . ,(all-the-icons-material "view_module" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;             (Property . ,(all-the-icons-faicon "wrench" :height 0.8 :v-adjust -0.05))
+;;             (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.85 :v-adjust -0.2))
+;;             (Value . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;             (Enum . ,(all-the-icons-material "storage" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;             (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.85 :v-adjust -0.2))
+;;             (Snippet . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2))
+;;             (Color . ,(all-the-icons-material "palette" :height 0.85 :v-adjust -0.2))
+;;             (File . ,(all-the-icons-faicon "file-o" :height 0.85 :v-adjust -0.05))
+;;             (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.85 :v-adjust -0.2))
+;;             (Folder . ,(all-the-icons-faicon "folder-open" :height 0.85 :v-adjust -0.05))
+;;             (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
+;;             (Constant . ,(all-the-icons-faicon "square-o" :height 0.85 :v-adjust -0.05))
+;;             (Struct . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
+;;             (Event . ,(all-the-icons-faicon "bolt" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-orange))
+;;             (Operator . ,(all-the-icons-material "control_point" :height 0.85 :v-adjust -0.2))
+;;             (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.8 :v-adjust -0.05))
+;;             (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
+;;           company-box-icons-alist 'company-box-icons-all-the-icons)))
+(use-package company-tabnine
+  :disabled
   :defer 1
   :custom
   (company-tabnine-max-num-results 9)
-  ;; :bind
-  ;; (("SPC a c o" . company-other-backend)
-  ;;  ("SPC a c t" . company-tabnine))
   :hook
   (lsp-after-open . (lambda ()
                       (setq company-tabnine-max-num-results 3)
@@ -462,10 +533,8 @@ If failed try to complete the common part with `company-complete-common'"
 
   (map! :leader
         (:prefix-map ("a" . "applications")
-        :desc "Use company default backend" "o" #'company-other-backend
-        :desc "Use company tabnine backend" "t" #'company-tabnine
-          )
-        )
+          :desc "Use company default backend" "o" #'company-other-backend
+          :desc "Use company tabnine backend" "t" #'company-tabnine))
 
   ;; Integrate company-tabnine with lsp-mode
   (defun company//sort-by-tabnine (candidates)
@@ -486,41 +555,48 @@ If failed try to complete the common part with `company-complete-common'"
         (setq candidates-tabnine (nreverse candidates-tabnine))
         (nconc (seq-take candidates-tabnine 3)
                (seq-take candidates-lsp 6))))))
-(after! dired
+(use-package dired
+  :defer t
+  :ensure nil
+  :bind
+  (("C-x C-j" . dired-jump)
+   ("C-x j" . dired-jump-other-window))
+  :custom
   ;; Always delete and copy recursively
-  (setq dired-recursive-deletes 'always)
-  (setq dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
   ;; Auto refresh Dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil)
   ;; Quickly copy/move file in Dired
-  (setq dired-dwim-target t)
+  (dired-dwim-target t)
   ;; Move files to trash when deleting
-  (setq delete-by-moving-to-trash t)
+  (delete-by-moving-to-trash t)
   ;; Load the newest version of a file
-  (setq load-prefer-newer t)
+  (load-prefer-newer t)
   ;; Detect external file changes and auto refresh file
-  (setq auto-revert-use-notify nil)
-  ;; Auto revert every 3 sec
-  (setq auto-revert-interval 3)
-
-  (setq dired-dwim-target t)
-
+  (auto-revert-use-notify nil)
+  (auto-revert-interval 3) ; Auto revert every 3 sec
+  :config
+  ;; Enable global auto-revert
+  (global-auto-revert-mode t)
   ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
   (put 'dired-find-alternate-file 'disabled nil)
-
-  (map! :map dired-mode-map
-        :n "RET" #'dired-find-alternate-file
-        :n "^" #'(lambda ()
-                   (interactive)
-                   (find-alternate-file ".."))))
+  :hook
+  (dired-mode . (lambda ()
+                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
+                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
+                  (local-set-key (kbd "^")
+                                 (lambda () (interactive) (find-alternate-file ".."))))))
 (map!
- :n "M-j" #'drag-stuff-down
- :n "M-k" #'drag-stuff-up)
-(map! :leader
-      (:prefix-map ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
+    :n "M-k" #'drag-stuff-up    ; drags line up
+    :n "M-j" #'drag-stuff-down)  ; drags line down
+(with-eval-after-load 'evil-org
+  (map!
+    :n "M-l" #'evil-org->       ; indents line to left
+    :n "M-h" #'evil-org-<))      ; indents line to right
 (use-package yasnippet
+  :defer t
   :diminish yas-minor-mode
   :init
   (use-package yasnippet-snippets :after yasnippet)
@@ -545,11 +621,11 @@ If failed try to complete the common part with `company-complete-common'"
   :defer t
   :after (treemacs magit))
 (use-package 2048-game
+  :defer t
   :commands (2048-game))
-;(after! lentic
-  ;(global-lentic-mode))
-(load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
+;; (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
+  :defer t
   :config
   ; get random quote from Apex Legends character
   (setq frame-title-format (get-random-apex-legends-quote))
@@ -557,7 +633,7 @@ If failed try to complete the common part with `company-complete-common'"
   (defun change-emacs-title--apex-legends-quote ()
     (interactive)
     (setq frame-title-format (get-random-apex-legends-quote))))
-(use-package! zone
+(use-package zone
   :ensure nil
   :defer 5
   :config
@@ -571,32 +647,152 @@ If failed try to complete the common part with `company-complete-common'"
        (mapcar 'symbol-name zone-programs))))
     (let ((zone-programs (list (intern pgm))))
       (zone))))
-(defun zone-pgm-md5 ()
-    "MD5 the buffer, then recursively checksum each hash."
-    (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-                     (point-min) (point-max))))
-      ;; Whitespace-fill the window.
-      (zone-fill-out-screen (window-width) (window-height))
-      (random t)
-      (goto-char (point-min))
-      (while (not (input-pending-p))
-        (when (eobp)
-          (goto-char (point-min)))
-        (while (not (eobp))
-          (delete-region (point) (line-end-position))
-          (let ((next-md5 (md5 prev-md5)))
-            (insert next-md5)
-            (setq prev-md5 next-md5))
-          (forward-line 1)
-          (zone-park/sit-for (point-min) 0.1)))))
-(eval-after-load "zone"
-  '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-     (setq zone-programs
-           (vconcat zone-programs [zone-pgm-md5]))))
+;; (defun zone-pgm-md5 ()
+;;     "MD5 the buffer, then recursively checksum each hash."
+;;     (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
+;;                      (point-min) (point-max))))
+;;       ;; Whitespace-fill the window.
+;;       (zone-fill-out-screen (window-width) (window-height))
+;;       (random t)
+;;       (goto-char (point-min))
+;;       (while (not (input-pending-p))
+;;         (when (eobp)
+;;           (goto-char (point-min)))
+;;         (while (not (eobp))
+;;           (delete-region (point) (line-end-position))
+;;           (let ((next-md5 (md5 prev-md5)))
+;;             (insert next-md5)
+;;             (setq prev-md5 next-md5))
+;;           (forward-line 1)
+;;           (zone-park/sit-for (point-min) 0.1)))))
+;; (eval-after-load "zone"
+;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+;;      (setq zone-programs
+;;            (vconcat zone-programs [zone-pgm-md5]))))
+;; (with-eval-after-load 'zone
+;; (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
+;; (require 'zone-end-of-buffer)
+;;     (unless (memq 'zone-pgm-end-of-buffer (append zone-programs nil))
+;;         (setq zone-programs
+;;             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
+;; (global-set-key (kbd "`-<escape>") 'god-local-mode)
+;; (global-set-key (kbd "<escape>") 'god-mode-all)
+
+;; (map! "S-<escape>" #'god-mode-all)
+;; (defun my-update-cursor ()
+;;   (setq cursor-type (if (or god-local-mode buffer-read-only)
+;;                         'box
+;;                       'bar)))
+
+;; (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+;; (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+;; (defun c/god-mode-update-cursor ()
+;;   (let ((limited-colors-p (> 257 (length (defined-colors)))))
+;;     (cond (god-local-mode (progn
+;;                             (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+;;                             (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+;;           (t (progn
+;;                (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
+;;                (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
+(use-package htmlize
+  :defer t)
+(use-package eww
+  :defer t
+  :ensure nil
+  :commands (eww)
+  :hook (eww-mode . (lambda ()
+                      "Rename EWW's buffer so sites open in new page."
+                      (rename-buffer "eww" t)))
+  :config
+  ;; I am using EAF-Browser instead of EWW
+  (unless *eaf-env*
+    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
+(add-hook 'vterm-mode-hook #'goto-address-mode)
+(use-package restclient
+  :defer t
+  :config
+    (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((restclient . t))))
+(use-package popup-kill-ring
+  :disabled
+  :defer t
+  :bind ("M-y" . popup-kill-ring))
+(use-package undo-tree
+  :defer t
+  :diminish undo-tree-mode
+  :init (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t))
+(map! :leader
+    (:prefix-map ("a" . "applications")
+        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
+(use-package discover-my-major
+  :defer 1
+  :bind ("C-h C-m" . discover-my-major))
+(use-package flycheck
+  :defer t
+  :hook (prog-mode . flycheck-mode)
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
+  :config
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
+(use-package highlight-indent-guides
+  :defer t
+  :if *sys/gui*
+  :diminish
+  :hook ((prog-mode web-mode nxml-mode) . highlight-indent-guides-mode)
+  :custom
+  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-responsive 'top)
+  (highlight-indent-guides-delay 0)
+  (highlight-indent-guides-auto-character-face-perc 7))
+(setq-default indent-tabs-mode nil)
+(setq-default indent-line-function 'insert-tab)
+(setq-default tab-width 4)
+(setq-default c-basic-offset 4)
+(setq-default js-switch-indent-offset 4)
+(c-set-offset 'comment-intro 0)
+(c-set-offset 'innamespace 0)
+(c-set-offset 'case-label '+)
+(c-set-offset 'access-label 0)
+(c-set-offset (quote cpp-macro) 0 nil)
+(add-hook 'after-change-major-mode-hook
+          (lambda () (if (equal electric-indent-mode 't)
+                    (when (derived-mode-p 'text-mode)
+                      (electric-indent-mode -1))
+                  (electric-indent-mode 1))))
+(use-package iedit
+  :defer t
+  :diminish)
+(use-package powerthesaurus
+  :defer t)
+(use-package ace-popup-menu
+  :defer t)
+(use-package string-inflection
+  :defer t)
+(use-package pipenv
+  :defer t)
+(use-package easy-escape
+  :defer t)
+(use-package cheatsheet
+  :defer t)
+(set-face-attribute 'easy-escape-face nil :foreground "red")
 (add-hook 'rustic-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
-(add-hook 'python-mode-hook (lambda ()
-              (set (make-local-variable 'company-backends) '(company-tabnine))))
+(use-package python-mode
+  :ensure nil
+  :after flycheck
+  :mode "\\.py\\'"
+  :custom
+  (python-indent-offset 4)
+  (flycheck-python-pycompile-executable "python3")
+  (python-shell-interpreter "python3")
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+                                (set (make-local-variable 'company-backends) '(company-tabnine)))))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (add-hook 'gfm-mode-hook
           (lambda () (when buffer-file-name
@@ -604,19 +800,35 @@ If failed try to complete the common part with `company-complete-common'"
                                  'markdown-toc-refresh-toc))))
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))))
-(add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
+            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))
+            (setq (make-local-variable 'tab-width) 2)))
 
-(add-hook 'vterm-mode-hook #'goto-address-mode)  ;; Add clickable links inside terminal
+(add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
+;; (use-package tex
+;;   :ensure auctex
+;;   :defer t
+;;   :custom
+;;   (TeX-auto-save t)
+;;   (TeX-parse-self t)
+;;   (TeX-master nil)
+;;   ;; to use pdfview with auctex
+;;   (TeX-view-program-selection '((output-pdf "pdf-tools"))
+;;                               TeX-source-correlate-start-server t)
+;;   (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+;;   (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+;;   :hook
+;;   (LaTeX-mode . (lambda ()
+;;                   (turn-on-reftex)
+;;                   (setq reftex-plug-into-AUCTeX t)
+;;                   (reftex-isearch-minor-mode)
+;;                   (setq TeX-PDF-mode t)
+;;                   (setq TeX-source-correlate-method 'synctex)
+;;                   (setq TeX-source-correlate-start-server t)))
+;;   :config
+;;   (when (version< emacs-version "26")
+;;     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
+(add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 (setq mac-command-modifier 'meta)
-;; (defun autocompile nil
-;;   (interactive)
-;;   (if (and
-;;        (string-equal buffer-file-name (expand-file-name "~/dotfiles/emacs/doom.d/config.org"))
-;;        (file-newer-than-file-p "~/dotfiles/emacs/doom.d/config.el" "~/dotfiles/emacs/doom.d/config.elc"))
-;;       (byte-compile-file "~/dotfiles/emacs/doom.d/config.el")))
-
-;; (add-hook 'after-save-hook 'autocompile)
 (defun async-shell-command-no-window (command)
   (interactive)
   (let
