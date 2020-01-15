@@ -174,130 +174,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (map! "M-s" #'save-buffer)
 (map! "M-a" #'mark-whole-buffer)
 (map! "M-v" #'counsel-yank-pop)
-;; (use-package org
-;;   :ensure nil
-;;   :defer t
-;;   :bind
-;;   ("C-c l" . org-store-link)
-;;   ("C-c a" . org-agenda)
-;;   ("C-c c" . org-capture)
-;;   ("C-c b" . org-switch)
-;;   (:map org-mode-map ("C-c C-p" . org-export-as-pdf-and-open))
-;;   :custom
-;;   (org-log-done 'time)
-;;   (org-export-backends (quote (ascii html icalendar latex md odt)))
-;;   (org-use-speed-commands t)
-;;   (org-confirm-babel-evaluate 'nil)
-;;   (org-todo-keywords
-;;    '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE")))
-;;   (org-agenda-window-setup 'other-window)
-;;   :config
-;;   (unless (version< org-version "9.2")
-;;     (require 'org-tempo))
-;;   (when (file-directory-p "~/org/agenda/")
-;;     (setq org-agenda-files (list "~/org/agenda/")))
-
-;;   (setq mac-command-modifier 'meta)
-
-;;   (defun org-export-turn-on-syntax-highlight ()
-;;     "Setup variables to turn on syntax highlighting when calling `org-latex-export-to-pdf'."
-;;     (interactive)
-;;     (setq org-latex-listings 'minted
-;;           org-latex-packages-alist '(("" "minted"))
-;;           org-latex-pdf-process
-;;           '("pdflatex -shelnl-escape -interaction nonstopmode -output-directory %o %f"
-;;             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
-
-;;   (defun org-export-as-pdf-and-open ()
-;;     "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
-;;     (interactive)
-;;     (save-buffer)
-;;     (let* ((pdf-path (org-latex-export-to-pdf))
-;;            (pdf-name (file-name-nondirectory pdf-path)))
-;;       (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
-;;           (progn
-;;             (kill-matching-buffers (concat "^" pdf-name) t t)
-;;             (find-file-other-window pdf-name))
-;;         (find-file-other-window pdf-name))
-;;       (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex")))))
-;; (add-hook 'org-mode-hook #'auto-fill-mode)
-
-;; (add-hook! 'org-mode-hook (company-mode -1))
-;; (add-hook! 'org-capture-mode-hook (company-mode -1))
-
-;; (setq
-;;  org-agenda-skip-scheduled-if-done t
-;;  org-ellipsis " ▾ "
-;;  org-bullets-bullet-list '("·")
-;;  org-tags-column -80
-;;  ;; org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
-;;  org-log-done 'time
-;;  org-refile-targets (quote ((nil :maxlevel . 1)))
-;;  org-capture-templates '(("n" "Note" entry
-;;                           (file+olp+datetree "journal.org")
-;;                           "**** [ ] %U %?" :prepend t :kill-buffer t)
-;;                          ("t" "Task" entry
-;;                           (file+headline "tasks.org" "Inbox")
-;;                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
-;;  +org-capture-todo-file "tasks.org"
-;;  org-super-agenda-groups '((:name "Today"
-;;                                   :time-grid t
-;;                                   :scheduled today)
-;;                            (:name "Due today"
-;;                                   :deadline today)
-;;                            (:name "Important"
-;;                                   :priority "A")
-;;                            (:name "Overdue"
-;;                                   :deadline past)
-;;                            (:name "Due soon"
-;;                                   :deadline future)
-;;                            (:name "Big Outcomes"
-;;                                   :tag "bo")))
-;; (after! org
-;;   (set-face-attribute 'org-link nil
-;;                       :weight 'normal
-;;                       :background nil)
-;;   (set-face-attribute 'org-code nil
-;;                       :foreground "#a9a1e1"
-;;                       :background nil)
-;;   (set-face-attribute 'org-date nil
-;;                       :foreground "#5B6268"
-;;                       :background nil)
-;;   (set-face-attribute 'org-level-1 nil
-;;                       :foreground "steelblue2"
-;;                       :background nil
-;;                       :height 1.2
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-level-2 nil
-;;                       :foreground "slategray2"
-;;                       :background nil
-;;                       :height 1.0
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-level-3 nil
-;;                       :foreground "SkyBlue2"
-;;                       :background nil
-;;                       :height 1.0
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-level-4 nil
-;;                       :foreground "DodgerBlue2"
-;;                       :background nil
-;;                       :height 1.0
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-level-5 nil
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-level-6 nil
-;;                       :weight 'normal)
-;;   (set-face-attribute 'org-document-title nil
-;;                       :foreground "SlateGray1"
-;;                       :background nil
-;;                       :height 1.75
-;;                       :weight 'bold)
-;;   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
-;; (map! :ne "SPC n b" #'org-brain-visualize)
-
-;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
-;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
-;; (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
+(use-package org
+  :defer t
+  :config
+    (setq org-startup-with-inline-images nil))
 (use-package toc-org
   :defer 3
   :hook (org-mode . toc-org-mode))
@@ -625,7 +505,6 @@ If failed try to complete the common part with `company-complete-common'"
   :commands (2048-game))
 ;; (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
-  :defer t
   :config
   ; get random quote from Apex Legends character
   (setq frame-title-format (get-random-apex-legends-quote))
@@ -730,7 +609,9 @@ If failed try to complete the common part with `company-complete-common'"
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 (use-package discover-my-major
   :defer 1
-  :bind ("C-h C-m" . discover-my-major))
+  :config
+  (map! :leader (:prefix "h"
+                    :desc "Open discover-my-major" "C-m" #'discover-my-major)))
 (use-package flycheck
   :defer t
   :hook (prog-mode . flycheck-mode)
@@ -761,9 +642,9 @@ If failed try to complete the common part with `company-complete-common'"
 (c-set-offset (quote cpp-macro) 0 nil)
 (add-hook 'after-change-major-mode-hook
           (lambda () (if (equal electric-indent-mode 't)
-                    (when (derived-mode-p 'text-mode)
-                      (electric-indent-mode -1))
-                  (electric-indent-mode 1))))
+                         (when (derived-mode-p 'text-mode)
+                           (electric-indent-mode -1))
+                       (electric-indent-mode 1))))
 (use-package iedit
   :defer t
   :diminish)
@@ -779,7 +660,18 @@ If failed try to complete the common part with `company-complete-common'"
   :defer t)
 (use-package cheatsheet
   :defer t)
-(set-face-attribute 'easy-escape-face nil :foreground "red")
+(use-package easy-escape
+  :defer t
+  :config
+    (set-face-attribute 'easy-escape-face nil :foreground "red"))
+(use-package parinfer
+  :defer t)
+(use-package evil-snipe
+  :defer t
+  :config
+  (setq evil-snipe-scope 'visible)
+  (setq evil-snipe-repeat-scope 'buffer)
+  (setq evil-snipe-spillover-scope 'whole-buffer))
 (add-hook 'rustic-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
 (use-package python-mode
@@ -801,7 +693,7 @@ If failed try to complete the common part with `company-complete-common'"
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (setq-local company-backends '((company-capf company-dabbrev-code company-files)))
-            (setq (make-local-variable 'tab-width) 2)))
+            (setq tab-width 2)))
 
 (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
 ;; (use-package tex
