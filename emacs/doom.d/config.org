@@ -1426,9 +1426,111 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
 
 ** Cheatsheet
 
+To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
+
 #+BEGIN_SRC emacs-lisp
 (use-package cheatsheet
   :defer t)
+#+END_SRC
+
+*** Cheatsheet mode
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add :group 'Cheatsheet
+                :key "C-q"
+                :description "Leave cheatsheet")
+#+END_SRC
+
+*** Evil mode
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Evil-mode
+                      '(:key "ESC" :description "Change mode to `NormalMode'")
+                      '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
+                      '(:key "<NormalMode> /" :description "Change mode to `FindForwardMode'")
+                      '(:key "<NormalMode> ?" :description "Change mode to `FindBackwordMode'")
+                      '(:key "<NormalMode> r" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> R" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> v" :description "Change mode to `VisualMode'")
+                      '(:key "<NormalMode> V" :description "Change mode to `VisualLineMode'")
+                      '(:key "<NormalMode> C-v" :description "Change mode to `VisualBlockMode'")
+                      '(:key "i" :description "Change mode to `InsertMode'")
+                      '(:key "I" :description "Moves the cursor to the beginning of the line and change mode to `InsertMode'")
+                      '(:key "a" :description "Moves the cursor after the current character and change mode to `InsertMode'")
+                      '(:key "A" :description "Moves the cursor to the end of the line and change mode to `InsertMode'")
+                      '(:key "o" :description "Inserts a new line below the current line and change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'"))
+#+END_SRC
+
+*** Emacs
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Emacs
+                      '(:key "SPC q q" :description "Quit Emacs")
+                      '(:key "SPC q Q" :description "Quit Emacs without saving")
+                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style"))
+#+END_SRC
+
+*** Navigation
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Navigation
+                      '(:key "<NormalMode> h" :description "Move left")
+                      '(:key "<NormalMode> j" :description "Move down")
+                      '(:key "<NormalMode> k" :description "Move up")
+                      '(:key "<NormalMode> l" :description "Move right"))
+#+END_SRC
+
+*** Buffer management
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Buffer-management
+                      '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
+                      '(:key "<NormalMode> SPC b B" :description "List buffers")
+                      '(:key "<VisualMode> b -" :description "Toggle narrowing buffer")
+                      '(:key "<NormalMode> b d" :description "Kill current buffer")
+                      '(:key "<NormalMode> b K" :description "Kill all buffer")
+                      '(:key "<NormalMode> b N" :description "Create new empty buffer"))
+#+END_SRC
+
+*** Window management
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Window-management
+                      '(:key "<NormalMode> SPC w d" :description "Delete window")
+                      '(:key "<NormalMode> SPC w R" :description "Rotate window")
+                      '(:key "<NormalMode> SPC w H" :description "Move window to left")
+                      '(:key "<NormalMode> SPC w J" :description "Move window to down")
+                      '(:key "<NormalMode> SPC w K" :description "Move window to up")
+                      '(:key "<NormalMode> SPC w L" :description "Move window to right"))
+#+END_SRC
+
+*** Git
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Git
+                      '(:key "<NormalMode> SPC g g" :description "Show Magit status")
+                      '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
+#+END_SRC
+
+**** Magit
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Magit
+                      '(:key "<NormalMode> s" :description "Stage hunk")
+                      '(:key "<NormalMode> c c" :description "Create commit")
+                      '(:key "<NormalMode> p u" :description "Push to upstream")
+                      '(:key "<NormalMode> f u" :description "Fetch from upstream")
+                      '(:key "<NormalMode> F u" :description "Pull from upstream"))
+#+END_SRC
+
+**** Git Timemachine
+
+#+BEGIN_SRC emacs-lisp
+(cheatsheet-add-group 'Window-management
+                      '(:key "<NormalMode> C-j" :description "Next revision")
+                      '(:key "<NormalMode> C-k" :description "Previous revision"))
 #+END_SRC
 
 ** Easy escape
