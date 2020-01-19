@@ -171,11 +171,35 @@ pleasent one.
 
 Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom Emacs]].
 
+To install Emacs-plus v27 (For MacOS) with all features execute
+
+~$ ./install-emacs-plus-for-mac~ on terminal.
+
+#+BEGIN_SRC sh :tangle install-emacs-plus-for-mac :exports none
+#!/usr/bin/env bash
+
+brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
+#+END_SRC
+
+OR
+
+copy paste this into terminal
+
+#+BEGIN_SRC sh :tangle no
+brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
+#+END_SRC
+
 ** Modification
    You have the permission to use, modify, distribute in any way you want.
 
    However, what is /free/ stays /free/. After all, this is [[file:LICENSE][GPL]].
 
+** About Readme
+This Readme is generated from ~config.org~. Don't make changes to Readme
+directly. \\
+Make changes in ~config.org~ then run ~org-gfm-export-to-markdown~ to generate
+Gitlab flavoured markdown (GFM).\\
+You can also use the org export dispatch ~C-c C-e g g~.
 ** Contribution
 If you spotted a bug or you have any suggestions, please fill in an issue.
 If you have something to fix, feel free to create a pull request.
@@ -183,9 +207,8 @@ If you have something to fix, feel free to create a pull request.
 
 Everyone starts somewhere, and I started here.
 
-[[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
-
-[[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
+- [[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
+- [[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
 
 * Lexical Binding
 
