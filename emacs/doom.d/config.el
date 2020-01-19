@@ -660,6 +660,61 @@ If failed try to complete the common part with `company-complete-common'"
   :defer t)
 (use-package cheatsheet
   :defer t)
+(cheatsheet-add :group 'Cheatsheet
+                :key "C-q"
+                :description "Leave cheatsheet")
+(cheatsheet-add-group 'Evil-mode
+                      '(:key "ESC" :description "Change mode to `NormalMode'")
+                      '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
+                      '(:key "<NormalMode> /" :description "Change mode to `FindForwardMode'")
+                      '(:key "<NormalMode> ?" :description "Change mode to `FindBackwordMode'")
+                      '(:key "<NormalMode> r" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> R" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> v" :description "Change mode to `VisualMode'")
+                      '(:key "<NormalMode> V" :description "Change mode to `VisualLineMode'")
+                      '(:key "<NormalMode> C-v" :description "Change mode to `VisualBlockMode'")
+                      '(:key "i" :description "Change mode to `InsertMode'")
+                      '(:key "I" :description "Moves the cursor to the beginning of the line and change mode to `InsertMode'")
+                      '(:key "a" :description "Moves the cursor after the current character and change mode to `InsertMode'")
+                      '(:key "A" :description "Moves the cursor to the end of the line and change mode to `InsertMode'")
+                      '(:key "o" :description "Inserts a new line below the current line and change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'"))
+(cheatsheet-add-group 'Emacs
+                      '(:key "SPC q q" :description "Quit Emacs")
+                      '(:key "SPC q Q" :description "Quit Emacs without saving")
+                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style"))
+(cheatsheet-add-group 'Navigation
+                      '(:key "<NormalMode> h" :description "Move left")
+                      '(:key "<NormalMode> j" :description "Move down")
+                      '(:key "<NormalMode> k" :description "Move up")
+                      '(:key "<NormalMode> l" :description "Move right"))
+(cheatsheet-add-group 'Buffer-management
+                      '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
+                      '(:key "<NormalMode> SPC b B" :description "List buffers")
+                      '(:key "<VisualMode> b -" :description "Toggle narrowing buffer")
+                      '(:key "<NormalMode> b d" :description "Kill current buffer")
+                      '(:key "<NormalMode> b K" :description "Kill all buffer")
+                      '(:key "<NormalMode> b N" :description "Create new empty buffer"))
+(cheatsheet-add-group 'Window-management
+                      '(:key "<NormalMode> SPC w d" :description "Delete window")
+                      '(:key "<NormalMode> SPC w R" :description "Rotate window")
+                      '(:key "<NormalMode> SPC w H" :description "Move window to left")
+                      '(:key "<NormalMode> SPC w J" :description "Move window to down")
+                      '(:key "<NormalMode> SPC w K" :description "Move window to up")
+                      '(:key "<NormalMode> SPC w L" :description "Move window to right"))
+(cheatsheet-add-group 'Git
+                      '(:key "<NormalMode> SPC g g" :description "Show Magit status")
+                      '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
+(cheatsheet-add-group 'Magit
+                      '(:key "<NormalMode> s" :description "Stage hunk")
+                      '(:key "<NormalMode> c c" :description "Create commit")
+                      '(:key "<NormalMode> p u" :description "Push to upstream")
+                      '(:key "<NormalMode> f u" :description "Fetch from upstream")
+                      '(:key "<NormalMode> F u" :description "Pull from upstream"))
+(cheatsheet-add-group 'Window-management
+                      '(:key "<NormalMode> C-j" :description "Next revision")
+                      '(:key "<NormalMode> C-k" :description "Previous revision"))
 (use-package easy-escape
   :defer t
   :config
