@@ -1,6 +1,116 @@
+<h1>My Doom Emacs config</h1>
+
+
+# Table of contents     :TOC_2_ORG:
+
+-   [About Emacs](#org5f1a7d7)
+-   [About my config](#orgd0fde79)
+    -   [Screenshot](#org5b1514e)
+    -   [Installation](#org5c4f647)
+    -   [Modification](#orge33d7b1)
+    -   [About Readme](#org33e281e)
+    -   [Contribution](#orgb358b4f)
+    -   [Special Thanks](#org8ac5d94)
+-   [Lexical Binding](#org36985fc)
+-   [Personal Information](#org3274841)
+-   [Improve boot up speed](#org9d6d948)
+    -   [Omit default startup screen](#orgc4132b4)
+    -   [Disable `package-enable-at-startup`](#org35e3dc5)
+    -   [Unset `file-name-handler-alist`](#org4dff5ff)
+    -   [Disable `site-run-file`](#org9754016)
+    -   [Disable Unnecessary Interface](#orgf4ae203)
+    -   [Setting up garbage collection for speedy startup](#org1328c27)
+-   [Use-Package Settings](#org7925b9a)
+-   [Defining constants](#org204d5d4)
+    -   [Are we running on a GUI Emacs?](#orgb683574)
+    -   [Are we running on a WinTel system?](#orgfe393c8)
+    -   [Are we running on a GNU/Linux system?](#org64f7683)
+    -   [Are we running on a Mac system?](#orgd8d1879)
+    -   [Are you a ROOT user?](#org013300a)
+    -   [Do we have ripgrep?](#orga003275)
+    -   [Do we have python?](#orgc014ac7)
+    -   [Do we have python3?](#org4048c6b)
+    -   [Do we have tr?](#orgf3b2756)
+    -   [Do we have Maven?](#org942eb88)
+    -   [Do we have clangd?](#orgb3f2fc0)
+    -   [Do we have gcc?](#orgd957cce)
+    -   [Do we have git?](#org59c1478)
+    -   [Do we have pdflatex?](#orgfdab5b8)
+    -   [Check basic requirements for EAF to run.](#orga40c4cf)
+-   [Some Emacs defaults](#org81c5782)
+-   [Better editing experience](#orga86e1b1)
+    -   [Modernize selection behavior](#orgd2e86a6)
+    -   [Disable scroll bar](#orgc55f3d8)
+    -   [Confirm kill process](#orgced425a)
+    -   [Automatically refreshes the buffer for changes outside of Emacs](#org55c73a4)
+    -   [Mouse wheel (track-pad) scroll speed](#orgd03e97a)
+    -   [Show matching parentheses](#org116272c)
+    -   [Treat underscore as part of the word](#org92cb86c)
+    -   [History](#org04da466)
+-   [Appearance](#orgd724b17)
+    -   [Setting up some frame defaults](#org1bc0af2)
+    -   [Dashboard with images](#orgfa7bce6)
+-   [Custom Keybinding](#orgbc5384f)
+    -   [⌘ + s → Save file](#org8627969)
+    -   [⌘ + a → Select all](#orgb582ab9)
+    -   [⌘ + v → Paste menu](#orgeffdf22)
+-   [Packages](#org1d7368c)
+    -   [Org mode](#orga050fd2)
+    -   [Projectile](#orgbd0400e)
+    -   [Web development](#orgfec813c)
+    -   [Ripgrep](#org5dfc7f1)
+    -   [Browse kill ring](#org708e714)
+    -   [Magit](#org063dfa7)
+    -   [Go to line preview](#org24dbe45)
+    -   [Clipmon](#org2607a45)
+    -   [Company](#org4a7862e)
+    -   [Dired](#org2dd0136)
+    -   [Drag lines](#org644f306)
+    -   [Yasnippet](#org83204bf)
+    -   [Treemacs magit](#org90eff61)
+    -   [2048 game](#orgb15af36)
+    -   [Lentic mode](#org42dd817)
+    -   [Apex Legends quotes](#org2df36c3)
+    -   [Zone](#org05b9708)
+    -   [God mode](#orgcc67528)
+    -   [HTMLize](#org55f67ee)
+    -   [EWW](#org87efc4f)
+    -   [VTerm](#org05909e6)
+    -   [Restclient](#org0fcbe99)
+    -   [Popup kill ring](#org95981a9)
+    -   [Undo tree](#org0321055)
+    -   [Discover My Major](#org7f05481)
+    -   [Flycheck](#org54b0af5)
+    -   [Hightlight indentation guide](#org4437fc7)
+    -   [Iedit](#org006d235)
+    -   [Powerthesaurus](#orge736949)
+    -   [Ace-popup](#orgcb51928)
+    -   [String-inflection](#org4e372d3)
+    -   [Pipenv](#orgc856158)
+    -   [Easy escape](#org2a325af)
+    -   [Cheatsheet](#orgfb39d9a)
+    -   [Easy escape](#org2a325af)
+    -   [Parinfer](#orgd461a38)
+    -   [Evil snipe](#orgf295e06)
+-   [Languages](#org58dc1fb)
+    -   [Rust](#orge2b75ef)
+    -   [Python](#orgb2351af)
+    -   [Dart](#org14ec475)
+    -   [Markdown](#org412feaa)
+    -   [Emacs lisp](#org385ab9b)
+    -   [TeX](#orgeb65509)
+    -   [YAML](#orgd9af230)
+-   [Other config](#orgf9dbdab)
+    -   [Use Command key as meta key (Only on MacOS)](#orgfe894ff)
+-   [Post Initialization](#org7cffa62)
+    -   [Play startup music](#org0294242)
+
+
+<a id="org5f1a7d7"></a>
+
 # About Emacs
 
-Emacs changes how you _think_ about programming.
+Emacs changes how you *think* about programming.
 
 Emacs is **totally introspectable**. You can always find out &rsquo;what code runs when I press this button?&rsquo;.
 
@@ -12,11 +122,11 @@ Emacs provides **functionality without applications**. Rather than separate appl
 
 Emacs is full of **incredible software concepts that haven&rsquo;t hit the mainstream yet**. For example:
 
-- Many platforms have a single item clipboard. Emacs has an **infinite clipboard**.
-- If you undo a change, and then continue editing, you can&rsquo;t redo the original change. Emacs allows **undoing to any historical state**, even allowing tree-based exploration of history.
-- Emacs supports a **reverse variable search**: you can find variables with a given value.
-- You can perform **structural editing** of code, allowing you to make changes without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
-- Many applications use a modal GUI: for example, you can&rsquo;t do other edits during a find-and-replace operation. Emacs provides **recursive editing** that allow you to suspend what you&rsquo;re currently doing, perform other edits, then continue the original task.
+-   Many platforms have a single item clipboard. Emacs has an **infinite clipboard**.
+-   If you undo a change, and then continue editing, you can&rsquo;t redo the original change. Emacs allows **undoing to any historical state**, even allowing tree-based exploration of history.
+-   Emacs supports a **reverse variable search**: you can find variables with a given value.
+-   You can perform **structural editing** of code, allowing you to make changes without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
+-   Many applications use a modal GUI: for example, you can&rsquo;t do other edits during a find-and-replace operation. Emacs provides **recursive editing** that allow you to suspend what you&rsquo;re currently doing, perform other edits, then continue the original task.
 
 Emacs has a **documentation culture**. Emacs includes a usage manual, a lisp programming manual, pervasive docstrings and even an interactive tutorial.
 
@@ -24,39 +134,78 @@ Emacs has a **broad ecosystem**. If you want to edit code in a niche language, t
 
 Emacs doesn&rsquo;t have a monopoly on good ideas, and there are other great tools out there. Nonetheless, we believe the [Emacs learning curve](https://i.stack.imgur.com/7Cu9Z.jpg) pays off.
 
-_This beautifully written **About EMACS** section credits to [Remacs](https://github.com/remacs/remacs)._
+*This beautifully written **About EMACS** section credits to [Remacs](https://github.com/remacs/remacs).*
 
 Also if you want to read more about Emacs, checkout [Why You Should Buy Into the Emacs Platform](https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform).
+
+
+<a id="orgd0fde79"></a>
 
 # About my config
 
 This Emacs config is a work of many hours of banging my head on a wall. My Emacs config has gone through many phase. This phase seems to the most pleasent one.
 
+
+<a id="org5b1514e"></a>
+
 ## Screenshot
 
 ![img](images/screenshot.png)
+
+
+<a id="org5c4f647"></a>
 
 ## Installation
 
 Use the install directions from [Doom Emacs](https://github.com/hlissner/doom-emacs).
 
+To install Emacs-plus v27 (For MacOS) with all features execute
+
+`$ ./install-emacs-plus-for-mac` on terminal.
+
+OR
+
+copy paste this into terminal
+
+```sh
+brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
+```
+
+
+<a id="orge33d7b1"></a>
+
 ## Modification
 
 You have the permission to use, modify, distribute in any way you want.
 
-However, what is _free_ stays _free_. After all, this is [GPL](LICENSE).
+However, what is *free* stays *free*. After all, this is [GPL](LICENSE).
+
+
+<a id="org33e281e"></a>
+
+## About Readme
+
+This Readme is generated from `config.org`. Don&rsquo;t make changes to Readme directly. Make changes in `config.org` then run `org-gfm-export-to-markdown` to generate Gitlab flavoured markdown (GFM). You can also use the org export dispatch `C-c C-e g g`.
+
+
+<a id="orgb358b4f"></a>
 
 ## Contribution
 
 If you spotted a bug or you have any suggestions, please fill in an issue. If you have something to fix, feel free to create a pull request.
 
+
+<a id="org8ac5d94"></a>
+
 ## Special Thanks
 
 Everyone starts somewhere, and I started here.
 
-[MatthewZMD](https://github.com/MatthewZMD/.emacs.d)
+-   [MatthewZMD](https://github.com/MatthewZMD/.emacs.d)
+-   [Henrik Lissner&rsquo;s Doom Emacs](https://github.com/hlissner/doom-emacs)
 
-[Henrik Lissner&rsquo;s Doom Emacs](https://github.com/hlissner/doom-emacs)
+
+<a id="org36985fc"></a>
 
 # Lexical Binding
 
@@ -68,6 +217,9 @@ Use lexical-binding. [Why?](https://nullprogram.com/blog/2016/12/22/)
 ;;; config.el --- -*- lexical-binding: t -*-
 ```
 
+
+<a id="org3274841"></a>
+
 # Personal Information
 
 Let&rsquo;s set some variables with basic user information.
@@ -77,7 +229,13 @@ Let&rsquo;s set some variables with basic user information.
       user-mail-address "justine@kizhak.com")
 ```
 
+
+<a id="org9d6d948"></a>
+
 # Improve boot up speed
+
+
+<a id="orgc4132b4"></a>
 
 ## Omit default startup screen
 
@@ -87,6 +245,9 @@ Let&rsquo;s set some variables with basic user information.
   :config (setq inhibit-startup-screen t))
 ```
 
+
+<a id="org35e3dc5"></a>
+
 ## Disable `package-enable-at-startup`
 
 Package initialize occurs automatically, before `user-init-file` is loaded, but after `early-init-file`. We handle package initialization, so we must prevent Emacs from doing it early!
@@ -94,6 +255,9 @@ Package initialize occurs automatically, before `user-init-file` is loaded, but 
 ```emacs-lisp
 (setq package-enable-at-startup nil)
 ```
+
+
+<a id="org4dff5ff"></a>
 
 ## Unset `file-name-handler-alist`
 
@@ -104,11 +268,17 @@ Every file opened and loaded by Emacs will run through this list to check for a 
 (setq file-name-handler-alist nil)
 ```
 
+
+<a id="org9754016"></a>
+
 ## Disable `site-run-file`
 
 ```emacs-lisp
 (setq site-run-file nil)
 ```
+
+
+<a id="orgf4ae203"></a>
 
 ## Disable Unnecessary Interface
 
@@ -122,6 +292,9 @@ It will be faster to disable them here before they&rsquo;ve been initialized.
 (push '(vertical-scroll-bars) default-frame-alist)
 ```
 
+
+<a id="org1328c27"></a>
+
 ## Setting up garbage collection for speedy startup
 
 We&rsquo;re going to increase the gc-cons-threshold to a very high number to decrease the load and compile time. We&rsquo;ll lower this value significantly after initialization has completed. We don&rsquo;t want to keep this value too high or it will result in long GC pauses during normal usage.
@@ -131,6 +304,7 @@ We&rsquo;re going to increase the gc-cons-threshold to a very high number to dec
   (setq gc-cons-threshold 402653184
         gc-cons-percentage 0.6))
 ```
+
 
 ### Better garbage threshold limit
 
@@ -146,6 +320,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
             (setq file-name-handler-alist file-name-handler-alist-original)
             (makunbound 'file-name-handler-alist-original)))
 ```
+
 
 ### Garbage collect when Emacs is out of focus
 
@@ -170,6 +345,9 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
                 (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
 ```
 
+
+<a id="org7925b9a"></a>
+
 # Use-Package Settings
 
 Tell `use-package` to always defer loading packages unless explicitly told otherwise. This speeds up initialization significantly as many packages are only loaded later when they are explicitly used.
@@ -183,7 +361,13 @@ Tell `use-package` to always defer loading packages unless explicitly told other
         use-package-enable-imenu-support t))
 ```
 
+
+<a id="org204d5d4"></a>
+
 # Defining constants
+
+
+<a id="orgb683574"></a>
 
 ## Are we running on a GUI Emacs?
 
@@ -192,12 +376,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (display-graphic-p))
 ```
 
+
+<a id="orgfe393c8"></a>
+
 ## Are we running on a WinTel system?
 
 ```emacs-lisp
 (defconst *sys/win32*
   (eq system-type 'windows-nt))
 ```
+
+
+<a id="org64f7683"></a>
 
 ## Are we running on a GNU/Linux system?
 
@@ -206,12 +396,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (eq system-type 'gnu/linux))
 ```
 
+
+<a id="orgd8d1879"></a>
+
 ## Are we running on a Mac system?
 
 ```emacs-lisp
 (defconst *sys/mac*
   (eq system-type 'darwin))
 ```
+
+
+<a id="org013300a"></a>
 
 ## Are you a ROOT user?
 
@@ -220,12 +416,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (string-equal "root" (getenv "USER")))
 ```
 
+
+<a id="orga003275"></a>
+
 ## Do we have ripgrep?
 
 ```emacs-lisp
 (defconst *rg*
   (executable-find "rg"))
 ```
+
+
+<a id="orgc014ac7"></a>
 
 ## Do we have python?
 
@@ -234,12 +436,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (executable-find "python"))
 ```
 
+
+<a id="org4048c6b"></a>
+
 ## Do we have python3?
 
 ```emacs-lisp
 (defconst *python3*
   (executable-find "python3"))
 ```
+
+
+<a id="orgf3b2756"></a>
 
 ## Do we have tr?
 
@@ -248,12 +456,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (executable-find "tr"))
 ```
 
+
+<a id="org942eb88"></a>
+
 ## Do we have Maven?
 
 ```emacs-lisp
 (defconst *mvn*
   (executable-find "mvn"))
 ```
+
+
+<a id="orgb3f2fc0"></a>
 
 ## Do we have clangd?
 
@@ -263,12 +477,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
       (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
 ```
 
+
+<a id="orgd957cce"></a>
+
 ## Do we have gcc?
 
 ```emacs-lisp
 (defconst *gcc*
   (executable-find "gcc"))
 ```
+
+
+<a id="org59c1478"></a>
 
 ## Do we have git?
 
@@ -277,12 +497,18 @@ Tell `use-package` to always defer loading packages unless explicitly told other
   (executable-find "git"))
 ```
 
+
+<a id="orgfdab5b8"></a>
+
 ## Do we have pdflatex?
 
 ```emacs-lisp
 (defconst *pdflatex*
   (executable-find "pdflatex"))
 ```
+
+
+<a id="orga40c4cf"></a>
 
 ## Check basic requirements for EAF to run.
 
@@ -292,6 +518,9 @@ Tell `use-package` to always defer loading packages unless explicitly told other
        (executable-find "pip")
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 ```
+
+
+<a id="org81c5782"></a>
 
 # Some Emacs defaults
 
@@ -322,7 +551,13 @@ Tell `use-package` to always defer loading packages unless explicitly told other
                   tab-width ian/indent-width))
 ```
 
+
+<a id="orga86e1b1"></a>
+
 # Better editing experience
+
+
+<a id="orgd2e86a6"></a>
 
 ## Modernize selection behavior
 
@@ -339,6 +574,9 @@ Replace the active region just by typing text, just like modern editors
 (setq delete-selection-mode t)
 ```
 
+
+<a id="orgc55f3d8"></a>
+
 ## Disable scroll bar
 
 ```emacs-lisp
@@ -346,6 +584,9 @@ Replace the active region just by typing text, just like modern editors
   :ensure nil
   :config (scroll-bar-mode -1))
 ```
+
+
+<a id="orgced425a"></a>
 
 ## Confirm kill process
 
@@ -357,6 +598,9 @@ Don’t bother confirming killing processes
   :config
   (setq confirm-kill-processes nil))
 ```
+
+
+<a id="org55c73a4"></a>
 
 ## Automatically refreshes the buffer for changes outside of Emacs
 
@@ -372,6 +616,9 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
         auto-revert-verbose nil))
 ```
 
+
+<a id="orgd03e97a"></a>
+
 ## Mouse wheel (track-pad) scroll speed
 
 By default, the scrolling is way too fast to be precise and helpful, let’s tune it down a little bit.
@@ -382,6 +629,9 @@ By default, the scrolling is way too fast to be precise and helpful, let’s tun
   :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
                 mouse-wheel-progressive-speed nil))
 ```
+
+
+<a id="org116272c"></a>
 
 ## Show matching parentheses
 
@@ -394,6 +644,9 @@ Reduce the highlight delay to instantly.
   :config (show-paren-mode +1))
 ```
 
+
+<a id="org92cb86c"></a>
+
 ## Treat underscore as part of the word
 
 ```emacs-lisp
@@ -401,6 +654,9 @@ Reduce the highlight delay to instantly.
 ;;           (lambda ()
 ;;             (modify-syntax-entry ?_ "w")))
 ```
+
+
+<a id="org04da466"></a>
 
 ## History
 
@@ -431,7 +687,13 @@ Reduce the highlight delay to instantly.
 (setq-default history-length 500)
 ```
 
+
+<a id="orgd724b17"></a>
+
 # Appearance
+
+
+<a id="org1bc0af2"></a>
 
 ## Setting up some frame defaults
 
@@ -450,6 +712,9 @@ Maximize the frame by default on start-up. Set the font to Fira code, if Fira co
     (set-frame-font "Fira Code" t t)))
 ```
 
+
+<a id="orgfa7bce6"></a>
+
 ## Dashboard with images
 
 Use the image in the dotfiles folder as the dashboard splash image
@@ -460,7 +725,13 @@ Use the image in the dotfiles folder as the dashboard splash image
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 ```
 
+
+<a id="orgbc5384f"></a>
+
 # Custom Keybinding
+
+
+<a id="org8627969"></a>
 
 ## ⌘ + s → Save file
 
@@ -468,11 +739,17 @@ Use the image in the dotfiles folder as the dashboard splash image
 (map! "M-s" #'save-buffer)
 ```
 
+
+<a id="orgb582ab9"></a>
+
 ## ⌘ + a → Select all
 
 ```emacs-lisp
 (map! "M-a" #'mark-whole-buffer)
 ```
+
+
+<a id="orgeffdf22"></a>
 
 ## ⌘ + v → Paste menu
 
@@ -480,7 +757,13 @@ Use the image in the dotfiles folder as the dashboard splash image
 (map! "M-v" #'counsel-yank-pop)
 ```
 
+
+<a id="org1d7368c"></a>
+
 # Packages
+
+
+<a id="orga050fd2"></a>
 
 ## Org mode
 
@@ -493,6 +776,7 @@ Don&rsquo;t display images in a org file which has images. To show image `M-x` `
     (setq org-startup-with-inline-images nil))
 ```
 
+
 ### Org-toc
 
 ```emacs-lisp
@@ -500,6 +784,7 @@ Don&rsquo;t display images in a org file which has images. To show image `M-x` `
   :defer 3
   :hook (org-mode . toc-org-mode))
 ```
+
 
 ### Ox-gfm
 
@@ -509,6 +794,7 @@ Github Flavored Markdown exporter for Org Mode
 (use-package ox-gfm
   :defer 3)
 ```
+
 
 ### Org Reveal
 
@@ -520,6 +806,9 @@ Github Flavored Markdown exporter for Org Mode
     (setq org-reveal-mathjax t))
 ```
 
+
+<a id="orgbd0400e"></a>
+
 ## Projectile
 
 ```emacs-lisp
@@ -528,7 +817,11 @@ Github Flavored Markdown exporter for Org Mode
     (setq  projectile-project-search-path '("~/projects")))
 ```
 
+
+<a id="orgfec813c"></a>
+
 ## Web development
+
 
 ### Web mode
 
@@ -550,12 +843,13 @@ Web mode, a major mode for editing web templates.
    web-mode-css-indent-offset 2))
 ```
 
+
 ### JavaScript/TypeScript
 
 1.  JavaScript2 Mode
 
     JS2 mode, a feature that offers improved JavsScript editing mode.
-
+    
     ```emacs-lisp
     (use-package js2-mode
       :defer 3
@@ -566,13 +860,14 @@ Web mode, a major mode for editing web templates.
 2.  TypeScript Mode
 
     TypeScript mode, a feature that offers TypeScript support for Emacs.
-
+    
     ```emacs-lisp
     (use-package typescript-mode
       :defer 3
       :mode "\\.ts\\'"
       :commands (typescript-mode))
     ```
+
 
 ### Prettier
 
@@ -584,6 +879,7 @@ Web mode, a major mode for editing web templates.
     (setq prettier-js-args '("--single-quote")))
 ```
 
+
 ### Emmet
 
 Emmet, a feature that allows writing HTML using CSS selectors along with C-j. See usage for more information.
@@ -594,6 +890,7 @@ Emmet, a feature that allows writing HTML using CSS selectors along with C-j. Se
   :hook ((web-mode . emmet-mode)
          (css-mode . emmet-mode)))
 ```
+
 
 ### Instant Rename Tag
 
@@ -608,6 +905,7 @@ Instant Rename Tag, a plugin that provides ability to rename html tag pairs inst
         (:prefix-map ("m" . "local leader")
           :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
 ```
+
 
 ### JSON
 
@@ -627,6 +925,9 @@ JSON Mode, a major mode for editing JSON files.
 ;; css-indent-offset 2)
 ```
 
+
+<a id="org5dfc7f1"></a>
+
 ## Ripgrep
 
 ```emacs-lisp
@@ -637,6 +938,9 @@ JSON Mode, a major mode for editing JSON files.
       (:prefix-map ("a" . "applications")
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 ```
+
+
+<a id="org708e714"></a>
 
 ## Browse kill ring
 
@@ -656,7 +960,13 @@ JSON Mode, a major mode for editing JSON files.
     (map! "M-v" #'browse-kill-ring))
 ```
 
+
+<a id="org063dfa7"></a>
+
 ## Magit
+
+
+<a id="org24dbe45"></a>
 
 ## Go to line preview
 
@@ -667,11 +977,17 @@ JSON Mode, a major mode for editing JSON files.
     (global-set-key [remap goto-line] 'goto-line-preview))
 ```
 
+
+<a id="org2607a45"></a>
+
 ## Clipmon
 
 ```emacs-lisp
 (add-to-list 'after-init-hook 'clipmon-mode-start)
 ```
+
+
+<a id="org4a7862e"></a>
 
 ## Company
 
@@ -725,6 +1041,7 @@ Setting up keybindings for completion selection
 ;;   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
 ```
 
+
 ### Company-lsp
 
 ```emacs-lisp
@@ -732,6 +1049,7 @@ Setting up keybindings for completion selection
   :defer t
   :custom (company-lsp-cache-candidates 'auto))
 ```
+
 
 ### Commpany-box
 
@@ -829,6 +1147,7 @@ Setting up keybindings for completion selection
 ;;           company-box-icons-alist 'company-box-icons-all-the-icons)))
 ```
 
+
 ### Company-tabnine
 
 [Company TabNine](https://github.com/TommyX12/company-tabnine), A company-mode backend for [TabNine](https://tabnine.com/), the all-language autocompleter.
@@ -879,6 +1198,9 @@ This is enabled by default, if ever you find it not good enough for a particular
                (seq-take candidates-lsp 6))))))
 ```
 
+
+<a id="org2dd0136"></a>
+
 ## Dired
 
 ```emacs-lisp
@@ -917,7 +1239,11 @@ This is enabled by default, if ever you find it not good enough for a particular
                                  (lambda () (interactive) (find-alternate-file ".."))))))
 ```
 
+
+<a id="org644f306"></a>
+
 ## Drag lines
+
 
 ### Vertically
 
@@ -927,6 +1253,7 @@ This is enabled by default, if ever you find it not good enough for a particular
     :n "M-j" #'drag-stuff-down)  ; drags line down
 ```
 
+
 ### Horizontally
 
 ```emacs-lisp
@@ -935,6 +1262,9 @@ This is enabled by default, if ever you find it not good enough for a particular
     :n "M-l" #'evil-org->       ; indents line to left
     :n "M-h" #'evil-org-<))      ; indents line to right
 ```
+
+
+<a id="org83204bf"></a>
 
 ## Yasnippet
 
@@ -963,6 +1293,9 @@ This is enabled by default, if ever you find it not good enough for a particular
         (ignore-errors (yas-next-field))))))
 ```
 
+
+<a id="org90eff61"></a>
+
 ## Treemacs magit
 
 ```emacs-lisp
@@ -970,6 +1303,9 @@ This is enabled by default, if ever you find it not good enough for a particular
   :defer t
   :after (treemacs magit))
 ```
+
+
+<a id="orgb15af36"></a>
 
 ## 2048 game
 
@@ -979,7 +1315,13 @@ This is enabled by default, if ever you find it not good enough for a particular
   :commands (2048-game))
 ```
 
+
+<a id="org42dd817"></a>
+
 ## Lentic mode
+
+
+<a id="org2df36c3"></a>
 
 ## Apex Legends quotes
 
@@ -996,6 +1338,9 @@ Use a random quote of a character from [Apex Legends](https://www.ea.com/games/a
     (interactive)
     (setq frame-title-format (get-random-apex-legends-quote))))
 ```
+
+
+<a id="org05b9708"></a>
 
 ## Zone
 
@@ -1015,6 +1360,7 @@ Use a random quote of a character from [Apex Legends](https://www.ea.com/games/a
     (let ((zone-programs (list (intern pgm))))
       (zone))))
 ```
+
 
 ### Zone md5
 
@@ -1046,6 +1392,7 @@ Use a random quote of a character from [Apex Legends](https://www.ea.com/games/a
   ;;            (vconcat zone-programs [zone-pgm-md5]))))
 ```
 
+
 ### Zone end of buffer
 
 ```emacs-lisp
@@ -1057,6 +1404,9 @@ Use a random quote of a character from [Apex Legends](https://www.ea.com/games/a
 ;;             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
 ```
 
+
+<a id="orgcc67528"></a>
+
 ## God mode
 
 ```emacs-lisp
@@ -1065,6 +1415,7 @@ Use a random quote of a character from [Apex Legends](https://www.ea.com/games/a
 
 ;; (map! "S-<escape>" #'god-mode-all)
 ```
+
 
 ### Cursor style to indicate mode
 
@@ -1079,6 +1430,7 @@ You can change the cursor style indicate whether you&rsquo;re in God mode or not
 ;; (add-hook 'god-mode-enabled-hook 'my-update-cursor)
 ;; (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 ```
+
 
 ### Change modeline color
 
@@ -1095,6 +1447,9 @@ You can use the following function to switch the entire modeline&rsquo;s foregro
 ;;                (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
 ```
 
+
+<a id="org55f67ee"></a>
+
 ## HTMLize
 
 HTMLize, a tool that converts buffer text and decorations to HTML
@@ -1103,6 +1458,9 @@ HTMLize, a tool that converts buffer text and decorations to HTML
 (use-package htmlize
   :defer t)
 ```
+
+
+<a id="org87efc4f"></a>
 
 ## EWW
 
@@ -1122,6 +1480,9 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
     (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
 ```
 
+
+<a id="org05909e6"></a>
+
 ## VTerm
 
 Add clickable links inside terminal
@@ -1129,6 +1490,9 @@ Add clickable links inside terminal
 ```emacs-lisp
 (add-hook 'vterm-mode-hook #'goto-address-mode)
 ```
+
+
+<a id="org0fcbe99"></a>
 
 ## Restclient
 
@@ -1141,6 +1505,9 @@ Add clickable links inside terminal
       '((restclient . t))))
 ```
 
+
+<a id="org95981a9"></a>
+
 ## Popup kill ring
 
 Popup Kill Ring, a feature that provides the ability to browse Emacs kill ring in autocomplete style popup menu.
@@ -1151,6 +1518,9 @@ Popup Kill Ring, a feature that provides the ability to browse Emacs kill ring i
   :defer t
   :bind ("M-y" . popup-kill-ring))
 ```
+
+
+<a id="org0321055"></a>
 
 ## Undo tree
 
@@ -1172,6 +1542,9 @@ Undo tree, a feature that provides a visualization of the undos in a file.
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 ```
 
+
+<a id="org7f05481"></a>
+
 ## Discover My Major
 
 Discover my major, a feature that discovers key bindings and their meaning for the current Emacs major mode.
@@ -1183,6 +1556,9 @@ Discover my major, a feature that discovers key bindings and their meaning for t
   (map! :leader (:prefix "h"
                     :desc "Open discover-my-major" "C-m" #'discover-my-major)))
 ```
+
+
+<a id="org54b0af5"></a>
 
 ## Flycheck
 
@@ -1198,6 +1574,9 @@ Flycheck, a syntax checking extension.
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
 ```
+
+
+<a id="org4437fc7"></a>
 
 ## Hightlight indentation guide
 
@@ -1234,6 +1613,9 @@ Indentation config
                        (electric-indent-mode 1))))
 ```
 
+
+<a id="org006d235"></a>
+
 ## Iedit
 
 Iedit, a minor mode that allows editing multiple regions simultaneousy in a buffer or a region.
@@ -1244,12 +1626,18 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   :diminish)
 ```
 
+
+<a id="orge736949"></a>
+
 ## Powerthesaurus
 
 ```emacs-lisp
 (use-package powerthesaurus
   :defer t)
 ```
+
+
+<a id="orgcb51928"></a>
 
 ## Ace-popup
 
@@ -1258,12 +1646,18 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   :defer t)
 ```
 
+
+<a id="org4e372d3"></a>
+
 ## String-inflection
 
 ```emacs-lisp
 (use-package string-inflection
   :defer t)
 ```
+
+
+<a id="orgc856158"></a>
 
 ## Pipenv
 
@@ -1272,6 +1666,9 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   :defer t)
 ```
 
+
+<a id="org2a325af"></a>
+
 ## Easy escape
 
 ```emacs-lisp
@@ -1279,12 +1676,125 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   :defer t)
 ```
 
+
+<a id="orgfb39d9a"></a>
+
 ## Cheatsheet
+
+To see cheatsheet for Emacs, run `M-x cheatsheet-show`
 
 ```emacs-lisp
 (use-package cheatsheet
   :defer t)
 ```
+
+
+### Cheatsheet mode
+
+```emacs-lisp
+(cheatsheet-add :group 'Cheatsheet
+                :key "C-q"
+                :description "Leave cheatsheet")
+```
+
+
+### Evil mode
+
+```emacs-lisp
+(cheatsheet-add-group 'Evil-mode
+                      '(:key "ESC" :description "Change mode to `NormalMode'")
+                      '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
+                      '(:key "<NormalMode> /" :description "Change mode to `FindForwardMode'")
+                      '(:key "<NormalMode> ?" :description "Change mode to `FindBackwordMode'")
+                      '(:key "<NormalMode> r" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> R" :description "Change mode to `ReplaceMode'")
+                      '(:key "<NormalMode> v" :description "Change mode to `VisualMode'")
+                      '(:key "<NormalMode> V" :description "Change mode to `VisualLineMode'")
+                      '(:key "<NormalMode> C-v" :description "Change mode to `VisualBlockMode'")
+                      '(:key "i" :description "Change mode to `InsertMode'")
+                      '(:key "I" :description "Moves the cursor to the beginning of the line and change mode to `InsertMode'")
+                      '(:key "a" :description "Moves the cursor after the current character and change mode to `InsertMode'")
+                      '(:key "A" :description "Moves the cursor to the end of the line and change mode to `InsertMode'")
+                      '(:key "o" :description "Inserts a new line below the current line and change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'")
+                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'"))
+```
+
+
+### Emacs
+
+```emacs-lisp
+(cheatsheet-add-group 'Emacs
+                      '(:key "SPC q q" :description "Quit Emacs")
+                      '(:key "SPC q Q" :description "Quit Emacs without saving")
+                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style"))
+```
+
+
+### Navigation
+
+```emacs-lisp
+(cheatsheet-add-group 'Navigation
+                      '(:key "<NormalMode> h" :description "Move left")
+                      '(:key "<NormalMode> j" :description "Move down")
+                      '(:key "<NormalMode> k" :description "Move up")
+                      '(:key "<NormalMode> l" :description "Move right"))
+```
+
+
+### Buffer management
+
+```emacs-lisp
+(cheatsheet-add-group 'Buffer-management
+                      '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
+                      '(:key "<NormalMode> SPC b B" :description "List buffers")
+                      '(:key "<VisualMode> b -" :description "Toggle narrowing buffer")
+                      '(:key "<NormalMode> b d" :description "Kill current buffer")
+                      '(:key "<NormalMode> b K" :description "Kill all buffer")
+                      '(:key "<NormalMode> b N" :description "Create new empty buffer"))
+```
+
+
+### Window management
+
+```emacs-lisp
+(cheatsheet-add-group 'Window-management
+                      '(:key "<NormalMode> SPC w d" :description "Delete window")
+                      '(:key "<NormalMode> SPC w R" :description "Rotate window")
+                      '(:key "<NormalMode> SPC w H" :description "Move window to left")
+                      '(:key "<NormalMode> SPC w J" :description "Move window to down")
+                      '(:key "<NormalMode> SPC w K" :description "Move window to up")
+                      '(:key "<NormalMode> SPC w L" :description "Move window to right"))
+```
+
+
+### Git
+
+```emacs-lisp
+(cheatsheet-add-group 'Git
+                      '(:key "<NormalMode> SPC g g" :description "Show Magit status")
+                      '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
+```
+
+1.  Magit
+
+    ```emacs-lisp
+    (cheatsheet-add-group 'Magit
+                          '(:key "<NormalMode> s" :description "Stage hunk")
+                          '(:key "<NormalMode> c c" :description "Create commit")
+                          '(:key "<NormalMode> p u" :description "Push to upstream")
+                          '(:key "<NormalMode> f u" :description "Fetch from upstream")
+                          '(:key "<NormalMode> F u" :description "Pull from upstream"))
+    ```
+
+2.  Git Timemachine
+
+    ```emacs-lisp
+    (cheatsheet-add-group 'Window-management
+                          '(:key "<NormalMode> C-j" :description "Next revision")
+                          '(:key "<NormalMode> C-k" :description "Previous revision"))
+    ```
+
 
 ## Easy escape
 
@@ -1299,12 +1809,18 @@ Now no more double backslash hell. [Github repo](https://github.com/cpitclaudel/
     (set-face-attribute 'easy-escape-face nil :foreground "red"))
 ```
 
+
+<a id="orgd461a38"></a>
+
 ## Parinfer
 
 ```emacs-lisp
 (use-package parinfer
   :defer t)
 ```
+
+
+<a id="orgf295e06"></a>
 
 ## Evil snipe
 
@@ -1317,7 +1833,13 @@ Now no more double backslash hell. [Github repo](https://github.com/cpitclaudel/
   (setq evil-snipe-spillover-scope 'whole-buffer))
 ```
 
+
+<a id="org58dc1fb"></a>
+
 # Languages
+
+
+<a id="orge2b75ef"></a>
 
 ## Rust
 
@@ -1325,6 +1847,9 @@ Now no more double backslash hell. [Github repo](https://github.com/cpitclaudel/
 (add-hook 'rustic-mode-hook (lambda ()
               (set (make-local-variable 'company-backends) '(company-tabnine))))
 ```
+
+
+<a id="orgb2351af"></a>
 
 ## Python
 
@@ -1344,11 +1869,17 @@ Adding TabNine completion to buffer
                                 (set (make-local-variable 'company-backends) '(company-tabnine)))))
 ```
 
+
+<a id="org14ec475"></a>
+
 ## Dart
 
 ```emacs-lisp
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 ```
+
+
+<a id="org412feaa"></a>
 
 ## Markdown
 
@@ -1361,6 +1892,9 @@ On save refresh markdown table of contents.
                                  'markdown-toc-refresh-toc))))
 ```
 
+
+<a id="org385ab9b"></a>
+
 ## Emacs lisp
 
 ```emacs-lisp
@@ -1371,6 +1905,9 @@ On save refresh markdown table of contents.
 
 (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
 ```
+
+
+<a id="orgeb65509"></a>
 
 ## TeX
 
@@ -1400,13 +1937,22 @@ On save refresh markdown table of contents.
 ;;     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 ```
 
+
+<a id="orgd9af230"></a>
+
 ## YAML
 
 ```emacs-lisp
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 ```
 
+
+<a id="orgf9dbdab"></a>
+
 # Other config
+
+
+<a id="orgfe894ff"></a>
 
 ## Use Command key as meta key (Only on MacOS)
 
@@ -1414,7 +1960,13 @@ On save refresh markdown table of contents.
 (setq mac-command-modifier 'meta)
 ```
 
+
+<a id="org7cffa62"></a>
+
 # Post Initialization
+
+
+<a id="org0294242"></a>
 
 ## Play startup music
 
