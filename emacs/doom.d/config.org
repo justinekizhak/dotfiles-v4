@@ -772,7 +772,7 @@ Instant Rename Tag, a plugin that provides ability to rename html tag pairs inst
   :load-path (lambda () (expand-file-name "~/dotfiles/emacs/packages/instant-rename-tag"))
   :config
   (map! :leader
-        (:prefix-map ("m" . "local leader")
+        (:prefix ("m" . "local leader")
           :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
 #+END_SRC
 
@@ -801,7 +801,7 @@ JSON Mode, a major mode for editing JSON files.
   :defer 3
   :config
     (map! :leader
-      (:prefix-map ("a" . "applications")
+      (:prefix ("a" . "applications")
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 #+END_SRC
 
@@ -1025,7 +1025,7 @@ This is enabled by default, if ever you find it not good enough for a particular
   (add-to-list 'company-backends #'company-tabnine)
 
   (map! :leader
-        (:prefix-map ("a" . "applications")
+        (:prefix ("a" . "applications")
           :desc "Use company default backend" "o" #'company-other-backend
           :desc "Use company tabnine backend" "t" #'company-tabnine))
 
@@ -1340,7 +1340,7 @@ Undo tree, a feature that provides a visualization of the undos in a file.
 
 #+BEGIN_SRC emacs-lisp
 (map! :leader
-    (:prefix-map ("a" . "applications")
+    (:prefix ("a" . "applications")
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 #+END_SRC
 
@@ -1352,8 +1352,8 @@ Discover my major, a feature that discovers key bindings and their meaning for t
 (use-package discover-my-major
   :defer 1
   :config
-  (map! :leader (:prefix "h"
-                    :desc "Open discover-my-major" "C-m" #'discover-my-major)))
+  (map! :leader (:prefix ("h" . "help")
+                    :desc "Open discover-my-major" "z" #'discover-my-major)))
 #+END_SRC
 
 ** Flycheck
