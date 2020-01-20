@@ -110,6 +110,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :config (delete-selection-mode +1))
 (setq delete-selection-mode t)
 (use-package scroll-bar
+  :defer t
   :ensure nil
   :config (scroll-bar-mode -1))
 (use-package files
@@ -117,6 +118,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :config
   (setq confirm-kill-processes nil))
 (use-package autorevert
+  :defer t
   :ensure nil
   :config
   (global-auto-revert-mode +1)
@@ -124,10 +126,12 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
         auto-revert-check-vc-info t
         auto-revert-verbose nil))
 (use-package mwheel
+  :defer t
   :ensure nil
   :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
                 mouse-wheel-progressive-speed nil))
 (use-package paren
+  :defer t
   :ensure nil
   :init (setq show-paren-delay 0)
   :config (show-paren-mode +1))
@@ -135,6 +139,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;;           (lambda ()
 ;;             (modify-syntax-entry ?_ "w")))
 (use-package recentf
+  :defer t
   :ensure nil
   :hook (after-init . recentf-mode)
   :custom
