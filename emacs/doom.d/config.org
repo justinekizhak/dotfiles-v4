@@ -1705,6 +1705,6 @@ Play Apex Legends music when booting up Emacs.
     (async-shell-command
      command)))
 
-(run-with-idle-timer 0 nil '(lambda ()
-                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+;; (run-with-idle-timer 0 nil '(lambda ()
+;;                               (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
 #+END_SRC
