@@ -171,10 +171,6 @@ pleasent one.
    
 ** Installation
 
-:PROPERTIES:
-:tangle: install-emacs-plus-for-mac
-:END:
-
 Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom Emacs]].
 
 To install Emacs-plus v27 (For MacOS) with all features execute
@@ -185,11 +181,11 @@ OR
 
 copy paste this into terminal
 
-#+BEGIN_SRC sh :exports none
+#+BEGIN_SRC sh :exports none :tangle install-emacs-plus-for-mac
 #!/usr/bin/env bash
 #+END_SRC
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle install-emacs-plus-for-mac
 brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
 #+END_SRC
 
