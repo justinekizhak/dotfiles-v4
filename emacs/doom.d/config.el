@@ -226,7 +226,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :load-path (lambda () (expand-file-name "~/dotfiles/emacs/packages/instant-rename-tag"))
   :config
   (map! :leader
-        (:prefix-map ("m" . "local leader")
+        (:prefix ("m" . "local leader")
           :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
 (use-package json-mode
   :defer 3
@@ -240,7 +240,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :defer 3
   :config
     (map! :leader
-      (:prefix-map ("a" . "applications")
+      (:prefix ("a" . "applications")
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 (use-package browse-kill-ring
   :disabled
@@ -412,7 +412,7 @@ If failed try to complete the common part with `company-complete-common'"
   (add-to-list 'company-backends #'company-tabnine)
 
   (map! :leader
-        (:prefix-map ("a" . "applications")
+        (:prefix ("a" . "applications")
           :desc "Use company default backend" "o" #'company-other-backend
           :desc "Use company tabnine backend" "t" #'company-tabnine))
 
@@ -605,13 +605,13 @@ If failed try to complete the common part with `company-complete-common'"
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t))
 (map! :leader
-    (:prefix-map ("a" . "applications")
+    (:prefix ("a" . "applications")
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 (use-package discover-my-major
   :defer 1
   :config
-  (map! :leader (:prefix "h"
-                    :desc "Open discover-my-major" "C-m" #'discover-my-major)))
+  (map! :leader (:prefix ("h" . "help")
+                    :desc "Open discover-my-major" "z" #'discover-my-major)))
 (use-package flycheck
   :defer t
   :hook (prog-mode . flycheck-mode)
@@ -787,5 +787,5 @@ If failed try to complete the common part with `company-complete-common'"
     (async-shell-command
      command)))
 
-(run-with-idle-timer 0 nil '(lambda ()
-                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+;; (run-with-idle-timer 0 nil '(lambda ()
+;;                               (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
