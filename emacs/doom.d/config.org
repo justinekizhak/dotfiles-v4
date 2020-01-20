@@ -505,6 +505,7 @@ Replace the active region just by typing text, just like modern editors
 
 #+BEGIN_SRC emacs-lisp
 (use-package scroll-bar
+  :defer t
   :ensure nil
   :config (scroll-bar-mode -1))
 #+END_SRC
@@ -526,6 +527,7 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
 
 #+BEGIN_SRC emacs-lisp
 (use-package autorevert
+  :defer t
   :ensure nil
   :config
   (global-auto-revert-mode +1)
@@ -540,6 +542,7 @@ By default, the scrolling is way too fast to be precise and helpful, let’s tun
 
 #+BEGIN_SRC emacs-lisp
 (use-package mwheel
+  :defer t
   :ensure nil
   :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
                 mouse-wheel-progressive-speed nil))
@@ -551,6 +554,7 @@ Reduce the highlight delay to instantly.
 
 #+BEGIN_SRC emacs-lisp
 (use-package paren
+  :defer t
   :ensure nil
   :init (setq show-paren-delay 0)
   :config (show-paren-mode +1))
@@ -568,6 +572,7 @@ Reduce the highlight delay to instantly.
 
 #+BEGIN_SRC emacs-lisp
 (use-package recentf
+  :defer t
   :ensure nil
   :hook (after-init . recentf-mode)
   :custom
