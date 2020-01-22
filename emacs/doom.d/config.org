@@ -656,7 +656,8 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
 (use-package org
   :defer t
   :config
-    (setq org-startup-with-inline-images nil))
+  (setq org-startup-with-inline-images nil)
+  (setq org-startup-shrink-all-tables t))
 #+END_SRC
 
 *** Org-toc
