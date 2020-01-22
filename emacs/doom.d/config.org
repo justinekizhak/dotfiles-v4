@@ -108,8 +108,6 @@
   - [[YAML][YAML]]
 - [[Other config][Other config]]
   - [[Use Command key as meta key (Only on MacOS)][Use Command key as meta key (Only on MacOS)]]
-- [[Post Initialization][Post Initialization]]
-  - [[Play startup music][Play startup music]]
 
 * About Emacs
   Emacs changes how you /think/ about programming.
@@ -1689,7 +1687,7 @@ On save refresh markdown table of contents.
 (setq mac-command-modifier 'meta)
 #+END_SRC
 
-* Post Initialization
+* Post Initialization :noexport:
 ** Play startup music
 
 Play Apex Legends music when booting up Emacs.
@@ -1706,6 +1704,6 @@ Play Apex Legends music when booting up Emacs.
     (async-shell-command
      command)))
 
-;; (run-with-idle-timer 0 nil '(lambda ()
-;;                               (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+(run-with-idle-timer 0 nil '(lambda ()
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
 #+END_SRC
