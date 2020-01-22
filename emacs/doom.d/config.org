@@ -657,7 +657,10 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
   :defer t
   :config
   (setq org-startup-with-inline-images nil)
-  (setq org-startup-shrink-all-tables t))
+  (setq org-startup-shrink-all-tables t)
+  ; Fix `org-cycle' bug
+  (map! :map org-mode-map
+        :n "<tab>" 'org-cycle))
 #+END_SRC
 
 *** Org-toc
