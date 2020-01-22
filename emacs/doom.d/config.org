@@ -1434,6 +1434,14 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   :defer t)
 #+END_SRC
 
+*** Keybinding
+
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
+#+END_SRC
+
 ** Ace-popup
 
 #+BEGIN_SRC emacs-lisp
