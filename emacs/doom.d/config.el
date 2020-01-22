@@ -182,7 +182,8 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (use-package org
   :defer t
   :config
-    (setq org-startup-with-inline-images nil))
+  (setq org-startup-with-inline-images nil)
+  (setq org-startup-shrink-all-tables t))
 (use-package toc-org
   :defer 3
   :hook (org-mode . toc-org-mode))
@@ -659,6 +660,26 @@ If failed try to complete the common part with `company-complete-common'"
   :defer t)
 (use-package string-inflection
   :defer t)
+  ;; :config
+  ;; (defun my-string-inflection-cycle-auto ()
+  ;;   "switching by major-mode"
+  ;;   (interactive)
+  ;;   (cond
+  ;;    ;; for emacs-lisp-mode
+  ;;    ((eq major-mode 'emacs-lisp-mode)
+  ;;     (string-inflection-all-cycle))
+  ;;    ;; for python
+  ;;    ((eq major-mode 'python-mode)
+  ;;     (string-inflection-python-style-cycle))
+  ;;    ;; for java
+  ;;    ((eq major-mode 'java-mode)
+  ;;     (string-inflection-java-style-cycle))
+  ;;    (t
+  ;;     ;; default
+  ;;     (string-inflection-ruby-style-cycle)))))
+(map! :leader
+    (:prefix ("a" . "applications")
+        :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
 (use-package pipenv
   :defer t)
 (use-package easy-escape
@@ -792,5 +813,5 @@ If failed try to complete the common part with `company-complete-common'"
     (async-shell-command
      command)))
 
-;; (run-with-idle-timer 0 nil '(lambda ()
-;;                               (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+(run-with-idle-timer 0 nil '(lambda ()
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
