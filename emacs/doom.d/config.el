@@ -183,7 +183,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :defer t
   :config
   (setq org-startup-with-inline-images nil)
-  (setq org-startup-shrink-all-tables t))
+  (setq org-startup-shrink-all-tables t)
+  ; Fix `org-cycle' bug
+  (map! :map org-mode-map
+        :n "<tab>" 'org-cycle))
 (use-package toc-org
   :defer 3
   :hook (org-mode . toc-org-mode))
@@ -194,6 +197,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
     :config
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
+(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 (use-package projectile
   :config
     (setq  projectile-project-search-path '("~/projects")))
@@ -656,6 +660,9 @@ If failed try to complete the common part with `company-complete-common'"
   :diminish)
 (use-package powerthesaurus
   :defer t)
+(map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
 (use-package ace-popup-menu
   :defer t)
 (use-package string-inflection
@@ -802,16 +809,3 @@ If failed try to complete the common part with `company-complete-common'"
 ;;     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 (setq mac-command-modifier 'meta)
-(defun async-shell-command-no-window (command)
-  (interactive)
-  (let
-      ((display-buffer-alist
-        (list
-         (cons
-          "\\*Async Shell Command\\*.*"
-          (cons #'display-buffer-no-window nil)))))
-    (async-shell-command
-     command)))
-
-(run-with-idle-timer 0 nil '(lambda ()
-                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
