@@ -7,7 +7,7 @@
 #+OPTIONS: toc:nil
 #+EXPORT_FILE_NAME: README
 
-#+HTML: <h1>My Doom Emacs config</h1>
+#+MARKDOWN: <h1>My Doom Emacs config</h1>
 * Table of contents :TOC_2_ORG:
 - [[About Emacs][About Emacs]]
 - [[About my config][About my config]]
