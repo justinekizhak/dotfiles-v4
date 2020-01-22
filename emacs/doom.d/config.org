@@ -1473,6 +1473,8 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
   ;;     (string-inflection-ruby-style-cycle)))))
 #+END_SRC
 
+*** Keybinding
+
 #+BEGIN_SRC emacs-lisp
 (map! :leader
     (:prefix ("a" . "applications")
@@ -1735,7 +1737,7 @@ On save refresh markdown table of contents.
 
 Play Apex Legends music when booting up Emacs.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (defun async-shell-command-no-window (command)
   (interactive)
   (let
