@@ -690,6 +690,14 @@ Github Flavored Markdown exporter for Org Mode
     (setq org-reveal-mathjax t))
 #+END_SRC
 
+*** Org LaTeX
+
+Use color links when exported from Org to Latex
+
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
+#+END_SRC
+
 ** Projectile
 
 #+BEGIN_SRC emacs-lisp
