@@ -1093,6 +1093,7 @@ This is enabled by default, if ever you find it not good enough for a particular
   (put 'dired-find-alternate-file 'disabled nil)
   :hook
   (dired-mode . (lambda ()
+                  (dired-hide-details-mode)
                   (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
                   (local-set-key (kbd "RET") #'dired-find-alternate-file)
                   (local-set-key (kbd "^")
