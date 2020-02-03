@@ -1548,7 +1548,12 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 (cheatsheet-add-group 'Emacs
                       '(:key "SPC q q" :description "Quit Emacs")
                       '(:key "SPC q Q" :description "Quit Emacs without saving")
-                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style"))
+                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style")
+                      '(:key "M-w" :description "Copy text")
+                      '(:key "C-w" :description "Cut text")
+                      '(:key "C-y" :description "Paste text")
+                      '(:key "M-y" :description "Cycle back Paste text")
+                      '(:key "C-_" :description "Undo [Emacs way]"))
 #+END_SRC
 
 *** Navigation
