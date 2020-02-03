@@ -1028,7 +1028,6 @@ This is enabled by default, if ever you find it not good enough for a particular
 
 #+BEGIN_SRC emacs-lisp
 (use-package company-tabnine
-  :disabled
   :defer 1
   :custom
   (company-tabnine-max-num-results 9)
@@ -1198,7 +1197,7 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
   :ensure nil
   :defer 5
   :config
-  (zone-when-idle 30) ; in seconds
+  ;; (zone-when-idle 30) ; in seconds
   (defun zone-choose (pgm)
     "Choose a PGM to run for `zone'."
     (interactive
