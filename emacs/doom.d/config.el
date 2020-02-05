@@ -776,10 +776,9 @@ If failed try to complete the common part with `company-complete-common'"
   :custom
   (python-indent-offset 4)
   (flycheck-python-pycompile-executable "python3")
-  (python-shell-interpreter "python3")
-  :config
-  (add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine)))))
+  (python-shell-interpreter "python3"))
+(add-hook 'python-mode-hook (lambda ()
+                                (set (make-local-variable 'company-backends) '(company-tabnine))))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (add-hook 'gfm-mode-hook
           (lambda () (when buffer-file-name
@@ -791,28 +790,29 @@ If failed try to complete the common part with `company-complete-common'"
             (setq tab-width 2)))
 
 (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
-;; (use-package tex
-;;   :ensure auctex
-;;   :defer t
-;;   :custom
-;;   (TeX-auto-save t)
-;;   (TeX-parse-self t)
-;;   (TeX-master nil)
-;;   ;; to use pdfview with auctex
-;;   (TeX-view-program-selection '((output-pdf "pdf-tools"))
-;;                               TeX-source-correlate-start-server t)
-;;   (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
-;;   (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
-;;   :hook
-;;   (LaTeX-mode . (lambda ()
-;;                   (turn-on-reftex)
-;;                   (setq reftex-plug-into-AUCTeX t)
-;;                   (reftex-isearch-minor-mode)
-;;                   (setq TeX-PDF-mode t)
-;;                   (setq TeX-source-correlate-method 'synctex)
-;;                   (setq TeX-source-correlate-start-server t)))
-;;   :config
-;;   (when (version< emacs-version "26")
-;;     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
+(use-package tex
+  :disabled
+  :ensure auctex
+  :defer t
+  :custom
+  (TeX-auto-save t)
+  (TeX-parse-self t)
+  (TeX-master nil)
+  ;; to use pdfview with auctex
+  (TeX-view-program-selection '((output-pdf "pdf-tools"))
+                              TeX-source-correlate-start-server t)
+  (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (turn-on-reftex)
+                  (setq reftex-plug-into-AUCTeX t)
+                  (reftex-isearch-minor-mode)
+                  (setq TeX-PDF-mode t)
+                  (setq TeX-source-correlate-method 'synctex)
+                  (setq TeX-source-correlate-start-server t)))
+  :config
+  (when (version< emacs-version "26")
+    (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 (setq mac-command-modifier 'meta)
