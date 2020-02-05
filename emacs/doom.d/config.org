@@ -1668,10 +1668,12 @@ Adding TabNine completion to buffer
   :custom
   (python-indent-offset 4)
   (flycheck-python-pycompile-executable "python3")
-  (python-shell-interpreter "python3")
-  :config
-  (add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine)))))
+  (python-shell-interpreter "python3"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook (lambda ()
+                                (set (make-local-variable 'company-backends) '(company-tabnine))))
 #+END_SRC
 
 ** Dart
