@@ -16,6 +16,7 @@
   - [[Modification][Modification]]
   - [[About Readme][About Readme]]
   - [[Contribution][Contribution]]
+  - [[Some helper guide][Some helper guide]]
   - [[Special Thanks][Special Thanks]]
 - [[Lexical Binding][Lexical Binding]]
 - [[Personal Information][Personal Information]]
@@ -60,6 +61,7 @@
   - [[⌘ + s → Save file][⌘ + s → Save file]]
   - [[⌘ + a → Select all][⌘ + a → Select all]]
   - [[⌘ + v → Paste menu][⌘ + v → Paste menu]]
+  - [[Window management][Window management]]
 - [[Packages][Packages]]
   - [[Org mode][Org mode]]
   - [[Projectile][Projectile]]
@@ -201,6 +203,8 @@ You can also use the org export dispatch ~C-c C-e g g~.
 ** Contribution
 If you spotted a bug or you have any suggestions, please fill in an issue.
 If you have something to fix, feel free to create a pull request.
+** Some helper guide
+*** [[https://noelwelsh.com/posts/2019-01-10-doom-emacs.html][Doom Emacs Workflows]]
 ** Special Thanks
 
 Everyone starts somewhere, and I started here.
@@ -554,7 +558,7 @@ Reduce the highlight delay to instantly.
 (use-package paren
   :defer t
   :ensure nil
-  :init (setq show-paren-delay 0)
+  :init (setq show-paren-delay 0.5)
   :config (show-paren-mode +1))
 #+END_SRC
 
@@ -643,6 +647,26 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 #+BEGIN_SRC emacs-lisp
 (map! "M-v" #'counsel-yank-pop)
+#+END_SRC
+
+** Window management
+
+*** Jump to any window using =SPC w M-w=
+
+Unbind existing =SPC w C-w= for Ace window
+
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+      (:prefix ("w")
+        "C-w" nil))
+#+END_SRC
+
+Bind =SPC w M-w= for Ace window
+
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+      (:prefix ("w" . "window")
+        :desc "Jump to any window using Ace" "M-w" #'ace-window))
 #+END_SRC
 
 * Packages
@@ -880,7 +904,7 @@ JSON Mode, a major mode for editing JSON files.
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 0.1)
+  (company-idle-delay 1)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :config
@@ -941,7 +965,7 @@ Setting up keybindings for completion selection
   (company-box-backends-colors nil)
   (company-box-show-single-candidate t)
   (company-box-max-candidates 50)
-  (company-box-doc-delay 0.3)
+  (company-box-doc-delay 1)
   :config
   ;; Support `company-common'
   (defun my-company-box--make-line (candidate)
@@ -1400,7 +1424,7 @@ Flycheck, a syntax checking extension.
   :custom
   (highlight-indent-guides-method 'character)
   (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-delay 0)
+  (highlight-indent-guides-delay 1.5)
   (highlight-indent-guides-auto-character-face-perc 7))
 #+END_SRC
 
@@ -1586,7 +1610,8 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
                       '(:key "<NormalMode> SPC w H" :description "Move window to left")
                       '(:key "<NormalMode> SPC w J" :description "Move window to down")
                       '(:key "<NormalMode> SPC w K" :description "Move window to up")
-                      '(:key "<NormalMode> SPC w L" :description "Move window to right"))
+                      '(:key "<NormalMode> SPC w L" :description "Move window to right")
+                      '(:key "<NormalMode> SPC w M-w" :description "Jump to any window using Ace"))
 #+END_SRC
 
 *** Git
@@ -1673,7 +1698,7 @@ Adding TabNine completion to buffer
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine))))
+                                (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
 #+END_SRC
 
 ** Dart
