@@ -59,3 +59,4 @@
 (package! cheatsheet)  ;; Make your own Emacs keybinding cheatsheet
 ;; (package! delsel)  ;; Delete selected text by typing
 ;; (package! popup-kill-ring)  ;; Browse through your kill ring (clipboard)
+(package! lsp-python-ms) ;; LSP Python MS, a lsp-mode client leveraging Microsoft's Python Language Server.

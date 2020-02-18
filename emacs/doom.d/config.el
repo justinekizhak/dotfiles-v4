@@ -133,7 +133,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (use-package paren
   :defer t
   :ensure nil
-  :init (setq show-paren-delay 0)
+  :init (setq show-paren-delay 0.5)
   :config (show-paren-mode +1))
 ;; (add-hook 'after-change-major-mode-hook
 ;;           (lambda ()
@@ -179,6 +179,12 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (map! "M-s" #'save-buffer)
 (map! "M-a" #'mark-whole-buffer)
 (map! "M-v" #'counsel-yank-pop)
+(map! :leader
+      (:prefix ("w")
+        "C-w" nil))
+(map! :leader
+      (:prefix ("w" . "window")
+        :desc "Jump to any window using Ace" "M-w" #'ace-window))
 (use-package org
   :defer t
   :config
@@ -287,7 +293,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 0.1)
+  (company-idle-delay 1)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :config
@@ -333,7 +339,7 @@ If failed try to complete the common part with `company-complete-common'"
   (company-box-backends-colors nil)
   (company-box-show-single-candidate t)
   (company-box-max-candidates 50)
-  (company-box-doc-delay 0.3)
+  (company-box-doc-delay 1)
   :config
   ;; Support `company-common'
   (defun my-company-box--make-line (candidate)
@@ -640,7 +646,7 @@ If failed try to complete the common part with `company-complete-common'"
   :custom
   (highlight-indent-guides-method 'character)
   (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-delay 0)
+  (highlight-indent-guides-delay 1.5)
   (highlight-indent-guides-auto-character-face-perc 7))
 (setq-default indent-tabs-mode nil)
 (setq-default indent-line-function 'insert-tab)
@@ -742,7 +748,8 @@ If failed try to complete the common part with `company-complete-common'"
                       '(:key "<NormalMode> SPC w H" :description "Move window to left")
                       '(:key "<NormalMode> SPC w J" :description "Move window to down")
                       '(:key "<NormalMode> SPC w K" :description "Move window to up")
-                      '(:key "<NormalMode> SPC w L" :description "Move window to right"))
+                      '(:key "<NormalMode> SPC w L" :description "Move window to right")
+                      '(:key "<NormalMode> SPC w M-w" :description "Jump to any window using Ace"))
 (cheatsheet-add-group 'Git
                       '(:key "<NormalMode> SPC g g" :description "Show Magit status")
                       '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
@@ -778,7 +785,7 @@ If failed try to complete the common part with `company-complete-common'"
   (flycheck-python-pycompile-executable "python3")
   (python-shell-interpreter "python3"))
 (add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine))))
+                                (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (add-hook 'gfm-mode-hook
           (lambda () (when buffer-file-name
