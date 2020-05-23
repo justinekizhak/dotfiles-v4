@@ -725,7 +725,7 @@ Use color links when exported from Org to Latex
 *** Org agenda
 
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-files '("~/org/project/"))
+(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
 #+END_SRC
 
 ** Projectile
@@ -787,9 +787,7 @@ TypeScript mode, a feature that offers TypeScript support for Emacs.
 #+BEGIN_SRC emacs-lisp
 (use-package prettier-js
   :defer 3
-  :hook js2-mode
-  :config
-    (setq prettier-js-args '("--single-quote")))
+  :hook js2-mode)
 #+END_SRC
 
 *** Emmet
@@ -833,6 +831,49 @@ JSON Mode, a major mode for editing JSON files.
 ;; json-reformat:indent-width 2
 ;; typescript-indent-level 2
 ;; css-indent-offset 2)
+#+END_SRC
+
+*** Web beautify
+
+#+BEGIN_SRC emacs-lisp
+;; (eval-after-load 'web-mode
+;;   '(add-hook 'web-mode-hook
+;;              (lambda ()
+;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
+
+(eval-after-load 'css-mode
+  '(add-hook 'css-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'prettier-js
+  '(add-hook 'web-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'prettier-js-mode))))
+#+END_SRC
+
+*** VueJS
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'vue-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+(delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
+
+(use-package vue-mode
+  :defer 1
+  :mode "\\.vue\\'")
+(with-eval-after-load 'lsp-mode
+  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
+#+END_SRC
+
+**** Prettier
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'prettier-js
+  '(add-hook 'vue-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'prettier-js-mode))))
 #+END_SRC
 
 ** Ripgrep
@@ -904,7 +945,7 @@ JSON Mode, a major mode for editing JSON files.
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 1)
+  (company-idle-delay 0.5)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :config
@@ -931,10 +972,10 @@ If failed try to complete the common part with `company-complete-common'"
 Setting up keybindings for completion selection
 
 #+BEGIN_SRC emacs-lisp
-;; (with-eval-after-load 'company
-;;   (define-key company-active-map (kbd "<return>") nil)
-;;   (define-key company-active-map (kbd "RET") nil)
-;;   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
 #+END_SRC
 
 *** Company-lsp
@@ -1052,6 +1093,7 @@ This is enabled by default, if ever you find it not good enough for a particular
 
 #+BEGIN_SRC emacs-lisp
 (use-package company-tabnine
+  :disabled
   :defer 1
   :custom
   (company-tabnine-max-num-results 9)
@@ -1339,11 +1381,20 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
 #+END_SRC
 ** VTerm
 
-Add clickable links inside terminal
+*** Add clickable links inside terminal
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'vterm-mode-hook #'goto-address-mode)
 #+END_SRC
+
+*** Vterm paste using vim keybind
+
+#+BEGIN_SRC emacs-lisp
+(map! :map vterm-mode-map
+      :n "P" #'vterm-yank
+      :n "p" #'vterm-yank)
+#+END_SRC
+
 ** Restclient
 
 #+BEGIN_SRC emacs-lisp
@@ -1677,8 +1728,8 @@ Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape]
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'rustic-mode-hook (lambda ()
-              (set (make-local-variable 'company-backends) '(company-tabnine))))
+;; (add-hook 'rustic-mode-hook (lambda ()
+;;               (set (make-local-variable 'company-backends) '(company-tabnine))))
 #+END_SRC
 
 ** Python
@@ -1697,8 +1748,8 @@ Adding TabNine completion to buffer
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
+;; (add-hook 'python-mode-hook (lambda ()
+;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
 #+END_SRC
 
 ** Dart

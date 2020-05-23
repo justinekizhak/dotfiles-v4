@@ -204,7 +204,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
 (setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
-(setq org-agenda-files '("~/org/project/"))
+(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
 (use-package projectile
   :config
     (setq  projectile-project-search-path '("~/projects")))
@@ -231,9 +231,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :commands (typescript-mode))
 (use-package prettier-js
   :defer 3
-  :hook js2-mode
-  :config
-    (setq prettier-js-args '("--single-quote")))
+  :hook js2-mode)
 (use-package emmet-mode
   :defer 3
   :hook ((web-mode . emmet-mode)
@@ -253,6 +251,31 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;; json-reformat:indent-width 2
 ;; typescript-indent-level 2
 ;; css-indent-offset 2)
+;; (eval-after-load 'web-mode
+;;   '(add-hook 'web-mode-hook
+;;              (lambda ()
+;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
+
+(eval-after-load 'css-mode
+  '(add-hook 'css-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
+(eval-after-load 'prettier-js
+  '(add-hook 'web-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'prettier-js-mode))))
+(add-hook 'vue-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+(delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
+
+(use-package vue-mode
+  :defer 1
+  :mode "\\.vue\\'")
+(with-eval-after-load 'lsp-mode
+  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
+(eval-after-load 'prettier-js
+  '(add-hook 'vue-mode-hook
+             (lambda ()
+               (add-hook 'before-save-hook 'prettier-js-mode))))
 (use-package deadgrep
   :defer 3
   :config
@@ -293,7 +316,7 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 1)
+  (company-idle-delay 0.5)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :config
@@ -315,10 +338,10 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common))))
-;; (with-eval-after-load 'company
-;;   (define-key company-active-map (kbd "<return>") nil)
-;;   (define-key company-active-map (kbd "RET") nil)
-;;   (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
 (use-package company-lsp
   :defer t
   :custom (company-lsp-cache-candidates 'auto))
@@ -415,6 +438,7 @@ If failed try to complete the common part with `company-complete-common'"
             (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
           company-box-icons-alist 'company-box-icons-all-the-icons)))
 (use-package company-tabnine
+  :disabled
   :defer 1
   :custom
   (company-tabnine-max-num-results 9)
@@ -605,6 +629,9 @@ If failed try to complete the common part with `company-complete-common'"
   (unless *eaf-env*
     (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
 (add-hook 'vterm-mode-hook #'goto-address-mode)
+(map! :map vterm-mode-map
+      :n "P" #'vterm-yank
+      :n "p" #'vterm-yank)
 (use-package restclient
   :defer t
   :config
@@ -774,8 +801,8 @@ If failed try to complete the common part with `company-complete-common'"
   (setq evil-snipe-scope 'visible)
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
-(add-hook 'rustic-mode-hook (lambda ()
-              (set (make-local-variable 'company-backends) '(company-tabnine))))
+;; (add-hook 'rustic-mode-hook (lambda ()
+;;               (set (make-local-variable 'company-backends) '(company-tabnine))))
 (use-package python-mode
   :ensure nil
   :after flycheck
@@ -784,8 +811,8 @@ If failed try to complete the common part with `company-complete-common'"
   (python-indent-offset 4)
   (flycheck-python-pycompile-executable "python3")
   (python-shell-interpreter "python3"))
-(add-hook 'python-mode-hook (lambda ()
-                                (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
+;; (add-hook 'python-mode-hook (lambda ()
+;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (add-hook 'gfm-mode-hook
           (lambda () (when buffer-file-name
