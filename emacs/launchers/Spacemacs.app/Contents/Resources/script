@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo 'spacemacs' > ~/.emacs-profile
+/usr/local/bin/emacs 
