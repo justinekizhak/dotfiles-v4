@@ -13,12 +13,11 @@ export LC_ALL=en_US.UTF-8
 export VISUAL=vim
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export PYTHONBREAKPOINT=pudb.set_trace
-GPG_TTY=$(tty)
-export GPG_TTY
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE
-
+export GPG_TTY=$(tty)
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export GIT_SUBREPO_VERBOSE=True
+export PRELUDE_INSTALL_DIR="$HOME/prelude"
+
 add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
         export PATH="$PATH:$1"
@@ -32,7 +31,7 @@ add_to_path "$HOME/Library/Python/3.7/bin"
 add_to_path "$HOME/.cargo/bin"
 add_to_path "$HOME/flutter/bin"
 add_to_path "$HOME/.local/bin"
-add_to_path "$HOME/.emacs.d/bin"
+add_to_path "$HOME/doom-emacs/bin"
 
 . "$HOME/git-subrepo/.rc"
 
