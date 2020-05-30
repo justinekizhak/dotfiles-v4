@@ -32,6 +32,7 @@ add_to_path "$HOME/.cargo/bin"
 add_to_path "$HOME/flutter/bin"
 add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/doom-emacs/bin"
+add_to_path "$HOME/.poetry/bin"
 
 . "$HOME/git-subrepo/.rc"
 
