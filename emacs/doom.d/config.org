@@ -100,6 +100,8 @@
   - [[Easy escape][Easy escape]]
   - [[Parinfer][Parinfer]]
   - [[Evil snipe][Evil snipe]]
+  - [[Indent tools][Indent tools]]
+  - [[Hydra][Hydra]]
 - [[Languages][Languages]]
   - [[Rust][Rust]]
   - [[Python][Python]]
@@ -110,6 +112,8 @@
   - [[YAML][YAML]]
 - [[Other config][Other config]]
   - [[Use Command key as meta key (Only on MacOS)][Use Command key as meta key (Only on MacOS)]]
+- [[Post Initialization][Post Initialization]]
+  - [[Play startup music][Play startup music]]
 
 * About Emacs
   Emacs changes how you /think/ about programming.
@@ -542,7 +546,7 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
 
 By default, the scrolling is way too fast to be precise and helpful, let’s tune it down a little bit.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package mwheel
   :defer t
   :ensure nil
@@ -907,9 +911,9 @@ JSON Mode, a major mode for editing JSON files.
 
 ** Magit
 
-# #+BEGIN_SRC emacs-lisp
-# (setq +magit-hub-features t)
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq +magit-hub-features t)
+#+END_SRC
 
 ** Go to line preview
 
@@ -928,7 +932,7 @@ JSON Mode, a major mode for editing JSON files.
 
 ** Company
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package company
   :defer t
   :diminish company-mode
@@ -971,7 +975,7 @@ If failed try to complete the common part with `company-complete-common'"
 
 Setting up keybindings for completion selection
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
@@ -980,7 +984,7 @@ Setting up keybindings for completion selection
 
 *** Company-lsp
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package company-lsp
   :defer t
   :custom (company-lsp-cache-candidates 'auto))
@@ -988,7 +992,7 @@ Setting up keybindings for completion selection
 
 *** Commpany-box
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package company-box
   :disabled
   :defer t
@@ -1091,7 +1095,7 @@ This is enabled by default, if ever you find it not good enough for a particular
 
 *Prerequisite*: Execute =M-x company-tabnine-install-binary= to install the TabNine binary for your system.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package company-tabnine
   :disabled
   :defer 1
@@ -1228,17 +1232,18 @@ This is enabled by default, if ever you find it not good enough for a particular
 
 ** 2048 game
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package 2048-game
   :defer t
   :commands (2048-game))
 #+END_SRC
 
 ** Lentic mode
-# #+BEGIN_SRC emacs-lisp
-# ;(after! lentic
-#   ;(global-lentic-mode))
-# #+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(after! lentic
+  (global-lentic-mode))
+#+END_SRC
 
 ** Apex Legends quotes
 
@@ -1258,7 +1263,7 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
 
 ** Zone
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package zone
   :ensure nil
   :defer 5
@@ -1318,40 +1323,40 @@ Use a random quote of a character from [[https://www.ea.com/games/apex-legends/p
 
 ** God mode
 
-#+BEGIN_SRC emacs-lisp
-;; (global-set-key (kbd "`-<escape>") 'god-local-mode)
-;; (global-set-key (kbd "<escape>") 'god-mode-all)
+#+BEGIN_SRC emacs-lisp  :tangle no
+(global-set-key (kbd "`-<escape>") 'god-local-mode)
+(global-set-key (kbd "<escape>") 'god-mode-all)
 
-;; (map! "S-<escape>" #'god-mode-all)
+(map! "S-<escape>" #'god-mode-all)
 #+END_SRC
 
 *** Cursor style to indicate mode
 
 You can change the cursor style indicate whether you're in God mode or not.
 
-#+BEGIN_SRC emacs-lisp
-;; (defun my-update-cursor ()
-;;   (setq cursor-type (if (or god-local-mode buffer-read-only)
-;;                         'box
-;;                       'bar)))
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun my-update-cursor ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only)
+                        'box
+                      'bar)))
 
-;; (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-;; (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+(add-hook 'god-mode-enabled-hook 'my-update-cursor)
+(add-hook 'god-mode-disabled-hook 'my-update-cursor)
 #+END_SRC
 
 *** Change modeline color
 
 You can use the following function to switch the entire modeline's foreground and background:
 
-#+BEGIN_SRC emacs-lisp
-;; (defun c/god-mode-update-cursor ()
-;;   (let ((limited-colors-p (> 257 (length (defined-colors)))))
-;;     (cond (god-local-mode (progn
-;;                             (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
-;;                             (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
-;;           (t (progn
-;;                (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
-;;                (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun c/god-mode-update-cursor ()
+  (let ((limited-colors-p (> 257 (length (defined-colors)))))
+    (cond (god-local-mode (progn
+                            (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+                            (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+          (t (progn
+               (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
+               (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
 #+END_SRC
 
 ** HTMLize
@@ -1362,6 +1367,7 @@ HTMLize, a tool that converts buffer text and decorations to HTML
 (use-package htmlize
   :defer t)
 #+END_SRC
+
 ** EWW
 
 Emacs Web Wowser, the HTML-based Emacs Web Browser.
@@ -1397,7 +1403,7 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
 
 ** Restclient
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package restclient
   :defer t
   :config
@@ -1466,7 +1472,7 @@ Flycheck, a syntax checking extension.
 
 ** Hightlight indentation guide
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package highlight-indent-guides
   :defer t
   :if *sys/gui*
@@ -1481,7 +1487,7 @@ Flycheck, a syntax checking extension.
 
 Indentation config
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq-default indent-tabs-mode nil)
 (setq-default indent-line-function 'insert-tab)
 (setq-default tab-width 4)
@@ -1581,14 +1587,14 @@ Iedit, a minor mode that allows editing multiple regions simultaneousy in a buff
 
 To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :no tangle
 (use-package cheatsheet
   :defer t)
 #+END_SRC
 
 *** Cheatsheet mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add :group 'Cheatsheet
                 :key "C-q"
                 :description "Leave cheatsheet")
@@ -1596,7 +1602,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Evil mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Evil-mode
                       '(:key "ESC" :description "Change mode to `NormalMode'")
                       '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
@@ -1618,7 +1624,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Emacs
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Emacs
                       '(:key "SPC q q" :description "Quit Emacs")
                       '(:key "SPC q Q" :description "Quit Emacs without saving")
@@ -1632,7 +1638,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Navigation
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Navigation
                       '(:key "<NormalMode> h" :description "Move left")
                       '(:key "<NormalMode> j" :description "Move down")
@@ -1642,7 +1648,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Buffer management
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Buffer-management
                       '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
                       '(:key "<NormalMode> SPC b B" :description "List buffers")
@@ -1654,7 +1660,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Window management
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Window-management
                       '(:key "<NormalMode> SPC w d" :description "Delete window")
                       '(:key "<NormalMode> SPC w R" :description "Rotate window")
@@ -1667,7 +1673,7 @@ To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
 
 *** Git
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (cheatsheet-add-group 'Git
                       '(:key "<NormalMode> SPC g g" :description "Show Magit status")
                       '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
@@ -1723,13 +1729,36 @@ Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape]
   (setq evil-snipe-spillover-scope 'whole-buffer))
 #+END_SRC
 
+** Indent tools
+
+Indent,  move around  and  act  on code  based  on indentation  (yaml, python, jade, etc).
+Meant for indentation-based  languages, but can be used  any time with indented text.
+
+#+BEGIN_SRC emacs-lisp
+(use-package indent-tools
+  :defer t
+  :after (hydra)
+  :bind ("C-c >" . #'indent-tools-hydra/body))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; (map! "C-c >" #'indent-tools-hydra/body)
+#+END_SRC
+
+** Hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :defer t)
+#+END_SRC
+
 * Languages
 
 ** Rust
 
-#+BEGIN_SRC emacs-lisp
-;; (add-hook 'rustic-mode-hook (lambda ()
-;;               (set (make-local-variable 'company-backends) '(company-tabnine))))
+#+BEGIN_SRC emacs-lisp :tangle no
+(add-hook 'rustic-mode-hook (lambda ()
+              (set (make-local-variable 'company-backends) '(company-tabnine))))
 #+END_SRC
 
 ** Python
@@ -1738,18 +1767,21 @@ Adding TabNine completion to buffer
 
 #+BEGIN_SRC emacs-lisp
 (use-package python-mode
-  :ensure nil
-  :after flycheck
+  :defer t
   :mode "\\.py\\'"
   :custom
-  (python-indent-offset 4)
-  (flycheck-python-pycompile-executable "python3")
-  (python-shell-interpreter "python3"))
+  (python-indent-offset 4))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
 ;; (add-hook 'python-mode-hook (lambda ()
 ;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; (add-hook 'python-mode-hook
+;;  (lambda () (define-key python-mode-map (kbd "C-c >") 'indent-tools-hydra/body)))
+
 #+END_SRC
 
 ** Dart
@@ -1813,6 +1845,11 @@ On save refresh markdown table of contents.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
+
+(use-package yaml-mode
+  :defer t
+  :mode ("\\.yaml\\'" "\\.yml\\'")
+  :commands (yaml-mode))
 #+END_SRC
 
 * Other config
@@ -1823,7 +1860,7 @@ On save refresh markdown table of contents.
 (setq mac-command-modifier 'meta)
 #+END_SRC
 
-* Post Initialization :noexport:
+* Post Initialization
 ** Play startup music
 
 Play Apex Legends music when booting up Emacs.

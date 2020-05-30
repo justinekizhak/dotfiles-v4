@@ -27,11 +27,11 @@
        doom                ; what makes DOOM look the way it does
        doom-dashboard      ; a nifty splash screen for Emacs
        doom-quit           ; DOOM quit-message prompts when you quit Emacs
-       ;;fill-column       ; a `fill-column' indicator
+       fill-column       ; a `fill-column' indicator
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        hydra               ; This is a package for GNU Emacs that can be used to tie related commands
                                         ; into a family of short bindings with a common prefix - a Hydra.
-       ;;indent-guides     ; highlighted indent columns
+       indent-guides     ; highlighted indent columns
        modeline            ; snazzy, Atom-inspired modeline, plus API
        nav-flash           ; blink the current line after jumping
        ;;neotree           ; a project drawer, like NERDTree for vim
@@ -47,6 +47,7 @@
        vi-tilde-fringe     ; fringe tildes to mark beyond EOB
        window-select       ; visually switch windows
        workspaces          ; tab emulation, persistence & separate workspaces
+       zen                 ; Distraction-free coding (or writing)
 
        :editor
        (evil +everywhere)  ; come to the dark side, we have cookies
@@ -68,6 +69,7 @@
        electric            ; smarter, keyword-based electric-indent
        ibuffer             ; interactive buffer management
        vc                  ; version-control and Emacs, sitting in a tree
+       (undo +tree)        ; Augments Emacs’ built-in undo system to be more intuitive and to persist across Emacs sessions.
 
        :term
        eshell              ; a consistent, cross-platform shell (WIP)
@@ -79,16 +81,12 @@
        syntax              ; tasing you for every semicolon you forget
        spell               ; tasing you for misspelling mispelling
 
-       :checkers
-       syntax  ; tasing you for every semicolon you forget
-       spell  ; tasing you for misspelling mispelling
-
        :tools
        ;;ansible
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
-       ;;docker
-       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       docker
+       editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
@@ -98,7 +96,7 @@
        ;;lsp
        macos               ; MacOS-specific commands
        magit               ; a git porcelain for Emacs
-       ;;make              ; run make tasks from Emacs
+       make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders

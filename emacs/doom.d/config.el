@@ -125,11 +125,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (setq auto-revert-interval 2
         auto-revert-check-vc-info t
         auto-revert-verbose nil))
-(use-package mwheel
-  :defer t
-  :ensure nil
-  :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
-                mouse-wheel-progressive-speed nil))
 (use-package paren
   :defer t
   :ensure nil
@@ -300,182 +295,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :config
     (global-set-key [remap goto-line] 'goto-line-preview))
 (add-to-list 'after-init-hook 'clipmon-mode-start)
-(use-package company
-  :defer t
-  :diminish company-mode
-  :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
-  :bind
-  (:map company-active-map
-        ([tab] . smarter-yas-expand-next-field-complete)
-        ("TAB" . smarter-yas-expand-next-field-complete))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-begin-commands '(self-insert-command))
-  (company-require-match 'never)
-  ;; Don't use company in the following modes
-  (company-global-modes '(not shell-mode eaf-mode))
-  ;; Trigger completion immediately.
-  (company-idle-delay 0.5)
-  ;; Number the candidates (use M-1, M-2 etc to select completions).
-  (company-show-numbers t)
-  :config
-  (unless *clangd* (delete 'company-clang company-backends))
-  (global-company-mode 1)
-  (defun smarter-yas-expand-next-field-complete ()
-    "Try to `yas-expand' and `yas-next-field' at current cursor position.
-
-If failed try to complete the common part with `company-complete-common'"
-    (interactive)
-    (if yas-minor-mode
-        (let ((old-point (point))
-              (old-tick (buffer-chars-modified-tick)))
-          (yas-expand)
-          (when (and (eq old-point (point))
-                     (eq old-tick (buffer-chars-modified-tick)))
-            (ignore-errors (yas-next-field))
-            (when (and (eq old-point (point))
-                       (eq old-tick (buffer-chars-modified-tick)))
-              (company-complete-common))))
-      (company-complete-common))))
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
-(use-package company-lsp
-  :defer t
-  :custom (company-lsp-cache-candidates 'auto))
-(use-package company-box
-  :disabled
-  :defer t
-  :diminish
-  :functions (my-company-box--make-line
-              my-company-box-icons--elisp)
-  :commands (company-box--get-color
-             company-box--resolve-colors
-             company-box--add-icon
-             company-box--apply-color
-             company-box--make-line
-             company-box-icons--elisp)
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-backends-colors nil)
-  (company-box-show-single-candidate t)
-  (company-box-max-candidates 50)
-  (company-box-doc-delay 1)
-  :config
-  ;; Support `company-common'
-  (defun my-company-box--make-line (candidate)
-    (-let* (((candidate annotation len-c len-a backend) candidate)
-            (color (company-box--get-color backend))
-            ((c-color a-color i-color s-color) (company-box--resolve-colors color))
-            (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
-            (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
-                                      (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
-            (align-string (when annotation
-                            (concat " " (and company-tooltip-align-annotations
-                                             (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
-            (space company-box--space)
-            (icon-p company-box-enable-icon)
-            (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
-            (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
-                            (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
-                          (company-box--apply-color icon-string i-color)
-                          (company-box--apply-color candidate-string c-color)
-                          align-string
-                          (company-box--apply-color annotation-string a-color)))
-            (len (length line)))
-      (add-text-properties 0 len (list 'company-box--len (+ len-c len-a)
-                                       'company-box--color s-color)
-                           line)
-      line))
-  (advice-add #'company-box--make-line :override #'my-company-box--make-line)
-
-  ;; Prettify icons
-  (defun my-company-box-icons--elisp (candidate)
-    (when (derived-mode-p 'emacs-lisp-mode)
-      (let ((sym (intern candidate)))
-        (cond ((fboundp sym) 'Function)
-              ((featurep sym) 'Module)
-              ((facep sym) 'Color)
-              ((boundp sym) 'Variable)
-              ((symbolp sym) 'Text)
-              (t . nil)))))
-  (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
-
-  (when (and *sys/gui*
-             (require 'all-the-icons nil t))
-    (declare-function all-the-icons-faicon 'all-the-icons)
-    (declare-function all-the-icons-material 'all-the-icons)
-    (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq company-box-icons-all-the-icons
-          `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.85 :v-adjust -0.2))
-            (Text . ,(all-the-icons-faicon "text-width" :height 0.8 :v-adjust -0.05))
-            (Method . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Function . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Constructor . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Field . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Variable . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Class . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Interface . ,(all-the-icons-material "share" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Module . ,(all-the-icons-material "view_module" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Property . ,(all-the-icons-faicon "wrench" :height 0.8 :v-adjust -0.05))
-            (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.85 :v-adjust -0.2))
-            (Value . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Enum . ,(all-the-icons-material "storage" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.85 :v-adjust -0.2))
-            (Snippet . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2))
-            (Color . ,(all-the-icons-material "palette" :height 0.85 :v-adjust -0.2))
-            (File . ,(all-the-icons-faicon "file-o" :height 0.85 :v-adjust -0.05))
-            (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.85 :v-adjust -0.2))
-            (Folder . ,(all-the-icons-faicon "folder-open" :height 0.85 :v-adjust -0.05))
-            (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Constant . ,(all-the-icons-faicon "square-o" :height 0.85 :v-adjust -0.05))
-            (Struct . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Event . ,(all-the-icons-faicon "bolt" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-orange))
-            (Operator . ,(all-the-icons-material "control_point" :height 0.85 :v-adjust -0.2))
-            (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.8 :v-adjust -0.05))
-            (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
-          company-box-icons-alist 'company-box-icons-all-the-icons)))
-(use-package company-tabnine
-  :disabled
-  :defer 1
-  :custom
-  (company-tabnine-max-num-results 9)
-  :hook
-  (lsp-after-open . (lambda ()
-                      (setq company-tabnine-max-num-results 3)
-                      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-                      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))))
-  (kill-emacs . company-tabnine-kill-process)
-  :config
-  ;; Enable TabNine on default
-  (add-to-list 'company-backends #'company-tabnine)
-
-  (map! :leader
-        (:prefix ("a" . "applications")
-          :desc "Use company default backend" "o" #'company-other-backend
-          :desc "Use company tabnine backend" "t" #'company-tabnine))
-
-  ;; Integrate company-tabnine with lsp-mode
-  (defun company//sort-by-tabnine (candidates)
-    (if (or (functionp company-backend)
-            (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-        candidates
-      (let ((candidates-table (make-hash-table :test #'equal))
-            candidates-lsp
-            candidates-tabnine)
-        (dolist (candidate candidates)
-          (if (eq (get-text-property 0 'company-backend candidate)
-                  'company-tabnine)
-              (unless (gethash candidate candidates-table)
-                (push candidate candidates-tabnine))
-            (push candidate candidates-lsp)
-            (puthash candidate t candidates-table)))
-        (setq candidates-lsp (nreverse candidates-lsp))
-        (setq candidates-tabnine (nreverse candidates-tabnine))
-        (nconc (seq-take candidates-tabnine 3)
-               (seq-take candidates-lsp 6))))))
 (use-package dired
   :defer t
   :ensure nil
@@ -542,9 +361,6 @@ If failed try to complete the common part with `company-complete-common'"
 (use-package treemacs-magit
   :defer t
   :after (treemacs magit))
-(use-package 2048-game
-  :defer t
-  :commands (2048-game))
 ;; (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
 (use-package apex-legends-quotes
   :config
@@ -554,20 +370,6 @@ If failed try to complete the common part with `company-complete-common'"
   (defun change-emacs-title--apex-legends-quote ()
     (interactive)
     (setq frame-title-format (get-random-apex-legends-quote))))
-(use-package zone
-  :ensure nil
-  :defer 5
-  :config
-  ;; (zone-when-idle 30) ; in seconds
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (zone))))
 ;; (defun zone-pgm-md5 ()
 ;;     "MD5 the buffer, then recursively checksum each hash."
 ;;     (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
@@ -596,25 +398,6 @@ If failed try to complete the common part with `company-complete-common'"
 ;;     (unless (memq 'zone-pgm-end-of-buffer (append zone-programs nil))
 ;;         (setq zone-programs
 ;;             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
-;; (global-set-key (kbd "`-<escape>") 'god-local-mode)
-;; (global-set-key (kbd "<escape>") 'god-mode-all)
-
-;; (map! "S-<escape>" #'god-mode-all)
-;; (defun my-update-cursor ()
-;;   (setq cursor-type (if (or god-local-mode buffer-read-only)
-;;                         'box
-;;                       'bar)))
-
-;; (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-;; (add-hook 'god-mode-disabled-hook 'my-update-cursor)
-;; (defun c/god-mode-update-cursor ()
-;;   (let ((limited-colors-p (> 257 (length (defined-colors)))))
-;;     (cond (god-local-mode (progn
-;;                             (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
-;;                             (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
-;;           (t (progn
-;;                (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
-;;                (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
 (use-package htmlize
   :defer t)
 (use-package eww
@@ -632,12 +415,6 @@ If failed try to complete the common part with `company-complete-common'"
 (map! :map vterm-mode-map
       :n "P" #'vterm-yank
       :n "p" #'vterm-yank)
-(use-package restclient
-  :defer t
-  :config
-    (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((restclient . t))))
 (use-package popup-kill-ring
   :disabled
   :defer t
@@ -665,31 +442,6 @@ If failed try to complete the common part with `company-complete-common'"
   :config
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
-(use-package highlight-indent-guides
-  :defer t
-  :if *sys/gui*
-  :diminish
-  :hook ((prog-mode web-mode nxml-mode) . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-delay 1.5)
-  (highlight-indent-guides-auto-character-face-perc 7))
-(setq-default indent-tabs-mode nil)
-(setq-default indent-line-function 'insert-tab)
-(setq-default tab-width 4)
-(setq-default c-basic-offset 4)
-(setq-default js-switch-indent-offset 4)
-(c-set-offset 'comment-intro 0)
-(c-set-offset 'innamespace 0)
-(c-set-offset 'case-label '+)
-(c-set-offset 'access-label 0)
-(c-set-offset (quote cpp-macro) 0 nil)
-(add-hook 'after-change-major-mode-hook
-          (lambda () (if (equal electric-indent-mode 't)
-                         (when (derived-mode-p 'text-mode)
-                           (electric-indent-mode -1))
-                       (electric-indent-mode 1))))
 (use-package iedit
   :defer t
   :diminish)
@@ -728,58 +480,6 @@ If failed try to complete the common part with `company-complete-common'"
   :defer t)
 (use-package cheatsheet
   :defer t)
-(cheatsheet-add :group 'Cheatsheet
-                :key "C-q"
-                :description "Leave cheatsheet")
-(cheatsheet-add-group 'Evil-mode
-                      '(:key "ESC" :description "Change mode to `NormalMode'")
-                      '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
-                      '(:key "<NormalMode> /" :description "Change mode to `FindForwardMode'")
-                      '(:key "<NormalMode> ?" :description "Change mode to `FindBackwordMode'")
-                      '(:key "<NormalMode> r" :description "Change mode to `ReplaceMode'")
-                      '(:key "<NormalMode> R" :description "Change mode to `ReplaceMode'")
-                      '(:key "<NormalMode> v" :description "Change mode to `VisualMode'")
-                      '(:key "<NormalMode> V" :description "Change mode to `VisualLineMode'")
-                      '(:key "<NormalMode> C-v" :description "Change mode to `VisualBlockMode'")
-                      '(:key "i" :description "Change mode to `InsertMode'")
-                      '(:key "I" :description "Moves the cursor to the beginning of the line and change mode to `InsertMode'")
-                      '(:key "a" :description "Moves the cursor after the current character and change mode to `InsertMode'")
-                      '(:key "A" :description "Moves the cursor to the end of the line and change mode to `InsertMode'")
-                      '(:key "o" :description "Inserts a new line below the current line and change mode to `InsertMode'")
-                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'")
-                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'"))
-(cheatsheet-add-group 'Emacs
-                      '(:key "SPC q q" :description "Quit Emacs")
-                      '(:key "SPC q Q" :description "Quit Emacs without saving")
-                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style")
-                      '(:key "M-w" :description "Copy text")
-                      '(:key "C-w" :description "Cut text")
-                      '(:key "C-y" :description "Paste text")
-                      '(:key "M-y" :description "Cycle back Paste text")
-                      '(:key "C-_" :description "Undo [Emacs way]"))
-(cheatsheet-add-group 'Navigation
-                      '(:key "<NormalMode> h" :description "Move left")
-                      '(:key "<NormalMode> j" :description "Move down")
-                      '(:key "<NormalMode> k" :description "Move up")
-                      '(:key "<NormalMode> l" :description "Move right"))
-(cheatsheet-add-group 'Buffer-management
-                      '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
-                      '(:key "<NormalMode> SPC b B" :description "List buffers")
-                      '(:key "<VisualMode> b -" :description "Toggle narrowing buffer")
-                      '(:key "<NormalMode> b d" :description "Kill current buffer")
-                      '(:key "<NormalMode> b K" :description "Kill all buffer")
-                      '(:key "<NormalMode> b N" :description "Create new empty buffer"))
-(cheatsheet-add-group 'Window-management
-                      '(:key "<NormalMode> SPC w d" :description "Delete window")
-                      '(:key "<NormalMode> SPC w R" :description "Rotate window")
-                      '(:key "<NormalMode> SPC w H" :description "Move window to left")
-                      '(:key "<NormalMode> SPC w J" :description "Move window to down")
-                      '(:key "<NormalMode> SPC w K" :description "Move window to up")
-                      '(:key "<NormalMode> SPC w L" :description "Move window to right")
-                      '(:key "<NormalMode> SPC w M-w" :description "Jump to any window using Ace"))
-(cheatsheet-add-group 'Git
-                      '(:key "<NormalMode> SPC g g" :description "Show Magit status")
-                      '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
 (cheatsheet-add-group 'Magit
                       '(:key "<NormalMode> s" :description "Stage hunk")
                       '(:key "<NormalMode> c c" :description "Create commit")
@@ -801,18 +501,22 @@ If failed try to complete the common part with `company-complete-common'"
   (setq evil-snipe-scope 'visible)
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
-;; (add-hook 'rustic-mode-hook (lambda ()
-;;               (set (make-local-variable 'company-backends) '(company-tabnine))))
+(use-package indent-tools
+  :defer t
+  :after (hydra)
+  :bind ("C-c >" . #'indent-tools-hydra/body))
+;; (map! "C-c >" #'indent-tools-hydra/body)
+(use-package hydra
+  :defer t)
 (use-package python-mode
-  :ensure nil
-  :after flycheck
+  :defer t
   :mode "\\.py\\'"
   :custom
-  (python-indent-offset 4)
-  (flycheck-python-pycompile-executable "python3")
-  (python-shell-interpreter "python3"))
+  (python-indent-offset 4))
 ;; (add-hook 'python-mode-hook (lambda ()
 ;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
+;; (add-hook 'python-mode-hook
+;;  (lambda () (define-key python-mode-map (kbd "C-c >") 'indent-tools-hydra/body)))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 (add-hook 'gfm-mode-hook
           (lambda () (when buffer-file-name
@@ -849,4 +553,9 @@ If failed try to complete the common part with `company-complete-common'"
   (when (version< emacs-version "26")
     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
+
+(use-package yaml-mode
+  :defer t
+  :mode ("\\.yaml\\'" "\\.yml\\'")
+  :commands (yaml-mode))
 (setq mac-command-modifier 'meta)
