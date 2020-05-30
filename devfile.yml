@@ -1,0 +1,174 @@
+version: v1
+platforms:
+  - name: macos
+    version:
+      identifier: "1"
+      command: "echo 1"
+    package_manager: "brew install {}"
+    default: "doom"
+    presets:
+      - name: full
+        requires:
+          - dotfiles
+          - zsh
+          - tmux
+          - vim
+          - doom-emacs
+          - spacemacs
+      - name: minimal
+        requires:
+          - dotfiles
+          - zsh
+      - name: doom
+        requires:
+          - dotfiles
+          - zsh
+          - doom-emacs
+      - name: space
+        requires:
+          - dotfiles
+          - zsh
+          - spacemacs
+    modules:
+      - name: zsh
+        version:
+          identifier: "5.3"
+          command: "zsh --version"
+        requires:
+          - brew
+          - git-subrepo
+          - fasd
+          - pipenv
+          - private_var
+        config:
+          - 'sudo sh -c "echo /usr/local/bin/zsh >> /etc/shells" && chsh -s $(which zsh)'
+          - "ln -sf ~/dotfiles/zsh/zshrc_manager.sh ~/.zshrc"
+          - "ln -sf ~/dotfiles/zsh/zimrc.sh ~/.zimrc"
+          - "ln -sf ~/dotfiles/zsh/zlogin.sh ~/.zlogin"
+          - "ln -sf ~/dotfiles/zsh/zshenv.sh ~/.zshenv"
+      - name: tmux
+        requires:
+          - brew
+        config:
+          - "brew install reattach-to-user-namespace"
+          - "ln -sf ~/dotfiles/tmux/tmux_manager.conf ~/.tmux.conf"
+      - name: vim
+        requires:
+          - brew
+        command: "brew install neovim"
+        config:
+          - "ln -sf ~/dotfiles/vim/vimrc.vim ~/.vimrc"
+          - "mkdir -p $HOME/.vim/undo"
+          - "curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+          - 'vim -c "PlugInstall" -c "qa!"'
+          - "~/dotfiles/vim/install_cmdT.sh"
+          - "~/dotfiles/vim/install_ycm.sh"
+          - "brew install clang-format"
+      - name: doom-emacs
+        requires:
+          - chemacs
+          - ripgrep
+          - git
+          - coreutils
+          - fd
+          - clang
+          - emacs-plus
+        command: "git clone https://github.com/hlissner/doom-emacs ~/doom-emacs"
+        config:
+          - "ln -s ~/dotfiles/emacs/doom.d/ ~/.doom.d/"
+          - "doom install"
+      - name: spacemacs
+        requires:
+          - emacs-plus
+        command: "git clone -b develop https://github.com/syl21bnr/spacemacs ~/spacemacs/"
+        config:
+          - "ln -s ~/dotfiles/emacs/spacemacs.d/ ~/.spacemacs.d/"
+      - name: chemacs
+        requires:
+          - wget
+        command: "curl https://raw.githubusercontent.com/plexus/chemacs/master/.emacs -o ~/.emacs"
+        config:
+          - "ln -s ~/dotfiles/emacs/emacs-profiles.el ~/.emacs-profiles.el"
+      - name: emacs-plus
+        requires:
+          - brew
+          - pinentry
+        init:
+          - "brew tap d13frosted/emacs-plus"
+        command: "brew install emacs-plus --HEAD --with-modern-icon-sexy-v2 --with-emacs-26-branch"
+      - name: brew
+        requires:
+          - xcode
+        command: '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
+      - name: clang
+        command: "xcode-select --install"
+      - name: xcode
+        command: None
+        config:
+          - 'echo "Please install Xcode using Mac app store"'
+      - name: rust
+        command: None
+        config:
+          - 'curl --proto "=https" --tlsv2.3 -sSf https://sh.rustup.rs | sh'
+          - "rustup toolchain add nightly"
+          - "cargo +nightly install racer"
+          - "rustup component add rust-src"
+      - name: pinentry
+        requires:
+          - brew
+        command: "brew install pinentry pinentry-mac"
+        config:
+          - 'echo "https://gitlab.com/help/user/project/repository/gpg_signed_commits/index.md"'
+      - name: vscode
+        command: None
+        config:
+          - 'echo "Install VSCode from their website https://code.visualstudio.com/"'
+          - 'echo "Install \"Settings sync\" by "Shan Khan" https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync"'
+          - 'echo "Press Shift + Alt + D it will ask your GitHub Gist ID."'
+          - 'echo "Generate a new GitHub token and enter."'
+          - 'echo "Enter Your Gist ID. Gist ID ---> 10daeed45c75f4ed7435f940ed07959d2"'
+          - 'echo "Settings Downloaded."'
+          - 'echo "All done"'
+      - name: git-subrepo
+        requires:
+          - git
+        command: "git clone https://github.com/ingydotnet/git-subrepo ~/git-subrepo"
+      - name: fasd
+        requires:
+          - brew
+      - name: pipenv
+        requires:
+          - brew
+      - name: git
+        command: None
+      - name: wget
+        command: None
+      - name: ripgrep
+        command: None
+      - name: coreutils
+        command: None
+      - name: fd
+        command: None
+      - name: poetry
+        command: "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python"
+        config:
+          - "poetry completions zsh > $(brew --prefix)/share/zsh/site-functions/_poetry"
+      - name: zmd
+        requires:
+          - emacs-plus
+        command: "git clone --recurse-submodules -j8 https://github.com/MatthewZMD/.emacs.d.git ~/zmd"
+    folders:
+      - alias: dotfiles
+        owner: justine
+        permission: "744"
+        name: "dotfiles"
+        parent_dir: "~/"
+        requires:
+          - git
+        init:
+          - "git clone git@gitlab.com:justinekizhak/dotfiles.git"
+        command: None
+    files:
+      - alias: private_var
+        name: "private_env_var.sh"
+        parent_dir: "~/dotfiles/zsh/"
