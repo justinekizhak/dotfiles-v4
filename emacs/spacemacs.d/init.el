@@ -101,7 +101,7 @@ values."
                                       package-build
                                       importmagic
                                       (tiny :location(recipe :fetcher github :repo "abo-abo/tiny"))
-                                      ;; exec-path-from-shell
+                                      (ox-rst :location (recipe :fetcher github :repo "msnoigrs/ox-rst"))
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -521,6 +521,8 @@ values."
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
+  (add-hook 'vterm-mode-hook #'goto-address-mode)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -578,7 +580,7 @@ This function is called at the very end of Spacemacs initialization."
  '(paradox-github-token t)
  '(prettier-js-command "/Users/justine/.nvm/versions/node/v12.4.0/bin/prettier")
  '(pytest-cmd-flags "--pdb")
- '(python-shell-interpreter "/usr/local/bin/python3" t)
+ '(python-shell-interpreter "/usr/local/bin/python3")
  '(ranger-override-dired 'ranger)
  '(rust-format-on-save t)
  '(rust-rustfmt-bin "/Users/justine/.cargo/bin/rustfmt")
