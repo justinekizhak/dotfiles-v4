@@ -1,18 +1,8 @@
 ;;; config.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
-(use-package "startup"
-  :ensure nil
-  :config (setq inhibit-startup-screen t))
-(setq package-enable-at-startup nil)
 (defvar file-name-handler-alist-original file-name-handler-alist)
 (setq file-name-handler-alist nil)
-(setq site-run-file nil)
-(menu-bar-mode -1)
-(unless (and (display-graphic-p) (eq system-type 'darwin))
-  (push '(menu-bar-lines . 0) default-frame-alist))
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
 (defvar better-gc-cons-threshold 67108864 ; 64mb
   "The default value to use for `gc-cons-threshold'.
 
@@ -93,10 +83,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (menu-bar-mode -1)
 
   ;; better scrolling experience
-  (setq scroll-margin 0
-        scroll-conservatively 10000
-        scroll-preserve-screen-position t
-        auto-window-vscroll nil)
+  ;; (setq scroll-margin 0
+  ;;       scroll-conservatively 10000
+  ;;       scroll-preserve-screen-position t
+  ;;       auto-window-vscroll nil)
 
   ;; increase line space for better readability
   (setq-default line-spacing 3)
@@ -166,8 +156,8 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   ;;              '(ns-transparent-titlebar . t))
   ;; (add-to-list 'default-frame-alist
   ;;              '(ns-appearance . dark))
-  (when (member "Fira Code" (font-family-list))
-    (set-frame-font "Fira Code" t t)))
+  (when (member "BlexMono Nerd Font Mono" (font-family-list))
+    (set-frame-font "BlexMono Nerd Font Mono" t t)))
 (add-hook! '(+doom-dashboard-mode-hook)
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))

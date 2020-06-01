@@ -1,5 +1,5 @@
 #+TITLE: My Doom Emacs config
-#+AUTHOR: Justine Kizhakkinedath                      
+#+AUTHOR: Justine Kizhakkinedath
 #+EMAIL: justine@kizhak.com
 #+LANGUAGE: en
 #+STARTUP: noinlineimages
@@ -21,11 +21,8 @@
 - [[Lexical Binding][Lexical Binding]]
 - [[Personal Information][Personal Information]]
 - [[Improve boot up speed][Improve boot up speed]]
-  - [[Omit default startup screen][Omit default startup screen]]
-  - [[Disable =package-enable-at-startup=][Disable =package-enable-at-startup=]]
   - [[Unset =file-name-handler-alist=][Unset =file-name-handler-alist=]]
   - [[Disable =site-run-file=][Disable =site-run-file=]]
-  - [[Disable Unnecessary Interface][Disable Unnecessary Interface]]
   - [[Setting up garbage collection for speedy startup][Setting up garbage collection for speedy startup]]
 - [[Use-Package Settings][Use-Package Settings]]
 - [[Defining constants][Defining constants]]
@@ -172,7 +169,7 @@ pleasent one.
 
 ** Screenshot
 [[file:images/screenshot.png]]
-   
+
 ** Installation
 
 Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom Emacs]].
@@ -241,21 +238,21 @@ Let's set some variables with basic user information.
 
 * Improve boot up speed
 
-** Omit default startup screen
+** Omit default startup screen :noexport:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package "startup"
   :ensure nil
   :config (setq inhibit-startup-screen t))
 #+END_SRC
 
-** Disable =package-enable-at-startup=
+** Disable =package-enable-at-startup= :noexport:
 
 Package initialize occurs automatically, before =user-init-file= is loaded,
 but after =early-init-file=. We handle package initialization, so we must
 prevent Emacs from doing it early!
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq package-enable-at-startup nil)
 #+END_SRC
 
@@ -270,17 +267,17 @@ them.
 (setq file-name-handler-alist nil)
 #+END_SRC
 
-** Disable =site-run-file=
+** Disable =site-run-file= :noexoprt:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq site-run-file nil)
 #+END_SRC
 
-** Disable Unnecessary Interface
+** Disable Unnecessary Interface :noexport:
 
 It will be faster to disable them here before they've been initialized.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (menu-bar-mode -1)
 (unless (and (display-graphic-p) (eq system-type 'darwin))
   (push '(menu-bar-lines . 0) default-frame-alist))
@@ -288,7 +285,7 @@ It will be faster to disable them here before they've been initialized.
 (push '(vertical-scroll-bars) default-frame-alist)
 #+END_SRC
 
-** Setting up garbage collection for speedy startup
+** Setting up garbage collection for speedy startup :noexoprt:
 
 We're going to increase the gc-cons-threshold to a very high number to decrease the load and compile time.
 We'll lower this value significantly after initialization has completed. We don't want to keep this value
@@ -477,10 +474,10 @@ initialization significantly as many packages are only loaded later when they ar
     (menu-bar-mode -1)
 
     ;; better scrolling experience
-    (setq scroll-margin 0
-          scroll-conservatively 10000
-          scroll-preserve-screen-position t
-          auto-window-vscroll nil)
+    ;; (setq scroll-margin 0
+    ;;       scroll-conservatively 10000
+    ;;       scroll-preserve-screen-position t
+    ;;       auto-window-vscroll nil)
 
     ;; increase line space for better readability
     (setq-default line-spacing 3)
@@ -608,7 +605,7 @@ Reduce the highlight delay to instantly.
 
 ** Setting up some frame defaults
 
-Maximize the frame by default on start-up. Set the font to Fira code, if Fira code is installed.
+Maximize the frame by default on start-up. Set the font to BlexMono, if BlexMono is installed.
 
 #+BEGIN_SRC emacs-lisp
 (use-package frame
@@ -619,8 +616,8 @@ Maximize the frame by default on start-up. Set the font to Fira code, if Fira co
   ;;              '(ns-transparent-titlebar . t))
   ;; (add-to-list 'default-frame-alist
   ;;              '(ns-appearance . dark))
-  (when (member "Fira Code" (font-family-list))
-    (set-frame-font "Fira Code" t t)))
+  (when (member "BlexMono Nerd Font Mono" (font-family-list))
+    (set-frame-font "BlexMono Nerd Font Mono" t t)))
 #+END_SRC
 
 ** Dashboard with images
