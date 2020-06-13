@@ -64,7 +64,6 @@
   - [[Projectile][Projectile]]
   - [[Web development][Web development]]
   - [[Ripgrep][Ripgrep]]
-  - [[Browse kill ring][Browse kill ring]]
   - [[Magit][Magit]]
   - [[Go to line preview][Go to line preview]]
   - [[Clipmon][Clipmon]]
@@ -82,9 +81,7 @@
   - [[EWW][EWW]]
   - [[VTerm][VTerm]]
   - [[Restclient][Restclient]]
-  - [[Popup kill ring][Popup kill ring]]
   - [[Undo tree][Undo tree]]
-  - [[Discover My Major][Discover My Major]]
   - [[Flycheck][Flycheck]]
   - [[Hightlight indentation guide][Hightlight indentation guide]]
   - [[Iedit][Iedit]]
@@ -109,6 +106,7 @@
   - [[YAML][YAML]]
 - [[Other config][Other config]]
   - [[Use Command key as meta key (Only on MacOS)][Use Command key as meta key (Only on MacOS)]]
+  - [[Create a paste-transient-state to cycle through kill ring on paste][Create a paste-transient-state to cycle through kill ring on paste]]
 - [[Post Initialization][Post Initialization]]
   - [[Play startup music][Play startup music]]
 
@@ -297,9 +295,9 @@ too high or it will result in long GC pauses during normal usage.
         gc-cons-percentage 0.6))
 #+END_SRC
 
-*** Better garbage threshold limit
+*** Better garbage threshold limit :noexoprt:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (defvar better-gc-cons-threshold 67108864 ; 64mb
   "The default value to use for `gc-cons-threshold'.
 
@@ -312,9 +310,9 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
             (makunbound 'file-name-handler-alist-original)))
 #+END_SRC
 
-*** Garbage collect when Emacs is out of focus
+*** Garbage collect when Emacs is out of focus :noexoprt:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (add-hook 'emacs-startup-hook
           (lambda ()
             (if (boundp 'after-focus-change-function)
@@ -888,11 +886,10 @@ JSON Mode, a major mode for editing JSON files.
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 #+END_SRC
 
-** Browse kill ring
+** Browse kill ring :noexport:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package browse-kill-ring
-  :disabled
   :defer 3
   :config
     (map! :map browse-kill-ring-mode-map
@@ -1409,13 +1406,12 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
       '((restclient . t))))
 #+END_SRC
 
-** Popup kill ring
+** Popup kill ring :noexport:
 
 Popup Kill Ring, a feature that provides the ability to browse Emacs kill ring in autocomplete style popup menu.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package popup-kill-ring
-  :disabled
   :defer t
   :bind ("M-y" . popup-kill-ring))
 #+END_SRC
@@ -1427,24 +1423,24 @@ Undo tree, a feature that provides a visualization of the undos in a file.
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :defer t
-  :diminish undo-tree-mode
-  :init (global-undo-tree-mode)
+  ;; :diminish undo-tree-mode
+  ;; :init (global-undo-tree-mode)
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (map! :leader
     (:prefix ("a" . "applications")
         :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
 #+END_SRC
 
-** Discover My Major
+** Discover My Major :noexport:
 
 Discover my major, a feature that discovers key bindings and their meaning for the current Emacs major mode.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package discover-my-major
   :defer 1
   :config
@@ -1855,6 +1851,25 @@ On save refresh markdown table of contents.
 
 #+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'meta)
+#+END_SRC
+
+** Create a paste-transient-state to cycle through kill ring on paste
+
+Refer [[https://github.com/hlissner/doom-emacs/blob/cd1675568bdbb388f931591ea6383fa8ded82765/docs/api.org#create-a-paste-transient-state-to-cycle-through-kill-ring-on-paste][doom docs on paste transient]]
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-paste (:color red
+                       :hint nil)
+  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
+ [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
+ above or below. Anything else exits."
+  ("C-j" evil-paste-pop)
+  ("C-k" evil-paste-pop-next)
+  ("p" evil-paste-after)
+  ("P" evil-paste-before))
+
+(map! :nv "p" #'hydra-paste/evil-paste-after
+      :nv "P" #'hydra-paste/evil-paste-before)
 #+END_SRC
 
 * Post Initialization

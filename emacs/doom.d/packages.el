@@ -50,7 +50,7 @@
 (package! highlight-indent-guides)                                             ;;; Highlight indentation
 (package! restclient)                                                          ;;; Rest API client within Emacs
 (package! ob-restclient)                                                       ;;; Use restclient within Org file
-(package! discover-my-major)                                                   ;;; Discover key bindings
+;; (package! discover-my-major)                                                   ;;; Discover key bindings
 (package! iedit)                                                               ;;; Edit all occurance of symbol simultanously
 (package! powerthesaurus)                                                      ;;; Thesaurus for Emacs
 (package! ace-popup-menu)                                                      ;;; Use better popup menu for Emacs

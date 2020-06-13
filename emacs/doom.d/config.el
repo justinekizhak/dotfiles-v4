@@ -3,34 +3,6 @@
       user-mail-address "justine@kizhak.com")
 (defvar file-name-handler-alist-original file-name-handler-alist)
 (setq file-name-handler-alist nil)
-(defvar better-gc-cons-threshold 67108864 ; 64mb
-  "The default value to use for `gc-cons-threshold'.
-
-If you experience freezing, decrease this.  If you experience stuttering, increase this.")
-
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold better-gc-cons-threshold)
-            (setq file-name-handler-alist file-name-handler-alist-original)
-            (makunbound 'file-name-handler-alist-original)))
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (if (boundp 'after-focus-change-function)
-                (add-function :after after-focus-change-function
-                              (lambda ()
-                                (unless (frame-focus-state)
-                                  (garbage-collect))))
-              (add-hook 'after-focus-change-function 'garbage-collect))
-            ;; Avoid garbage collection when using minibuffer
-                (defun gc-minibuffer-setup-hook ()
-                (setq gc-cons-threshold (* better-gc-cons-threshold 2)))
-
-                (defun gc-minibuffer-exit-hook ()
-                (garbage-collect)
-                (setq gc-cons-threshold better-gc-cons-threshold))
-
-                (add-hook 'minibuffer-setup-hook #'gc-minibuffer-setup-hook)
-                (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
 (with-eval-after-load 'use-package
   (setq use-package-always-defer t
         use-package-verbose t
@@ -70,30 +42,30 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
-(use-package emacs
-  :preface
-  (defvar ian/indent-width 4) ; change this value to your preferred width
-  :config
-  (setq
-   ring-bell-function 'ignore       ; minimise distraction
-   frame-resize-pixelwise t
-   default-directory "~/")
+  (use-package emacs
+    :preface
+    (defvar ian/indent-width 4) ; change this value to your preferred width
+    :config
+    (setq
+     ring-bell-function 'ignore       ; minimise distraction
+     frame-resize-pixelwise t
+     default-directory "~/")
 
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
 
-  ;; better scrolling experience
-  ;; (setq scroll-margin 0
-  ;;       scroll-conservatively 10000
-  ;;       scroll-preserve-screen-position t
-  ;;       auto-window-vscroll nil)
+    ;; better scrolling experience
+    ;; (setq scroll-margin 0
+    ;;       scroll-conservatively 10000
+    ;;       scroll-preserve-screen-position t
+    ;;       auto-window-vscroll nil)
 
-  ;; increase line space for better readability
-  (setq-default line-spacing 3)
+    ;; increase line space for better readability
+    (setq-default line-spacing 3)
 
-  ;; Always use spaces for indentation
-  (setq-default indent-tabs-mode nil
-                tab-width ian/indent-width))
+    ;; Always use spaces for indentation
+    (setq-default indent-tabs-mode nil
+                  tab-width ian/indent-width))
 (use-package delsel
   :disabled
   :ensure nil
@@ -267,19 +239,6 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
     (map! :leader
       (:prefix ("a" . "applications")
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
-(use-package browse-kill-ring
-  :disabled
-  :defer 3
-  :config
-    (map! :map browse-kill-ring-mode-map
-        "j" #'browse-kill-ring-forward
-        "k" #'browse-kill-ring-previous
-        "/" #'browse-kill-ring-search-forward
-        "?" #'browse-kill-ring-search-backward
-        "N" #'(lambda ()
-                (interactive)
-                (browse-kill-ring-search-backward "")))
-    (map! "M-v" #'browse-kill-ring))
 (use-package goto-line-preview
   :defer 3
   :config
@@ -378,10 +337,10 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 ;;             (setq prev-md5 next-md5))
 ;;           (forward-line 1)
 ;;           (zone-park/sit-for (point-min) 0.1)))))
-;; (eval-after-load "zone"
-;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-;;      (setq zone-programs
-;;            (vconcat zone-programs [zone-pgm-md5]))))
+  ;; (eval-after-load "zone"
+  ;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+  ;;      (setq zone-programs
+  ;;            (vconcat zone-programs [zone-pgm-md5]))))
 ;; (with-eval-after-load 'zone
 ;; (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
 ;; (require 'zone-end-of-buffer)
@@ -405,25 +364,13 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
 (map! :map vterm-mode-map
       :n "P" #'vterm-yank
       :n "p" #'vterm-yank)
-(use-package popup-kill-ring
-  :disabled
-  :defer t
-  :bind ("M-y" . popup-kill-ring))
 (use-package undo-tree
   :defer t
-  :diminish undo-tree-mode
-  :init (global-undo-tree-mode)
+  ;; :diminish undo-tree-mode
+  ;; :init (global-undo-tree-mode)
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t))
-(map! :leader
-    (:prefix ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
-(use-package discover-my-major
-  :defer 1
-  :config
-  (map! :leader (:prefix ("h" . "help")
-                    :desc "Open discover-my-major" "z" #'discover-my-major)))
 (use-package flycheck
   :defer t
   :hook (prog-mode . flycheck-mode)
@@ -549,3 +496,15 @@ If you experience freezing, decrease this.  If you experience stuttering, increa
   :mode ("\\.yaml\\'" "\\.yml\\'")
   :commands (yaml-mode))
 (setq mac-command-modifier 'meta)
+(defhydra hydra-paste (:color red
+                       :hint nil)
+  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
+ [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
+ above or below. Anything else exits."
+  ("C-j" evil-paste-pop)
+  ("C-k" evil-paste-pop-next)
+  ("p" evil-paste-after)
+  ("P" evil-paste-before))
+
+(map! :nv "p" #'hydra-paste/evil-paste-after
+      :nv "P" #'hydra-paste/evil-paste-before)
