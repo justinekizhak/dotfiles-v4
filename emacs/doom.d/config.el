@@ -1,14 +1,6 @@
 ;;; config.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
-(defvar file-name-handler-alist-original file-name-handler-alist)
-(setq file-name-handler-alist nil)
-(with-eval-after-load 'use-package
-  (setq use-package-always-defer t
-        use-package-verbose t
-        use-package-expand-minimally t
-        use-package-compute-statistics t
-        use-package-enable-imenu-support t))
 (defconst *sys/gui*
   (display-graphic-p))
 (defconst *sys/win32*
@@ -42,30 +34,30 @@
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
-  (use-package emacs
-    :preface
-    (defvar ian/indent-width 4) ; change this value to your preferred width
-    :config
-    (setq
-     ring-bell-function 'ignore       ; minimise distraction
-     frame-resize-pixelwise t
-     default-directory "~/")
+(use-package emacs
+  :preface
+  (defvar ian/indent-width 2) ; change this value to your preferred width
+  :config
+  (setq
+    ring-bell-function 'ignore       ; minimise distraction
+    frame-resize-pixelwise t
+    default-directory "~/")
 
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
 
-    ;; better scrolling experience
-    ;; (setq scroll-margin 0
-    ;;       scroll-conservatively 10000
-    ;;       scroll-preserve-screen-position t
-    ;;       auto-window-vscroll nil)
+  ;; better scrolling experience
+  ;; (setq scroll-margin 0
+  ;;       scroll-conservatively 10000
+  ;;       scroll-preserve-screen-position t
+  ;;       auto-window-vscroll nil)
 
-    ;; increase line space for better readability
-    (setq-default line-spacing 3)
+  ;; increase line space for better readability
+  (setq-default line-spacing 3)
 
-    ;; Always use spaces for indentation
-    (setq-default indent-tabs-mode nil
-                  tab-width ian/indent-width))
+  ;; Always use spaces for indentation
+  (setq-default indent-tabs-mode nil
+                tab-width ian/indent-width))
 (use-package delsel
   :disabled
   :ensure nil
@@ -121,15 +113,18 @@
 ;; Set history-length longer
 (setq-default history-length 500)
 (use-package frame
-  :ensure nil
+  :ensure t
   :config
-  (setq initial-frame-alist (quote ((fullscreen . maximized))))
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(ns-transparent-titlebar . t))
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(ns-appearance . dark))
-  (when (member "BlexMono Nerd Font Mono" (font-family-list))
-    (set-frame-font "BlexMono Nerd Font Mono" t t)))
+  (defun my-settings()
+    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+    (when (member "BlexMono Nerd Font Mono" (font-family-list))
+        (set-frame-font "BlexMono Nerd Font Mono" t t)))
+  (if (daemonp)
+    (add-hook 'after-make-frame-functions
+      (lambda (frame)
+        (select-frame frame)
+        (my-settings))))
+  (my-settings))
 (add-hook! '(+doom-dashboard-mode-hook)
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
@@ -147,6 +142,7 @@
   :config
   (setq org-startup-with-inline-images nil)
   (setq org-startup-shrink-all-tables t)
+  (setq org-use-property-inheritance t)
   ; Fix `org-cycle' bug
   (map! :map org-mode-map
         :n "<tab>" 'org-cycle))

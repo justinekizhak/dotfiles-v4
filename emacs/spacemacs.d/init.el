@@ -366,144 +366,14 @@ values."
 ;;   you should place your code here."
 
 
-;;   ;; Takes time because some files are missing
-;;   ;; (byte-recompile-directory (expand-file-name "~/dotfiles/emacs/") 0)
-
-;;   "This is were you can ultimately override default Spacemacs configuration.
-;;   This function is called at the very end of Spacemacs initialization."
-;;   (setq powerline-default-separator 'arrow)
-
-;;   (exec-path-from-shell-initialize)
-
-;;   ;; Use Emacs terminfo, not system terminfo
-;;   (setq system-uses-terminfo nil)
-
-;;   ;; (setq undo-tree-auto-save-history t
-;;   ;;       undo-tree-history-directory-alist
-;;   ;;       `(("." . ,(concat spacemacs-cache-directory "undo"))))
-;;   ;; (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
-;;   ;;   (make-directory (concat spacemacs-cache-directory "undo")))
-
-
-;;   (add-to-list 'exec-path "/usr/local/bin/")
-;;   (add-to-list 'exec-path "~/.nvm/versions/node/v12.13.1/bin" t)
-
-
-
-;;   (setq
-;;    backup-directory-alist '(("." . "~/.emacs-saves/"))    ; don't litter my fs tree
-;;         )
-
-;;   (setq ispell-program-name "/usr/local/bin/aspell")
-
-;;   (spacemacs/toggle-display-time-on)
-
-;;   (eval-after-load "company"
-;;     '(add-to-list 'company-backends 'company-anaconda))
-
-;;   (add-hook 'python-mode-hook 'importmagic-mode)
-
-;;   (global-company-mode)
-
-;;   (setq web-beautify-js-program "~/.nvm/versions/node/v12.13.1/bin/js-beautify")
-
-;;   (spacemacs|do-after-display-system-init
-;;    (spacemacs-modeline/init-spaceline))
-
-;;   (add-to-list 'default-frame-alist '(width . 160))
-;;   (add-to-list 'default-frame-alist '(height . 35))
-
-;;   (when (string= system-type "darwin")
-;;     (setq dired-use-ls-dired nil))
-
-;;   ;; (spaceline-compile)
-
 ;;   (setq gud-pdb-command-name "python3 -m pdb ")
 
-;;   ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-
-;;   ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;;   (setq-default dotspacemacs-configuration-layers
-;;                 '((python :variables
-;;                           python-formatter 'yapf
-;;                           python-format-on-save t
-;;                           python-sort-imports-on-save t
-;;                           )))
-
-;;   (defun spacemacs/python-toggle-breakpoint ()
-;;      "Add a break point, highlight it."
-;;      (interactive)
-;;      (let ((trace (cond ((spacemacs/pyenv-executable-find "trepan3k") "import trepan.api; trepan.api.debug()")
-;;                         ((spacemacs/pyenv-executable-find "wdb") "import wdb; wdb.set_trace()")
-;;                         ((spacemacs/pyenv-executable-find "ipdb") "import ipdb; ipdb.set_trace()")
-;;                         ((spacemacs/pyenv-executable-find "pudb") "import pudb; pudb.set_trace()")
-;;                         ((spacemacs/pyenv-executable-find "ipdb3") "import ipdb; ipdb.set_trace()")
-;;                         ((spacemacs/pyenv-executable-find "pudb3")
-;;                          (if (string= (getenv "PYTHONBREAKPOINT") "pudb.set_trace")
-;;                              "breakpoint()" "import pudb; pudb.set_trace()"))
-;;                         ((spacemacs/pyenv-executable-find "python3.7") "breakpoint()")
-;;                         ((spacemacs/pyenv-executable-find "python3.8") "breakpoint()")
-;;                         (t "breakpoint()")))
-;;            (line (thing-at-point 'line)))
-;;        (if (and line (string-match trace line))
-;;            (kill-whole-line)
-;;          (progn
-;;            (back-to-indentation)
-;;            (insert trace)
-;;            (insert "\n")
-;;            (python-indent-line)))))
-
-;;   ;; setup files ending in “.svelte” to open in js2-mode
-;;   ;; (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
-
-;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-;;   (setq lsp-haskell-process-path-hie "hie-wrapper")
-;;   (require 'lsp-haskell)
-;;   (add-hook 'haskell-mode-hook #'lsp)
-
-;;   ;; (defun display-startup-echo-area-message ()
-;;   ;;   (message "Let the hacking begin!"))
-
-;;   (run-with-timer
-;;    3 nil
-;;    (lambda ()
-;;      (select-frame-set-input-focus (new-frame))))
-
-;;   (defun turn-on-goto-address-mode ()
-;;     (goto-address-mode 1))
-
-;;   (add-hook 'term-mode-hook #'turn-on-goto-address-mode)
-
-;;   ;; (tiny-setup-default)
-
-
-
-
-;;   (defun welcome-message (frame)
-;;     (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green"))))
-
-;;   (run-with-idle-timer 0 nil #'(lambda ()
-;;     (message "%s" (propertize "Let the hacking begin!" 'face '(:foreground "green")))))
-
-;;   (defun date-timestamp ()
-;;     "Insert date time stamp"
-;;     (interactive)
-;;     (insert (format-time-string "date: \"%Y-%m-%dT%H:%M:%S\"")))
-
-;;   (add-hook 'after-make-frame-functions #'welcome-message)
-
-;;   (ranger-override-dired-mode t)
-
-;;   ;; (tern-disable-port-files nil)
-
-;;   (define-key ranger-normal-mode-map (kbd "+") #'dired-create-directory)
-
-
-;;   ;; (magit-define-popup-action 'magit-branch-popup
-;;   ;;   ?o "Checkout new orphan branch" 'magit-branch-orphan)
+  (setq-default dotspacemacs-configuration-layers
+                '((python :variables
+                          python-formatter 'black
+                          python-format-on-save t
+                          python-sort-imports-on-save t
+                          )))
 
   (setq mac-command-modifier 'meta)
 
@@ -580,7 +450,7 @@ This function is called at the very end of Spacemacs initialization."
  '(paradox-github-token t)
  '(prettier-js-command "/Users/justine/.nvm/versions/node/v12.4.0/bin/prettier")
  '(pytest-cmd-flags "--pdb")
- '(python-shell-interpreter "/usr/local/bin/python3")
+ '(python-shell-interpreter "python3.8")
  '(ranger-override-dired 'ranger)
  '(rust-format-on-save t)
  '(rust-rustfmt-bin "/Users/justine/.cargo/bin/rustfmt")
