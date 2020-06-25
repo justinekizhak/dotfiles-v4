@@ -103,6 +103,9 @@
 - [[Other config][Other config]]
   - [[Use Command key as meta key (Only on MacOS)][Use Command key as meta key (Only on MacOS)]]
   - [[Create a paste-transient-state to cycle through kill ring on paste][Create a paste-transient-state to cycle through kill ring on paste]]
+  - [[Backup][Backup]]
+  - [[Use firefox as default browser][Use firefox as default browser]]
+  - [[Refresh file automatically][Refresh file automatically]]
 - [[Post Initialization][Post Initialization]]
   - [[Play startup music][Play startup music]]
 
@@ -1871,6 +1874,47 @@ Refer [[https://github.com/hlissner/doom-emacs/blob/cd1675568bdbb388f931591ea638
 
 (map! :nv "p" #'hydra-paste/evil-paste-after
       :nv "P" #'hydra-paste/evil-paste-before)
+#+END_SRC
+
+** Backup
+
+#+BEGIN_SRC emacs-lisp
+;; Enable backup
+(setq make-backup-files t)
+
+;; Backup by copying
+(setq backup-by-copying t)
+#+END_SRC
+
+*** Auto save files when Emacs is out of focus
+
+Ref: [[http://ergoemacs.org/emacs/emacs_auto_save.html][Emacs auto save files]]
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-save-all-unsaved ()
+  "Save all unsaved files. no ask.
+Version 2019-11-05"
+  (interactive)
+  (save-some-buffers t ))
+
+;; when switching out of emacs, all unsaved files will be saved
+(add-hook 'focus-out-hook 'xah-save-all-unsaved)
+#+END_SRC
+
+** Use firefox as default browser
+
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
+
+** Refresh file automatically
+
+When a file is updated outside emacs, make it update if it's already opened in emacs
+
+Ref: [[http://ergoemacs.org/emacs/emacs_misc_init.html]]
+
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode 1)
 #+END_SRC
 
 * Post Initialization

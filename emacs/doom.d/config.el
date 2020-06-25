@@ -504,3 +504,18 @@
 
 (map! :nv "p" #'hydra-paste/evil-paste-after
       :nv "P" #'hydra-paste/evil-paste-before)
+;; Enable backup
+(setq make-backup-files t)
+
+;; Backup by copying
+(setq backup-by-copying t)
+(defun xah-save-all-unsaved ()
+  "Save all unsaved files. no ask.
+Version 2019-11-05"
+  (interactive)
+  (save-some-buffers t ))
+
+;; when switching out of emacs, all unsaved files will be saved
+(add-hook 'focus-out-hook 'xah-save-all-unsaved)
+(setq browse-url-browser-function 'browse-url-firefox)
+(global-auto-revert-mode 1)
