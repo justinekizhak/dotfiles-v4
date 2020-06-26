@@ -14,20 +14,21 @@
 
        :completion
        (company            ; the ultimate code completion backend
-        +tng
-        ;;+childframe      ; a nicer company UI. Emacs +26 only!
-        +auto)             ; as-you-type code completion
+        +childframe)
+       ;+tng  ; tng and childframe are incompatable with each other. Refer doom docs.
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy
-        +fuzzy)            ; a search engine for love and life
+        +fuzzy            ; a search engine for love and life
+        +prescient
+        +icons)
 
        :ui
        deft                ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
        doom-dashboard      ; a nifty splash screen for Emacs
        doom-quit           ; DOOM quit-message prompts when you quit Emacs
-       fill-column       ; a `fill-column' indicator
+       ;;fill-column       ; a `fill-column' indicator
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        hydra               ; This is a package for GNU Emacs that can be used to tie related commands
                                         ; into a family of short bindings with a common prefix - a Hydra.
@@ -39,7 +40,8 @@
        (popup              ; tame sudden yet inevitable temporary windows
         +all               ; catch all popups that start with an asterix
         +defaults)         ; default popup rules
-       pretty-code         ; replace bits of code with pretty symbols
+       (pretty-code
+        +fira)         ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        treemacs            ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
@@ -50,10 +52,12 @@
        zen                 ; Distraction-free coding (or writing)
 
        :editor
-       (evil +everywhere)  ; come to the dark side, we have cookies
+       (evil
+        +everywhere)  ; come to the dark side, we have cookies
        file-templates      ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
-       (format +onsave)    ; automated prettiness
+       (format
+        +onsave)    ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors    ; editing in many places at once
@@ -65,11 +69,14 @@
 
        :emacs
        (dired
+        +ranger
         +icons)            ; making dired pretty [functional]
        electric            ; smarter, keyword-based electric-indent
-       ibuffer             ; interactive buffer management
+       (ibuffer
+        +icons)             ; interactive buffer management
        vc                  ; version-control and Emacs, sitting in a tree
-       (undo +tree)        ; Augments Emacs’ built-in undo system to be more intuitive and to persist across Emacs sessions.
+       (undo
+        +tree)        ; Augments Emacs’ built-in undo system to be more intuitive and to persist across Emacs sessions.
 
        :term
        eshell              ; a consistent, cross-platform shell (WIP)
@@ -85,15 +92,20 @@
        ;;ansible
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
-       docker
+       (docker
+        +lsp)
        editorconfig      ; let someone else argue about tabs vs spaces
-       ;;ein               ; tame Jupyter notebooks with emacs
-       (eval +overlay)     ; run code, run (also, repls)
+       ein               ; tame Jupyter notebooks with emacs
+       (eval
+        +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup             ; helps you navigate your code and documentation
         +devdocs
-        +docsets)          ; ...or in Dash docsets locally
-       ;;lsp
+        +docsets
+        +dictionary
+        +offline)          ; ...or in Dash docsets locally ;
+       (lsp
+        +peek)
        macos               ; MacOS-specific commands
        magit               ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
@@ -127,7 +139,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       javascript          ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -135,31 +147,37 @@
        ;;factor
        ;;ledger            ; an accounting system in Emacs
        ;;lua               ; one-based indices? one-based indices
-       markdown            ; writing docs for people to ignore
+       (markdown
+        +grip)            ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org                ; organize your plain life in plain text
         +attach            ; custom attachment system
         +babel             ; running code in org
+        +brain
         +capture           ; org-capture in and outside of Emacs
         +dragndrop         ; drag & drop files/images into org buffers
         +export            ; Exporting org to whatever you want
+        +journal
+        +jupyter
+        +noter
         +pandoc            ; export-with-pandoc support
+        +present
+        +roam)          ; using org-mode for presentations
         ;;+hugo            ; use Emacs for hugo blogging
         ;;+pomodoro        ; be fruitful with the tomato technique
-        +present)          ; using org-mode for presentations
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python              ; beautiful is better than ugly
+       (python +lsp +poetry)              ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
-       ;;rest              ; Emacs as a REST client
-       ;;rst               ; ReST in peace
+       rest              ; Emacs as a REST client
+       rst               ; ReST in peace
        ;;ruby              ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       rust                ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +lsp)                ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
        sh                  ; she sells {ba,z,fi}sh shells on the C xor
@@ -167,6 +185,7 @@
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        web                 ; the tubes
+       (yaml +lsp)
 
        :email
        ;;(mu4e +gmail)

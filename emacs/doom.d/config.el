@@ -46,12 +46,6 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 
-  ;; better scrolling experience
-  ;; (setq scroll-margin 0
-  ;;       scroll-conservatively 10000
-  ;;       scroll-preserve-screen-position t
-  ;;       auto-window-vscroll nil)
-
   ;; increase line space for better readability
   (setq-default line-spacing 3)
 
@@ -333,10 +327,10 @@
 ;;             (setq prev-md5 next-md5))
 ;;           (forward-line 1)
 ;;           (zone-park/sit-for (point-min) 0.1)))))
-  ;; (eval-after-load "zone"
-  ;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-  ;;      (setq zone-programs
-  ;;            (vconcat zone-programs [zone-pgm-md5]))))
+;; (eval-after-load "zone"
+;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
+;;      (setq zone-programs
+;;            (vconcat zone-programs [zone-pgm-md5]))))
 ;; (with-eval-after-load 'zone
 ;; (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
 ;; (require 'zone-end-of-buffer)
