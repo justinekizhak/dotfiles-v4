@@ -42,7 +42,6 @@
   - [[Disable scroll bar][Disable scroll bar]]
   - [[Confirm kill process][Confirm kill process]]
   - [[Automatically refreshes the buffer for changes outside of Emacs][Automatically refreshes the buffer for changes outside of Emacs]]
-  - [[Mouse wheel (track-pad) scroll speed][Mouse wheel (track-pad) scroll speed]]
   - [[Show matching parentheses][Show matching parentheses]]
   - [[Treat underscore as part of the word][Treat underscore as part of the word]]
   - [[History][History]]
@@ -50,49 +49,38 @@
   - [[Setting up some frame defaults][Setting up some frame defaults]]
   - [[Dashboard with images][Dashboard with images]]
 - [[Custom Keybinding][Custom Keybinding]]
-  - [[⌘ + s → Save file][⌘ + s → Save file]]
-  - [[⌘ + a → Select all][⌘ + a → Select all]]
-  - [[⌘ + v → Paste menu][⌘ + v → Paste menu]]
   - [[Window management][Window management]]
+  - [[⌘ + a → Select all][⌘ + a → Select all]]
+  - [[⌘ + s → Save file][⌘ + s → Save file]]
+  - [[⌘ + v → Paste menu][⌘ + v → Paste menu]]
 - [[Packages][Packages]]
-  - [[Org mode][Org mode]]
-  - [[Projectile][Projectile]]
-  - [[Web development][Web development]]
-  - [[Ripgrep][Ripgrep]]
-  - [[Magit][Magit]]
-  - [[Go to line preview][Go to line preview]]
+  - [[Ace-popup][Ace-popup]]
+  - [[Apex Legends quotes][Apex Legends quotes]]
   - [[Clipmon][Clipmon]]
-  - [[Company][Company]]
   - [[Dired][Dired]]
   - [[Drag lines][Drag lines]]
-  - [[Yasnippet][Yasnippet]]
-  - [[Treemacs magit][Treemacs magit]]
-  - [[2048 game][2048 game]]
-  - [[Lentic mode][Lentic mode]]
-  - [[Apex Legends quotes][Apex Legends quotes]]
-  - [[Zone][Zone]]
-  - [[God mode][God mode]]
-  - [[HTMLize][HTMLize]]
-  - [[EWW][EWW]]
-  - [[VTerm][VTerm]]
-  - [[Restclient][Restclient]]
-  - [[Undo tree][Undo tree]]
-  - [[Flycheck][Flycheck]]
-  - [[Hightlight indentation guide][Hightlight indentation guide]]
-  - [[Iedit][Iedit]]
-  - [[Powerthesaurus][Powerthesaurus]]
-  - [[Ace-popup][Ace-popup]]
-  - [[String-inflection][String-inflection]]
-  - [[Pipenv][Pipenv]]
   - [[Easy escape][Easy escape]]
-  - [[Cheatsheet][Cheatsheet]]
   - [[Easy escape][Easy escape]]
-  - [[Parinfer][Parinfer]]
   - [[Evil snipe][Evil snipe]]
-  - [[Indent tools][Indent tools]]
+  - [[EWW][EWW]]
+  - [[Flycheck][Flycheck]]
+  - [[Go to line preview][Go to line preview]]
+  - [[HTMLize][HTMLize]]
   - [[Hydra][Hydra]]
+  - [[Iedit][Iedit]]
+  - [[Indent tools][Indent tools]]
+  - [[Org mode][Org mode]]
+  - [[Parinfer][Parinfer]]
+  - [[Pipenv][Pipenv]]
+  - [[Powerthesaurus][Powerthesaurus]]
+  - [[Projectile][Projectile]]
+  - [[Ripgrep][Ripgrep]]
+  - [[String-inflection][String-inflection]]
+  - [[Treemacs magit][Treemacs magit]]
+  - [[Undo tree][Undo tree]]
+  - [[VTerm][VTerm]]
+  - [[Web development][Web development]]
 - [[Languages][Languages]]
-  - [[Rust][Rust]]
   - [[Python][Python]]
   - [[Dart][Dart]]
   - [[Markdown][Markdown]]
@@ -417,18 +405,6 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
         auto-revert-verbose nil))
 #+END_SRC
 
-** Mouse wheel (track-pad) scroll speed
-
-By default, the scrolling is way too fast to be precise and helpful, let’s tune it down a little bit.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package mwheel
-  :defer t
-  :ensure nil
-  :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
-                mouse-wheel-progressive-speed nil))
-#+END_SRC
-
 ** Show matching parentheses
 
 Reduce the highlight delay to instantly.
@@ -513,24 +489,6 @@ Use the image in the dotfiles folder as the dashboard splash image
 
 * Custom Keybinding
 
-** ⌘ + s → Save file
-
-#+BEGIN_SRC emacs-lisp
-(map! "M-s" #'save-buffer)
-#+END_SRC
-
-** ⌘ + a → Select all
-
-#+BEGIN_SRC emacs-lisp
-(map! "M-a" #'mark-whole-buffer)
-#+END_SRC
-
-** ⌘ + v → Paste menu
-
-#+BEGIN_SRC emacs-lisp
-(map! "M-v" #'counsel-yank-pop)
-#+END_SRC
-
 ** Window management
 
 *** Jump to any window using =SPC w M-w=
@@ -551,7 +509,225 @@ Bind =SPC w M-w= for Ace window
         :desc "Jump to any window using Ace" "M-w" #'ace-window))
 #+END_SRC
 
+** ⌘ + a → Select all
+
+#+BEGIN_SRC emacs-lisp
+(map! "M-a" #'mark-whole-buffer)
+#+END_SRC
+
+** ⌘ + s → Save file
+
+#+BEGIN_SRC emacs-lisp
+(map! "M-s" #'save-buffer)
+#+END_SRC
+
+** ⌘ + v → Paste menu
+
+#+BEGIN_SRC emacs-lisp
+(map! "M-v" #'counsel-yank-pop)
+#+END_SRC
+
 * Packages
+
+** Ace-popup
+
+#+BEGIN_SRC emacs-lisp
+(use-package ace-popup-menu
+  :defer t)
+#+END_SRC
+
+** Apex Legends quotes
+
+Use a random quote of a character from [[https://www.ea.com/games/apex-legends/play-now-for-free][Apex Legends]] as your frame title.
+
+#+BEGIN_SRC emacs-lisp
+(use-package apex-legends-quotes
+  :config
+  ; get random quote from Apex Legends character
+  (setq frame-title-format (get-random-apex-legends-quote))
+  ; interactive function to change title
+  (defun change-emacs-title--apex-legends-quote ()
+    (interactive)
+    (setq frame-title-format (get-random-apex-legends-quote))))
+#+END_SRC
+
+** Clipmon
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'after-init-hook 'clipmon-mode-start)
+#+END_SRC
+
+** Dired
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :defer t
+  :ensure nil
+  :bind
+  (("C-x C-j" . dired-jump)
+   ("C-x j" . dired-jump-other-window))
+  :custom
+  ;; Always delete and copy recursively
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
+  ;; Auto refresh Dired, but be quiet about it
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil)
+  ;; Quickly copy/move file in Dired
+  (dired-dwim-target t)
+  ;; Move files to trash when deleting
+  (delete-by-moving-to-trash t)
+  ;; Load the newest version of a file
+  (load-prefer-newer t)
+  ;; Detect external file changes and auto refresh file
+  (auto-revert-use-notify nil)
+  (auto-revert-interval 3) ; Auto revert every 3 sec
+  :config
+  ;; Enable global auto-revert
+  (global-auto-revert-mode t)
+  ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
+  (put 'dired-find-alternate-file 'disabled nil)
+  :hook
+  (dired-mode . (lambda ()
+                  (dired-hide-details-mode)
+                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
+                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
+                  (local-set-key (kbd "^")
+                                 (lambda () (interactive) (find-alternate-file ".."))))))
+#+END_SRC
+
+** Drag lines
+
+*** Vertically
+
+#+BEGIN_SRC emacs-lisp
+(map!
+    :n "M-k" #'drag-stuff-up    ; drags line up
+    :n "M-j" #'drag-stuff-down)  ; drags line down
+#+END_SRC
+
+*** Horizontally
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'evil-org
+  (map!
+    :n "M-l" #'evil-org->       ; indents line to left
+    :n "M-h" #'evil-org-<))      ; indents line to right
+#+END_SRC
+
+** Easy escape
+
+#+BEGIN_SRC emacs-lisp
+(use-package easy-escape
+  :defer t)
+#+END_SRC
+
+** Easy escape
+
+Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape][Github repo]]
+
+[[https://raw.githubusercontent.com/cpitclaudel/easy-escape/master/img/easy-escape.png]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package easy-escape
+  :defer t
+  :config
+    (set-face-attribute 'easy-escape-face nil :foreground "red"))
+#+END_SRC
+
+** Evil snipe
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-snipe
+  :defer t
+  :config
+  (setq evil-snipe-scope 'visible)
+  (setq evil-snipe-repeat-scope 'buffer)
+  (setq evil-snipe-spillover-scope 'whole-buffer))
+#+END_SRC
+
+** EWW
+
+Emacs Web Wowser, the HTML-based Emacs Web Browser.
+
+#+BEGIN_SRC emacs-lisp
+(use-package eww
+  :defer t
+  :ensure nil
+  :commands (eww)
+  :hook (eww-mode . (lambda ()
+                      "Rename EWW's buffer so sites open in new page."
+                      (rename-buffer "eww" t)))
+  :config
+  ;; I am using EAF-Browser instead of EWW
+  (unless *eaf-env*
+    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
+#+END_SRC
+** Flycheck
+
+Flycheck, a syntax checking extension.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :defer t
+  :hook (prog-mode . flycheck-mode)
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
+  :config
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
+#+END_SRC
+
+** Go to line preview
+
+#+BEGIN_SRC emacs-lisp
+(use-package goto-line-preview
+  :defer 3
+  :config
+    (global-set-key [remap goto-line] 'goto-line-preview))
+#+END_SRC
+
+** HTMLize
+
+HTMLize, a tool that converts buffer text and decorations to HTML
+
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+  :defer t)
+#+END_SRC
+
+** Hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :defer t)
+#+END_SRC
+
+** Iedit
+
+Iedit, a minor mode that allows editing multiple regions simultaneousy in a buffer or a region.
+
+#+BEGIN_SRC emacs-lisp
+(use-package iedit
+  :defer t
+  :diminish)
+#+END_SRC
+
+** Indent tools
+
+Indent,  move around  and  act  on code  based  on indentation  (yaml, python, jade, etc).
+Meant for indentation-based  languages, but can be used  any time with indented text.
+
+#+BEGIN_SRC emacs-lisp
+(use-package indent-tools
+  :defer t
+  :after (hydra)
+  :bind ("C-c >" . #'indent-tools-hydra/body))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; (map! "C-c >" #'indent-tools-hydra/body)
+#+END_SRC
 
 ** Org mode
 
@@ -611,12 +787,122 @@ Use color links when exported from Org to Latex
 (setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
 #+END_SRC
 
+** Parinfer
+
+#+BEGIN_SRC emacs-lisp
+(use-package parinfer
+  :defer t)
+#+END_SRC
+
+** Pipenv
+
+#+BEGIN_SRC emacs-lisp
+(use-package pipenv
+  :defer t)
+#+END_SRC
+
+** Powerthesaurus
+
+#+BEGIN_SRC emacs-lisp
+(use-package powerthesaurus
+  :defer t)
+#+END_SRC
+
+*** Keybinding
+
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
+#+END_SRC
+
 ** Projectile
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :config
     (setq  projectile-project-search-path '("~/projects")))
+#+END_SRC
+
+** Ripgrep
+
+#+BEGIN_SRC emacs-lisp
+(use-package deadgrep
+  :defer 3
+  :config
+    (map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Open Ripgrep interface" "r" #'deadgrep)))
+#+END_SRC
+
+** String-inflection
+
+#+BEGIN_SRC emacs-lisp
+(use-package string-inflection
+  :defer t)
+  ;; :config
+  ;; (defun my-string-inflection-cycle-auto ()
+  ;;   "switching by major-mode"
+  ;;   (interactive)
+  ;;   (cond
+  ;;    ;; for emacs-lisp-mode
+  ;;    ((eq major-mode 'emacs-lisp-mode)
+  ;;     (string-inflection-all-cycle))
+  ;;    ;; for python
+  ;;    ((eq major-mode 'python-mode)
+  ;;     (string-inflection-python-style-cycle))
+  ;;    ;; for java
+  ;;    ((eq major-mode 'java-mode)
+  ;;     (string-inflection-java-style-cycle))
+  ;;    (t
+  ;;     ;; default
+  ;;     (string-inflection-ruby-style-cycle)))))
+#+END_SRC
+
+*** Keybinding
+
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+    (:prefix ("a" . "applications")
+        :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
+#+END_SRC
+
+** Treemacs magit
+
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs-magit
+  :defer t
+  :after (treemacs magit))
+#+END_SRC
+
+** Undo tree
+
+Undo tree, a feature that provides a visualization of the undos in a file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :defer t
+  ;; :diminish undo-tree-mode
+  ;; :init (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t))
+#+END_SRC
+
+** VTerm
+
+*** Add clickable links inside terminal
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'vterm-mode-hook #'goto-address-mode)
+#+END_SRC
+
+*** Vterm paste using vim keybind
+
+#+BEGIN_SRC emacs-lisp
+(map! :map vterm-mode-map
+      :n "P" #'vterm-yank
+      :n "p" #'vterm-yank)
 #+END_SRC
 
 ** Web development
@@ -759,884 +1045,7 @@ JSON Mode, a major mode for editing JSON files.
                (add-hook 'before-save-hook 'prettier-js-mode))))
 #+END_SRC
 
-** Ripgrep
-
-#+BEGIN_SRC emacs-lisp
-(use-package deadgrep
-  :defer 3
-  :config
-    (map! :leader
-      (:prefix ("a" . "applications")
-        :desc "Open Ripgrep interface" "r" #'deadgrep)))
-#+END_SRC
-
-** Browse kill ring :noexport:
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package browse-kill-ring
-  :defer 3
-  :config
-    (map! :map browse-kill-ring-mode-map
-        "j" #'browse-kill-ring-forward
-        "k" #'browse-kill-ring-previous
-        "/" #'browse-kill-ring-search-forward
-        "?" #'browse-kill-ring-search-backward
-        "N" #'(lambda ()
-                (interactive)
-                (browse-kill-ring-search-backward "")))
-    (map! "M-v" #'browse-kill-ring))
-#+END_SRC
-
-** Magit
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq +magit-hub-features t)
-#+END_SRC
-
-** Go to line preview
-
-#+BEGIN_SRC emacs-lisp
-(use-package goto-line-preview
-  :defer 3
-  :config
-    (global-set-key [remap goto-line] 'goto-line-preview))
-#+END_SRC
-
-** Clipmon
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'after-init-hook 'clipmon-mode-start)
-#+END_SRC
-
-** Company
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package company
-  :defer t
-  :diminish company-mode
-  :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
-  :bind
-  (:map company-active-map
-        ([tab] . smarter-yas-expand-next-field-complete)
-        ("TAB" . smarter-yas-expand-next-field-complete))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-begin-commands '(self-insert-command))
-  (company-require-match 'never)
-  ;; Don't use company in the following modes
-  (company-global-modes '(not shell-mode eaf-mode))
-  ;; Trigger completion immediately.
-  (company-idle-delay 0.5)
-  ;; Number the candidates (use M-1, M-2 etc to select completions).
-  (company-show-numbers t)
-  :config
-  (unless *clangd* (delete 'company-clang company-backends))
-  (global-company-mode 1)
-  (defun smarter-yas-expand-next-field-complete ()
-    "Try to `yas-expand' and `yas-next-field' at current cursor position.
-
-If failed try to complete the common part with `company-complete-common'"
-    (interactive)
-    (if yas-minor-mode
-        (let ((old-point (point))
-              (old-tick (buffer-chars-modified-tick)))
-          (yas-expand)
-          (when (and (eq old-point (point))
-                     (eq old-tick (buffer-chars-modified-tick)))
-            (ignore-errors (yas-next-field))
-            (when (and (eq old-point (point))
-                       (eq old-tick (buffer-chars-modified-tick)))
-              (company-complete-common))))
-      (company-complete-common))))
-#+END_SRC
-
-Setting up keybindings for completion selection
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
-#+END_SRC
-
-*** Company-lsp
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package company-lsp
-  :defer t
-  :custom (company-lsp-cache-candidates 'auto))
-#+END_SRC
-
-*** Commpany-box
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package company-box
-  :disabled
-  :defer t
-  :diminish
-  :functions (my-company-box--make-line
-              my-company-box-icons--elisp)
-  :commands (company-box--get-color
-             company-box--resolve-colors
-             company-box--add-icon
-             company-box--apply-color
-             company-box--make-line
-             company-box-icons--elisp)
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-backends-colors nil)
-  (company-box-show-single-candidate t)
-  (company-box-max-candidates 50)
-  (company-box-doc-delay 1)
-  :config
-  ;; Support `company-common'
-  (defun my-company-box--make-line (candidate)
-    (-let* (((candidate annotation len-c len-a backend) candidate)
-            (color (company-box--get-color backend))
-            ((c-color a-color i-color s-color) (company-box--resolve-colors color))
-            (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
-            (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
-                                      (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
-            (align-string (when annotation
-                            (concat " " (and company-tooltip-align-annotations
-                                             (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
-            (space company-box--space)
-            (icon-p company-box-enable-icon)
-            (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
-            (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
-                            (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
-                          (company-box--apply-color icon-string i-color)
-                          (company-box--apply-color candidate-string c-color)
-                          align-string
-                          (company-box--apply-color annotation-string a-color)))
-            (len (length line)))
-      (add-text-properties 0 len (list 'company-box--len (+ len-c len-a)
-                                       'company-box--color s-color)
-                           line)
-      line))
-  (advice-add #'company-box--make-line :override #'my-company-box--make-line)
-
-  ;; Prettify icons
-  (defun my-company-box-icons--elisp (candidate)
-    (when (derived-mode-p 'emacs-lisp-mode)
-      (let ((sym (intern candidate)))
-        (cond ((fboundp sym) 'Function)
-              ((featurep sym) 'Module)
-              ((facep sym) 'Color)
-              ((boundp sym) 'Variable)
-              ((symbolp sym) 'Text)
-              (t . nil)))))
-  (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
-
-  (when (and *sys/gui*
-             (require 'all-the-icons nil t))
-    (declare-function all-the-icons-faicon 'all-the-icons)
-    (declare-function all-the-icons-material 'all-the-icons)
-    (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq company-box-icons-all-the-icons
-          `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.85 :v-adjust -0.2))
-            (Text . ,(all-the-icons-faicon "text-width" :height 0.8 :v-adjust -0.05))
-            (Method . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Function . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Constructor . ,(all-the-icons-faicon "cube" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-purple))
-            (Field . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Variable . ,(all-the-icons-octicon "tag" :height 0.8 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Class . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Interface . ,(all-the-icons-material "share" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Module . ,(all-the-icons-material "view_module" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Property . ,(all-the-icons-faicon "wrench" :height 0.8 :v-adjust -0.05))
-            (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.85 :v-adjust -0.2))
-            (Value . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Enum . ,(all-the-icons-material "storage" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.85 :v-adjust -0.2))
-            (Snippet . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2))
-            (Color . ,(all-the-icons-material "palette" :height 0.85 :v-adjust -0.2))
-            (File . ,(all-the-icons-faicon "file-o" :height 0.85 :v-adjust -0.05))
-            (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.85 :v-adjust -0.2))
-            (Folder . ,(all-the-icons-faicon "folder-open" :height 0.85 :v-adjust -0.05))
-            (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Constant . ,(all-the-icons-faicon "square-o" :height 0.85 :v-adjust -0.05))
-            (Struct . ,(all-the-icons-material "settings_input_component" :height 0.85 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Event . ,(all-the-icons-faicon "bolt" :height 0.8 :v-adjust -0.05 :face 'all-the-icons-orange))
-            (Operator . ,(all-the-icons-material "control_point" :height 0.85 :v-adjust -0.2))
-            (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.8 :v-adjust -0.05))
-            (Template . ,(all-the-icons-material "format_align_center" :height 0.85 :v-adjust -0.2)))
-          company-box-icons-alist 'company-box-icons-all-the-icons)))
-#+END_SRC
-
-*** Company-tabnine
-
-[[https://github.com/TommyX12/company-tabnine][Company TabNine]], A company-mode backend for [[https://tabnine.com/][TabNine]], the all-language autocompleter.
-
-This is enabled by default, if ever you find it not good enough for a particular completion, simply use =M-q= to immediately switch to default backends.
-
-*Prerequisite*: Execute =M-x company-tabnine-install-binary= to install the TabNine binary for your system.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package company-tabnine
-  :disabled
-  :defer 1
-  :custom
-  (company-tabnine-max-num-results 9)
-  :hook
-  (lsp-after-open . (lambda ()
-                      (setq company-tabnine-max-num-results 3)
-                      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-                      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))))
-  (kill-emacs . company-tabnine-kill-process)
-  :config
-  ;; Enable TabNine on default
-  (add-to-list 'company-backends #'company-tabnine)
-
-  (map! :leader
-        (:prefix ("a" . "applications")
-          :desc "Use company default backend" "o" #'company-other-backend
-          :desc "Use company tabnine backend" "t" #'company-tabnine))
-
-  ;; Integrate company-tabnine with lsp-mode
-  (defun company//sort-by-tabnine (candidates)
-    (if (or (functionp company-backend)
-            (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-        candidates
-      (let ((candidates-table (make-hash-table :test #'equal))
-            candidates-lsp
-            candidates-tabnine)
-        (dolist (candidate candidates)
-          (if (eq (get-text-property 0 'company-backend candidate)
-                  'company-tabnine)
-              (unless (gethash candidate candidates-table)
-                (push candidate candidates-tabnine))
-            (push candidate candidates-lsp)
-            (puthash candidate t candidates-table)))
-        (setq candidates-lsp (nreverse candidates-lsp))
-        (setq candidates-tabnine (nreverse candidates-tabnine))
-        (nconc (seq-take candidates-tabnine 3)
-               (seq-take candidates-lsp 6))))))
-#+END_SRC
-
-** Dired
-
-#+BEGIN_SRC emacs-lisp
-(use-package dired
-  :defer t
-  :ensure nil
-  :bind
-  (("C-x C-j" . dired-jump)
-   ("C-x j" . dired-jump-other-window))
-  :custom
-  ;; Always delete and copy recursively
-  (dired-recursive-deletes 'always)
-  (dired-recursive-copies 'always)
-  ;; Auto refresh Dired, but be quiet about it
-  (global-auto-revert-non-file-buffers t)
-  (auto-revert-verbose nil)
-  ;; Quickly copy/move file in Dired
-  (dired-dwim-target t)
-  ;; Move files to trash when deleting
-  (delete-by-moving-to-trash t)
-  ;; Load the newest version of a file
-  (load-prefer-newer t)
-  ;; Detect external file changes and auto refresh file
-  (auto-revert-use-notify nil)
-  (auto-revert-interval 3) ; Auto revert every 3 sec
-  :config
-  ;; Enable global auto-revert
-  (global-auto-revert-mode t)
-  ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
-  (put 'dired-find-alternate-file 'disabled nil)
-  :hook
-  (dired-mode . (lambda ()
-                  (dired-hide-details-mode)
-                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
-                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
-                  (local-set-key (kbd "^")
-                                 (lambda () (interactive) (find-alternate-file ".."))))))
-#+END_SRC
-
-** Drag lines
-
-*** Vertically
-
-#+BEGIN_SRC emacs-lisp
-(map!
-    :n "M-k" #'drag-stuff-up    ; drags line up
-    :n "M-j" #'drag-stuff-down)  ; drags line down
-#+END_SRC
-
-*** Horizontally
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'evil-org
-  (map!
-    :n "M-l" #'evil-org->       ; indents line to left
-    :n "M-h" #'evil-org-<))      ; indents line to right
-#+END_SRC
-
-** Yasnippet
-
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :defer t
-  :diminish yas-minor-mode
-  :init
-  (use-package yasnippet-snippets :after yasnippet)
-  :hook ((prog-mode LaTeX-mode org-mode) . yas-minor-mode)
-  :bind
-  (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
-  (:map yas-keymap
-        (("TAB" . smarter-yas-expand-next-field)
-         ([(tab)] . smarter-yas-expand-next-field)))
-  :config
-  (yas-reload-all)
-  (defun smarter-yas-expand-next-field ()
-    "Try to `yas-expand' then `yas-next-field' at current cursor position."
-    (interactive)
-    (let ((old-point (point))
-          (old-tick (buffer-chars-modified-tick)))
-      (yas-expand)
-      (when (and (eq old-point (point))
-                 (eq old-tick (buffer-chars-modified-tick)))
-        (ignore-errors (yas-next-field))))))
-#+END_SRC
-
-** Treemacs magit
-
-#+BEGIN_SRC emacs-lisp
-(use-package treemacs-magit
-  :defer t
-  :after (treemacs magit))
-#+END_SRC
-
-** 2048 game
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package 2048-game
-  :defer t
-  :commands (2048-game))
-#+END_SRC
-
-** Lentic mode
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(after! lentic
-  (global-lentic-mode))
-#+END_SRC
-
-** Apex Legends quotes
-
-Use a random quote of a character from [[https://www.ea.com/games/apex-legends/play-now-for-free][Apex Legends]] as your frame title.
-
-#+BEGIN_SRC emacs-lisp
-;; (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
-(use-package apex-legends-quotes
-  :config
-  ; get random quote from Apex Legends character
-  (setq frame-title-format (get-random-apex-legends-quote))
-  ; interactive function to change title
-  (defun change-emacs-title--apex-legends-quote ()
-    (interactive)
-    (setq frame-title-format (get-random-apex-legends-quote))))
-#+END_SRC
-
-** Zone
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package zone
-  :ensure nil
-  :defer 5
-  :config
-  ;; (zone-when-idle 30) ; in seconds
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (zone))))
-#+END_SRC
-
-*** Zone md5
-
-#+BEGIN_SRC emacs-lisp
-;; (defun zone-pgm-md5 ()
-;;     "MD5 the buffer, then recursively checksum each hash."
-;;     (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-;;                      (point-min) (point-max))))
-;;       ;; Whitespace-fill the window.
-;;       (zone-fill-out-screen (window-width) (window-height))
-;;       (random t)
-;;       (goto-char (point-min))
-;;       (while (not (input-pending-p))
-;;         (when (eobp)
-;;           (goto-char (point-min)))
-;;         (while (not (eobp))
-;;           (delete-region (point) (line-end-position))
-;;           (let ((next-md5 (md5 prev-md5)))
-;;             (insert next-md5)
-;;             (setq prev-md5 next-md5))
-;;           (forward-line 1)
-;;           (zone-park/sit-for (point-min) 0.1)))))
-          #+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  ;; (eval-after-load "zone"
-  ;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-  ;;      (setq zone-programs
-  ;;            (vconcat zone-programs [zone-pgm-md5]))))
-#+END_SRC
-
-*** Zone end of buffer
-
-#+BEGIN_SRC emacs-lisp
-;; (with-eval-after-load 'zone
-;; (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
-;; (require 'zone-end-of-buffer)
-;;     (unless (memq 'zone-pgm-end-of-buffer (append zone-programs nil))
-;;         (setq zone-programs
-;;             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
-#+END_SRC
-
-** God mode
-
-#+BEGIN_SRC emacs-lisp  :tangle no
-(global-set-key (kbd "`-<escape>") 'god-local-mode)
-(global-set-key (kbd "<escape>") 'god-mode-all)
-
-(map! "S-<escape>" #'god-mode-all)
-#+END_SRC
-
-*** Cursor style to indicate mode
-
-You can change the cursor style indicate whether you're in God mode or not.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(defun my-update-cursor ()
-  (setq cursor-type (if (or god-local-mode buffer-read-only)
-                        'box
-                      'bar)))
-
-(add-hook 'god-mode-enabled-hook 'my-update-cursor)
-(add-hook 'god-mode-disabled-hook 'my-update-cursor)
-#+END_SRC
-
-*** Change modeline color
-
-You can use the following function to switch the entire modeline's foreground and background:
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(defun c/god-mode-update-cursor ()
-  (let ((limited-colors-p (> 257 (length (defined-colors)))))
-    (cond (god-local-mode (progn
-                            (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
-                            (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
-          (t (progn
-               (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
-               (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
-#+END_SRC
-
-** HTMLize
-
-HTMLize, a tool that converts buffer text and decorations to HTML
-
-#+BEGIN_SRC emacs-lisp
-(use-package htmlize
-  :defer t)
-#+END_SRC
-
-** EWW
-
-Emacs Web Wowser, the HTML-based Emacs Web Browser.
-
-#+BEGIN_SRC emacs-lisp
-(use-package eww
-  :defer t
-  :ensure nil
-  :commands (eww)
-  :hook (eww-mode . (lambda ()
-                      "Rename EWW's buffer so sites open in new page."
-                      (rename-buffer "eww" t)))
-  :config
-  ;; I am using EAF-Browser instead of EWW
-  (unless *eaf-env*
-    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
-#+END_SRC
-** VTerm
-
-*** Add clickable links inside terminal
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'vterm-mode-hook #'goto-address-mode)
-#+END_SRC
-
-*** Vterm paste using vim keybind
-
-#+BEGIN_SRC emacs-lisp
-(map! :map vterm-mode-map
-      :n "P" #'vterm-yank
-      :n "p" #'vterm-yank)
-#+END_SRC
-
-** Restclient
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package restclient
-  :defer t
-  :config
-    (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((restclient . t))))
-#+END_SRC
-
-** Popup kill ring :noexport:
-
-Popup Kill Ring, a feature that provides the ability to browse Emacs kill ring in autocomplete style popup menu.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package popup-kill-ring
-  :defer t
-  :bind ("M-y" . popup-kill-ring))
-#+END_SRC
-
-** Undo tree
-
-Undo tree, a feature that provides a visualization of the undos in a file.
-
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :defer t
-  ;; :diminish undo-tree-mode
-  ;; :init (global-undo-tree-mode)
-  :custom
-  (undo-tree-visualizer-diff t)
-  (undo-tree-visualizer-timestamps t))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(map! :leader
-    (:prefix ("a" . "applications")
-        :desc "Open undo tree visualizer" "u" #'undo-tree-visualize))
-#+END_SRC
-
-** Discover My Major :noexport:
-
-Discover my major, a feature that discovers key bindings and their meaning for the current Emacs major mode.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package discover-my-major
-  :defer 1
-  :config
-  (map! :leader (:prefix ("h" . "help")
-                    :desc "Open discover-my-major" "z" #'discover-my-major)))
-#+END_SRC
-
-** Flycheck
-
-Flycheck, a syntax checking extension.
-
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :defer t
-  :hook (prog-mode . flycheck-mode)
-  :custom
-  (flycheck-emacs-lisp-load-path 'inherit)
-  :config
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
-  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
-#+END_SRC
-
-** Hightlight indentation guide
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package highlight-indent-guides
-  :defer t
-  :if *sys/gui*
-  :diminish
-  :hook ((prog-mode web-mode nxml-mode) . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-delay 1.5)
-  (highlight-indent-guides-auto-character-face-perc 7))
-#+END_SRC
-
-Indentation config
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq-default indent-tabs-mode nil)
-(setq-default indent-line-function 'insert-tab)
-(setq-default tab-width 4)
-(setq-default c-basic-offset 4)
-(setq-default js-switch-indent-offset 4)
-(c-set-offset 'comment-intro 0)
-(c-set-offset 'innamespace 0)
-(c-set-offset 'case-label '+)
-(c-set-offset 'access-label 0)
-(c-set-offset (quote cpp-macro) 0 nil)
-(add-hook 'after-change-major-mode-hook
-          (lambda () (if (equal electric-indent-mode 't)
-                         (when (derived-mode-p 'text-mode)
-                           (electric-indent-mode -1))
-                       (electric-indent-mode 1))))
-#+END_SRC
-
-** Iedit
-
-Iedit, a minor mode that allows editing multiple regions simultaneousy in a buffer or a region.
-
-#+BEGIN_SRC emacs-lisp
-(use-package iedit
-  :defer t
-  :diminish)
-#+END_SRC
-
-** Powerthesaurus
-
-#+BEGIN_SRC emacs-lisp
-(use-package powerthesaurus
-  :defer t)
-#+END_SRC
-
-*** Keybinding
-
-#+BEGIN_SRC emacs-lisp
-(map! :leader
-      (:prefix ("a" . "applications")
-        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
-#+END_SRC
-
-** Ace-popup
-
-#+BEGIN_SRC emacs-lisp
-(use-package ace-popup-menu
-  :defer t)
-#+END_SRC
-
-** String-inflection
-
-#+BEGIN_SRC emacs-lisp
-(use-package string-inflection
-  :defer t)
-  ;; :config
-  ;; (defun my-string-inflection-cycle-auto ()
-  ;;   "switching by major-mode"
-  ;;   (interactive)
-  ;;   (cond
-  ;;    ;; for emacs-lisp-mode
-  ;;    ((eq major-mode 'emacs-lisp-mode)
-  ;;     (string-inflection-all-cycle))
-  ;;    ;; for python
-  ;;    ((eq major-mode 'python-mode)
-  ;;     (string-inflection-python-style-cycle))
-  ;;    ;; for java
-  ;;    ((eq major-mode 'java-mode)
-  ;;     (string-inflection-java-style-cycle))
-  ;;    (t
-  ;;     ;; default
-  ;;     (string-inflection-ruby-style-cycle)))))
-#+END_SRC
-
-*** Keybinding
-
-#+BEGIN_SRC emacs-lisp
-(map! :leader
-    (:prefix ("a" . "applications")
-        :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
-#+END_SRC
-
-** Pipenv
-
-#+BEGIN_SRC emacs-lisp
-(use-package pipenv
-  :defer t)
-#+END_SRC
-
-** Easy escape
-
-#+BEGIN_SRC emacs-lisp
-(use-package easy-escape
-  :defer t)
-#+END_SRC
-
-** Cheatsheet
-
-To see cheatsheet for Emacs, run ~M-x cheatsheet-show~
-
-#+BEGIN_SRC emacs-lisp :no tangle
-(use-package cheatsheet
-  :defer t)
-#+END_SRC
-
-*** Cheatsheet mode
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add :group 'Cheatsheet
-                :key "C-q"
-                :description "Leave cheatsheet")
-#+END_SRC
-
-*** Evil mode
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Evil-mode
-                      '(:key "ESC" :description "Change mode to `NormalMode'")
-                      '(:key "<NormalMode> :" :description "Change mode to `CommandMode'")
-                      '(:key "<NormalMode> /" :description "Change mode to `FindForwardMode'")
-                      '(:key "<NormalMode> ?" :description "Change mode to `FindBackwordMode'")
-                      '(:key "<NormalMode> r" :description "Change mode to `ReplaceMode'")
-                      '(:key "<NormalMode> R" :description "Change mode to `ReplaceMode'")
-                      '(:key "<NormalMode> v" :description "Change mode to `VisualMode'")
-                      '(:key "<NormalMode> V" :description "Change mode to `VisualLineMode'")
-                      '(:key "<NormalMode> C-v" :description "Change mode to `VisualBlockMode'")
-                      '(:key "i" :description "Change mode to `InsertMode'")
-                      '(:key "I" :description "Moves the cursor to the beginning of the line and change mode to `InsertMode'")
-                      '(:key "a" :description "Moves the cursor after the current character and change mode to `InsertMode'")
-                      '(:key "A" :description "Moves the cursor to the end of the line and change mode to `InsertMode'")
-                      '(:key "o" :description "Inserts a new line below the current line and change mode to `InsertMode'")
-                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'")
-                      '(:key "O" :description "Inserts a new line above the current one change mode to `InsertMode'"))
-#+END_SRC
-
-*** Emacs
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Emacs
-                      '(:key "SPC q q" :description "Quit Emacs")
-                      '(:key "SPC q Q" :description "Quit Emacs without saving")
-                      '(:key "<Command line mode> q" :description "Quit Emacs Vim style")
-                      '(:key "M-w" :description "Copy text")
-                      '(:key "C-w" :description "Cut text")
-                      '(:key "C-y" :description "Paste text")
-                      '(:key "M-y" :description "Cycle back Paste text")
-                      '(:key "C-_" :description "Undo [Emacs way]"))
-#+END_SRC
-
-*** Navigation
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Navigation
-                      '(:key "<NormalMode> h" :description "Move left")
-                      '(:key "<NormalMode> j" :description "Move down")
-                      '(:key "<NormalMode> k" :description "Move up")
-                      '(:key "<NormalMode> l" :description "Move right"))
-#+END_SRC
-
-*** Buffer management
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Buffer-management
-                      '(:key "<NormalMode> SPC b i" :description "List buffers using ibuffer")
-                      '(:key "<NormalMode> SPC b B" :description "List buffers")
-                      '(:key "<VisualMode> b -" :description "Toggle narrowing buffer")
-                      '(:key "<NormalMode> b d" :description "Kill current buffer")
-                      '(:key "<NormalMode> b K" :description "Kill all buffer")
-                      '(:key "<NormalMode> b N" :description "Create new empty buffer"))
-#+END_SRC
-
-*** Window management
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Window-management
-                      '(:key "<NormalMode> SPC w d" :description "Delete window")
-                      '(:key "<NormalMode> SPC w R" :description "Rotate window")
-                      '(:key "<NormalMode> SPC w H" :description "Move window to left")
-                      '(:key "<NormalMode> SPC w J" :description "Move window to down")
-                      '(:key "<NormalMode> SPC w K" :description "Move window to up")
-                      '(:key "<NormalMode> SPC w L" :description "Move window to right")
-                      '(:key "<NormalMode> SPC w M-w" :description "Jump to any window using Ace"))
-#+END_SRC
-
-*** Git
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(cheatsheet-add-group 'Git
-                      '(:key "<NormalMode> SPC g g" :description "Show Magit status")
-                      '(:key "<NormalMode> SPC g t" :description "Toggle Git-Timemachine"))
-#+END_SRC
-
-**** Magit
-
-#+BEGIN_SRC emacs-lisp
-(cheatsheet-add-group 'Magit
-                      '(:key "<NormalMode> s" :description "Stage hunk")
-                      '(:key "<NormalMode> c c" :description "Create commit")
-                      '(:key "<NormalMode> p u" :description "Push to upstream")
-                      '(:key "<NormalMode> f u" :description "Fetch from upstream")
-                      '(:key "<NormalMode> F u" :description "Pull from upstream"))
-#+END_SRC
-
-**** Git Timemachine
-
-#+BEGIN_SRC emacs-lisp
-(cheatsheet-add-group 'Window-management
-                      '(:key "<NormalMode> C-j" :description "Next revision")
-                      '(:key "<NormalMode> C-k" :description "Previous revision"))
-#+END_SRC
-
-** Easy escape
-
-Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape][Github repo]]
-
-[[https://raw.githubusercontent.com/cpitclaudel/easy-escape/master/img/easy-escape.png]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package easy-escape
-  :defer t
-  :config
-    (set-face-attribute 'easy-escape-face nil :foreground "red"))
-#+END_SRC
-
-** Parinfer
-
-#+BEGIN_SRC emacs-lisp
-(use-package parinfer
-  :defer t)
-#+END_SRC
-
-** Evil snipe
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-snipe
-  :defer t
-  :config
-  (setq evil-snipe-scope 'visible)
-  (setq evil-snipe-repeat-scope 'buffer)
-  (setq evil-snipe-spillover-scope 'whole-buffer))
-#+END_SRC
-
-** Indent tools
-
-Indent,  move around  and  act  on code  based  on indentation  (yaml, python, jade, etc).
-Meant for indentation-based  languages, but can be used  any time with indented text.
-
-#+BEGIN_SRC emacs-lisp
-(use-package indent-tools
-  :defer t
-  :after (hydra)
-  :bind ("C-c >" . #'indent-tools-hydra/body))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-;; (map! "C-c >" #'indent-tools-hydra/body)
-#+END_SRC
-
-** Hydra
-
-#+BEGIN_SRC emacs-lisp
-(use-package hydra
-  :defer t)
-#+END_SRC
-
 * Languages
-
-** Rust
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(add-hook 'rustic-mode-hook (lambda ()
-              (set (make-local-variable 'company-backends) '(company-tabnine))))
-#+END_SRC
 
 ** Python
 

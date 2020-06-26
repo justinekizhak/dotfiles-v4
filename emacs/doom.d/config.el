@@ -122,15 +122,114 @@
 (add-hook! '(+doom-dashboard-mode-hook)
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
-(map! "M-s" #'save-buffer)
-(map! "M-a" #'mark-whole-buffer)
-(map! "M-v" #'counsel-yank-pop)
 (map! :leader
       (:prefix ("w")
         "C-w" nil))
 (map! :leader
       (:prefix ("w" . "window")
         :desc "Jump to any window using Ace" "M-w" #'ace-window))
+(map! "M-a" #'mark-whole-buffer)
+(map! "M-s" #'save-buffer)
+(map! "M-v" #'counsel-yank-pop)
+(use-package ace-popup-menu
+  :defer t)
+(use-package apex-legends-quotes
+  :config
+  ; get random quote from Apex Legends character
+  (setq frame-title-format (get-random-apex-legends-quote))
+  ; interactive function to change title
+  (defun change-emacs-title--apex-legends-quote ()
+    (interactive)
+    (setq frame-title-format (get-random-apex-legends-quote))))
+(add-to-list 'after-init-hook 'clipmon-mode-start)
+(use-package dired
+  :defer t
+  :ensure nil
+  :bind
+  (("C-x C-j" . dired-jump)
+   ("C-x j" . dired-jump-other-window))
+  :custom
+  ;; Always delete and copy recursively
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
+  ;; Auto refresh Dired, but be quiet about it
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil)
+  ;; Quickly copy/move file in Dired
+  (dired-dwim-target t)
+  ;; Move files to trash when deleting
+  (delete-by-moving-to-trash t)
+  ;; Load the newest version of a file
+  (load-prefer-newer t)
+  ;; Detect external file changes and auto refresh file
+  (auto-revert-use-notify nil)
+  (auto-revert-interval 3) ; Auto revert every 3 sec
+  :config
+  ;; Enable global auto-revert
+  (global-auto-revert-mode t)
+  ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
+  (put 'dired-find-alternate-file 'disabled nil)
+  :hook
+  (dired-mode . (lambda ()
+                  (dired-hide-details-mode)
+                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
+                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
+                  (local-set-key (kbd "^")
+                                 (lambda () (interactive) (find-alternate-file ".."))))))
+(map!
+    :n "M-k" #'drag-stuff-up    ; drags line up
+    :n "M-j" #'drag-stuff-down)  ; drags line down
+(with-eval-after-load 'evil-org
+  (map!
+    :n "M-l" #'evil-org->       ; indents line to left
+    :n "M-h" #'evil-org-<))      ; indents line to right
+(use-package easy-escape
+  :defer t)
+(use-package easy-escape
+  :defer t
+  :config
+    (set-face-attribute 'easy-escape-face nil :foreground "red"))
+(use-package evil-snipe
+  :defer t
+  :config
+  (setq evil-snipe-scope 'visible)
+  (setq evil-snipe-repeat-scope 'buffer)
+  (setq evil-snipe-spillover-scope 'whole-buffer))
+(use-package eww
+  :defer t
+  :ensure nil
+  :commands (eww)
+  :hook (eww-mode . (lambda ()
+                      "Rename EWW's buffer so sites open in new page."
+                      (rename-buffer "eww" t)))
+  :config
+  ;; I am using EAF-Browser instead of EWW
+  (unless *eaf-env*
+    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
+(use-package flycheck
+  :defer t
+  :hook (prog-mode . flycheck-mode)
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
+  :config
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
+(use-package goto-line-preview
+  :defer 3
+  :config
+    (global-set-key [remap goto-line] 'goto-line-preview))
+(use-package htmlize
+  :defer t)
+(use-package hydra
+  :defer t)
+(use-package iedit
+  :defer t
+  :diminish)
+(use-package indent-tools
+  :defer t
+  :after (hydra)
+  :bind ("C-c >" . #'indent-tools-hydra/body))
+;; (map! "C-c >" #'indent-tools-hydra/body)
 (use-package org
   :defer t
   :config
@@ -152,9 +251,60 @@
     (setq org-reveal-mathjax t))
 (setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 (setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
+(use-package parinfer
+  :defer t)
+(use-package pipenv
+  :defer t)
+(use-package powerthesaurus
+  :defer t)
+(map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
 (use-package projectile
   :config
     (setq  projectile-project-search-path '("~/projects")))
+(use-package deadgrep
+  :defer 3
+  :config
+    (map! :leader
+      (:prefix ("a" . "applications")
+        :desc "Open Ripgrep interface" "r" #'deadgrep)))
+(use-package string-inflection
+  :defer t)
+  ;; :config
+  ;; (defun my-string-inflection-cycle-auto ()
+  ;;   "switching by major-mode"
+  ;;   (interactive)
+  ;;   (cond
+  ;;    ;; for emacs-lisp-mode
+  ;;    ((eq major-mode 'emacs-lisp-mode)
+  ;;     (string-inflection-all-cycle))
+  ;;    ;; for python
+  ;;    ((eq major-mode 'python-mode)
+  ;;     (string-inflection-python-style-cycle))
+  ;;    ;; for java
+  ;;    ((eq major-mode 'java-mode)
+  ;;     (string-inflection-java-style-cycle))
+  ;;    (t
+  ;;     ;; default
+  ;;     (string-inflection-ruby-style-cycle)))))
+(map! :leader
+    (:prefix ("a" . "applications")
+        :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
+(use-package treemacs-magit
+  :defer t
+  :after (treemacs magit))
+(use-package undo-tree
+  :defer t
+  ;; :diminish undo-tree-mode
+  ;; :init (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t))
+(add-hook 'vterm-mode-hook #'goto-address-mode)
+(map! :map vterm-mode-map
+      :n "P" #'vterm-yank
+      :n "p" #'vterm-yank)
 (use-package web-mode
   :defer 3
   :custom-face
@@ -223,218 +373,6 @@
   '(add-hook 'vue-mode-hook
              (lambda ()
                (add-hook 'before-save-hook 'prettier-js-mode))))
-(use-package deadgrep
-  :defer 3
-  :config
-    (map! :leader
-      (:prefix ("a" . "applications")
-        :desc "Open Ripgrep interface" "r" #'deadgrep)))
-(use-package goto-line-preview
-  :defer 3
-  :config
-    (global-set-key [remap goto-line] 'goto-line-preview))
-(add-to-list 'after-init-hook 'clipmon-mode-start)
-(use-package dired
-  :defer t
-  :ensure nil
-  :bind
-  (("C-x C-j" . dired-jump)
-   ("C-x j" . dired-jump-other-window))
-  :custom
-  ;; Always delete and copy recursively
-  (dired-recursive-deletes 'always)
-  (dired-recursive-copies 'always)
-  ;; Auto refresh Dired, but be quiet about it
-  (global-auto-revert-non-file-buffers t)
-  (auto-revert-verbose nil)
-  ;; Quickly copy/move file in Dired
-  (dired-dwim-target t)
-  ;; Move files to trash when deleting
-  (delete-by-moving-to-trash t)
-  ;; Load the newest version of a file
-  (load-prefer-newer t)
-  ;; Detect external file changes and auto refresh file
-  (auto-revert-use-notify nil)
-  (auto-revert-interval 3) ; Auto revert every 3 sec
-  :config
-  ;; Enable global auto-revert
-  (global-auto-revert-mode t)
-  ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
-  (put 'dired-find-alternate-file 'disabled nil)
-  :hook
-  (dired-mode . (lambda ()
-                  (dired-hide-details-mode)
-                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
-                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
-                  (local-set-key (kbd "^")
-                                 (lambda () (interactive) (find-alternate-file ".."))))))
-(map!
-    :n "M-k" #'drag-stuff-up    ; drags line up
-    :n "M-j" #'drag-stuff-down)  ; drags line down
-(with-eval-after-load 'evil-org
-  (map!
-    :n "M-l" #'evil-org->       ; indents line to left
-    :n "M-h" #'evil-org-<))      ; indents line to right
-(use-package yasnippet
-  :defer t
-  :diminish yas-minor-mode
-  :init
-  (use-package yasnippet-snippets :after yasnippet)
-  :hook ((prog-mode LaTeX-mode org-mode) . yas-minor-mode)
-  :bind
-  (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
-  (:map yas-keymap
-        (("TAB" . smarter-yas-expand-next-field)
-         ([(tab)] . smarter-yas-expand-next-field)))
-  :config
-  (yas-reload-all)
-  (defun smarter-yas-expand-next-field ()
-    "Try to `yas-expand' then `yas-next-field' at current cursor position."
-    (interactive)
-    (let ((old-point (point))
-          (old-tick (buffer-chars-modified-tick)))
-      (yas-expand)
-      (when (and (eq old-point (point))
-                 (eq old-tick (buffer-chars-modified-tick)))
-        (ignore-errors (yas-next-field))))))
-(use-package treemacs-magit
-  :defer t
-  :after (treemacs magit))
-;; (load "~/projects/apex-legends-quotes/apex-legends-quotes.el")
-(use-package apex-legends-quotes
-  :config
-  ; get random quote from Apex Legends character
-  (setq frame-title-format (get-random-apex-legends-quote))
-  ; interactive function to change title
-  (defun change-emacs-title--apex-legends-quote ()
-    (interactive)
-    (setq frame-title-format (get-random-apex-legends-quote))))
-;; (defun zone-pgm-md5 ()
-;;     "MD5 the buffer, then recursively checksum each hash."
-;;     (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-;;                      (point-min) (point-max))))
-;;       ;; Whitespace-fill the window.
-;;       (zone-fill-out-screen (window-width) (window-height))
-;;       (random t)
-;;       (goto-char (point-min))
-;;       (while (not (input-pending-p))
-;;         (when (eobp)
-;;           (goto-char (point-min)))
-;;         (while (not (eobp))
-;;           (delete-region (point) (line-end-position))
-;;           (let ((next-md5 (md5 prev-md5)))
-;;             (insert next-md5)
-;;             (setq prev-md5 next-md5))
-;;           (forward-line 1)
-;;           (zone-park/sit-for (point-min) 0.1)))))
-;; (eval-after-load "zone"
-;;   '(unless (memq 'zone-pgm-md5 (append zone-programs nil))
-;;      (setq zone-programs
-;;            (vconcat zone-programs [zone-pgm-md5]))))
-;; (with-eval-after-load 'zone
-;; (load "~/dotfiles/emacs/packages/zone-end-of-buffer/zone-end-of-buffer.el")
-;; (require 'zone-end-of-buffer)
-;;     (unless (memq 'zone-pgm-end-of-buffer (append zone-programs nil))
-;;         (setq zone-programs
-;;             (vconcat zone-programs [zone-pgm-end-of-buffer]))))
-(use-package htmlize
-  :defer t)
-(use-package eww
-  :defer t
-  :ensure nil
-  :commands (eww)
-  :hook (eww-mode . (lambda ()
-                      "Rename EWW's buffer so sites open in new page."
-                      (rename-buffer "eww" t)))
-  :config
-  ;; I am using EAF-Browser instead of EWW
-  (unless *eaf-env*
-    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
-(add-hook 'vterm-mode-hook #'goto-address-mode)
-(map! :map vterm-mode-map
-      :n "P" #'vterm-yank
-      :n "p" #'vterm-yank)
-(use-package undo-tree
-  :defer t
-  ;; :diminish undo-tree-mode
-  ;; :init (global-undo-tree-mode)
-  :custom
-  (undo-tree-visualizer-diff t)
-  (undo-tree-visualizer-timestamps t))
-(use-package flycheck
-  :defer t
-  :hook (prog-mode . flycheck-mode)
-  :custom
-  (flycheck-emacs-lisp-load-path 'inherit)
-  :config
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
-  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
-(use-package iedit
-  :defer t
-  :diminish)
-(use-package powerthesaurus
-  :defer t)
-(map! :leader
-      (:prefix ("a" . "applications")
-        :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
-(use-package ace-popup-menu
-  :defer t)
-(use-package string-inflection
-  :defer t)
-  ;; :config
-  ;; (defun my-string-inflection-cycle-auto ()
-  ;;   "switching by major-mode"
-  ;;   (interactive)
-  ;;   (cond
-  ;;    ;; for emacs-lisp-mode
-  ;;    ((eq major-mode 'emacs-lisp-mode)
-  ;;     (string-inflection-all-cycle))
-  ;;    ;; for python
-  ;;    ((eq major-mode 'python-mode)
-  ;;     (string-inflection-python-style-cycle))
-  ;;    ;; for java
-  ;;    ((eq major-mode 'java-mode)
-  ;;     (string-inflection-java-style-cycle))
-  ;;    (t
-  ;;     ;; default
-  ;;     (string-inflection-ruby-style-cycle)))))
-(map! :leader
-    (:prefix ("a" . "applications")
-        :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
-(use-package pipenv
-  :defer t)
-(use-package easy-escape
-  :defer t)
-(use-package cheatsheet
-  :defer t)
-(cheatsheet-add-group 'Magit
-                      '(:key "<NormalMode> s" :description "Stage hunk")
-                      '(:key "<NormalMode> c c" :description "Create commit")
-                      '(:key "<NormalMode> p u" :description "Push to upstream")
-                      '(:key "<NormalMode> f u" :description "Fetch from upstream")
-                      '(:key "<NormalMode> F u" :description "Pull from upstream"))
-(cheatsheet-add-group 'Window-management
-                      '(:key "<NormalMode> C-j" :description "Next revision")
-                      '(:key "<NormalMode> C-k" :description "Previous revision"))
-(use-package easy-escape
-  :defer t
-  :config
-    (set-face-attribute 'easy-escape-face nil :foreground "red"))
-(use-package parinfer
-  :defer t)
-(use-package evil-snipe
-  :defer t
-  :config
-  (setq evil-snipe-scope 'visible)
-  (setq evil-snipe-repeat-scope 'buffer)
-  (setq evil-snipe-spillover-scope 'whole-buffer))
-(use-package indent-tools
-  :defer t
-  :after (hydra)
-  :bind ("C-c >" . #'indent-tools-hydra/body))
-;; (map! "C-c >" #'indent-tools-hydra/body)
-(use-package hydra
-  :defer t)
 (use-package python-mode
   :defer t
   :mode "\\.py\\'"

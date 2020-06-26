@@ -73,10 +73,19 @@ platforms:
           - fd
           - clang
           - emacs-plus
+          - editorconfig
+          - graphviz
+          - wordnet
         command: "git clone https://github.com/hlissner/doom-emacs ~/doom-emacs"
         config:
           - "ln -s ~/dotfiles/emacs/doom.d/ ~/.doom.d/"
           - "doom install"
+      - name: editorconfig
+        command: "brew install editorconfig"
+      - name: graphviz
+        command: "brew install graphviz"
+      - name: wordnet
+        command: "brew install wordnet"
       - name: spacemacs
         requires:
           - emacs-plus
