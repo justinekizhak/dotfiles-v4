@@ -46,12 +46,22 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 
+  ;; better scrolling experience
+  ;; (setq scroll-margin 0
+  ;;       scroll-conservatively 10000
+  ;;       scroll-preserve-screen-position t
+  ;;       auto-window-vscroll nil)
+
   ;; increase line space for better readability
   (setq-default line-spacing 3)
 
   ;; Always use spaces for indentation
   (setq-default indent-tabs-mode nil
                 tab-width ian/indent-width))
+(use-package delsel
+  :disabled
+  :ensure nil
+  :config (delete-selection-mode +1))
 (setq delete-selection-mode t)
 (use-package scroll-bar
   :defer t
