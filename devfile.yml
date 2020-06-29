@@ -104,7 +104,7 @@ platforms:
           - pinentry
         init:
           - "brew tap d13frosted/emacs-plus"
-        command: "brew install emacs-plus --HEAD --with-modern-icon-sexy-v2 --with-emacs-26-branch"
+        command: "brew install emacs-plus@27 --HEAD --with-modern-icon-sexy-v1 --with-jansson --with-xwidgets"
       - name: brew
         requires:
           - xcode

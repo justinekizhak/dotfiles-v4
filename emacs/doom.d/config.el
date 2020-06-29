@@ -133,14 +133,12 @@
 (map! "M-v" #'counsel-yank-pop)
 (use-package ace-popup-menu
   :defer t)
-(use-package apex-legends-quotes
-  :config
-  ; get random quote from Apex Legends character
-  (setq frame-title-format (get-random-apex-legends-quote))
-  ; interactive function to change title
-  (defun change-emacs-title--apex-legends-quote ()
-    (interactive)
-    (setq frame-title-format (get-random-apex-legends-quote))))
+(setq frame-title-format (shell-command-to-string "apex-voicelines"))
+
+; interactive function to change title
+(defun change-emacs-title-apex ()
+  (interactive)
+  (setq frame-title-format (shell-command-to-string "apex-voicelines")))
 (add-to-list 'after-init-hook 'clipmon-mode-start)
 (use-package dired
   :defer t
@@ -373,6 +371,9 @@
   '(add-hook 'vue-mode-hook
              (lambda ()
                (add-hook 'before-save-hook 'prettier-js-mode))))
+;; (setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-doc-max-height 30)
+(setq lsp-ui-doc-max-width 150)
 (use-package python-mode
   :defer t
   :mode "\\.py\\'"
@@ -451,3 +452,16 @@ Version 2019-11-05"
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
 (setq browse-url-browser-function 'browse-url-firefox)
 (global-auto-revert-mode 1)
+(defun async-shell-command-no-window (command)
+  (interactive)
+  (let
+      ((display-buffer-alist
+        (list
+         (cons
+          "\\*Async Shell Command\\*.*"
+          (cons #'display-buffer-no-window nil)))))
+    (async-shell-command
+     command)))
+
+(run-with-idle-timer 0 nil '(lambda ()
+                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))

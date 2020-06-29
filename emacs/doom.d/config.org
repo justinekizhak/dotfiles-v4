@@ -55,7 +55,7 @@
   - [[⌘ + v → Paste menu][⌘ + v → Paste menu]]
 - [[Packages][Packages]]
   - [[Ace-popup][Ace-popup]]
-  - [[Apex Legends quotes][Apex Legends quotes]]
+  - [[Apex Legends title][Apex Legends title]]
   - [[Clipmon][Clipmon]]
   - [[Dired][Dired]]
   - [[Drag lines][Drag lines]]
@@ -80,6 +80,7 @@
   - [[Undo tree][Undo tree]]
   - [[VTerm][VTerm]]
   - [[Web development][Web development]]
+  - [[LSP][LSP]]
 - [[Languages][Languages]]
   - [[Python][Python]]
   - [[Dart][Dart]]
@@ -536,19 +537,27 @@ Bind =SPC w M-w= for Ace window
   :defer t)
 #+END_SRC
 
-** Apex Legends quotes
+** Apex Legends title
 
 Use a random quote of a character from [[https://www.ea.com/games/apex-legends/play-now-for-free][Apex Legends]] as your frame title.
 
+Requires [[https://pypi.org/project/apex-legends-voicelines/][Apex Legends voicelines]] python package.
+
+*** Install the package using
+
+#+BEGIN_SRC sh :tangle no
+pipx install apex-legends-voicelines
+#+END_SRC
+
+*** Usage
+
 #+BEGIN_SRC emacs-lisp
-(use-package apex-legends-quotes
-  :config
-  ; get random quote from Apex Legends character
-  (setq frame-title-format (get-random-apex-legends-quote))
-  ; interactive function to change title
-  (defun change-emacs-title--apex-legends-quote ()
-    (interactive)
-    (setq frame-title-format (get-random-apex-legends-quote))))
+(setq frame-title-format (shell-command-to-string "apex-voicelines"))
+
+; interactive function to change title
+(defun change-emacs-title-apex ()
+  (interactive)
+  (setq frame-title-format (shell-command-to-string "apex-voicelines")))
 #+END_SRC
 
 ** Clipmon
@@ -1045,6 +1054,14 @@ JSON Mode, a major mode for editing JSON files.
                (add-hook 'before-save-hook 'prettier-js-mode))))
 #+END_SRC
 
+** LSP
+
+#+BEGIN_SRC emacs-lisp
+;; (setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-doc-max-height 30)
+(setq lsp-ui-doc-max-width 150)
+#+END_SRC
+
 * Languages
 
 ** Python
@@ -1211,7 +1228,7 @@ Ref: [[http://ergoemacs.org/emacs/emacs_misc_init.html]]
 
 Play Apex Legends music when booting up Emacs.
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (defun async-shell-command-no-window (command)
   (interactive)
   (let
