@@ -69,9 +69,11 @@
   - [[Hydra][Hydra]]
   - [[Iedit][Iedit]]
   - [[Indent tools][Indent tools]]
+  - [[LSP][LSP]]
   - [[Org mode][Org mode]]
   - [[Parinfer][Parinfer]]
   - [[Pipenv][Pipenv]]
+  - [[PlantUML][PlantUML]]
   - [[Powerthesaurus][Powerthesaurus]]
   - [[Projectile][Projectile]]
   - [[Ripgrep][Ripgrep]]
@@ -80,7 +82,6 @@
   - [[Undo tree][Undo tree]]
   - [[VTerm][VTerm]]
   - [[Web development][Web development]]
-  - [[LSP][LSP]]
 - [[Languages][Languages]]
   - [[Python][Python]]
   - [[Dart][Dart]]
@@ -92,7 +93,6 @@
   - [[Use Command key as meta key (Only on MacOS)][Use Command key as meta key (Only on MacOS)]]
   - [[Create a paste-transient-state to cycle through kill ring on paste][Create a paste-transient-state to cycle through kill ring on paste]]
   - [[Backup][Backup]]
-  - [[Use firefox as default browser][Use firefox as default browser]]
   - [[Refresh file automatically][Refresh file automatically]]
 - [[Post Initialization][Post Initialization]]
   - [[Play startup music][Play startup music]]
@@ -714,7 +714,7 @@ HTMLize, a tool that converts buffer text and decorations to HTML
 
 ** Iedit
 
-Iedit, a minor mode that allows editing multiple regions simultaneousy in a buffer or a region.
+Iedit, a minor mode that allows editing multiple regions simultaneously in a buffer or a region.
 
 #+BEGIN_SRC emacs-lisp
 (use-package iedit
@@ -738,6 +738,14 @@ Meant for indentation-based  languages, but can be used  any time with indented 
 ;; (map! "C-c >" #'indent-tools-hydra/body)
 #+END_SRC
 
+** LSP
+
+#+BEGIN_SRC emacs-lisp
+;; (setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-doc-max-height 30)
+(setq lsp-ui-doc-max-width 150)
+#+END_SRC
+
 ** Org mode
 
 Don't display images in a org file which has images.
@@ -752,15 +760,13 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
   (setq org-use-property-inheritance t)
   ; Fix `org-cycle' bug
   (map! :map org-mode-map
-        :n "<tab>" 'org-cycle))
-#+END_SRC
-
-*** Org-toc
-
-#+BEGIN_SRC emacs-lisp
-(use-package toc-org
-  :defer 3
-  :hook (org-mode . toc-org-mode))
+        :n "<tab>" 'org-cycle)
+  ; Add plantUML
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (setq org-plantuml-jar-path "~/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+  ; Add graphviz
+  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot)))
 #+END_SRC
 
 *** Ox-gfm
@@ -807,6 +813,13 @@ Use color links when exported from Org to Latex
 
 #+BEGIN_SRC emacs-lisp
 (use-package pipenv
+  :defer t)
+#+END_SRC
+
+** PlantUML
+
+#+BEGIN_SRC emacs-lisp
+(use-package plantuml-mode
   :defer t)
 #+END_SRC
 
@@ -1054,14 +1067,6 @@ JSON Mode, a major mode for editing JSON files.
                (add-hook 'before-save-hook 'prettier-js-mode))))
 #+END_SRC
 
-** LSP
-
-#+BEGIN_SRC emacs-lisp
-;; (setq lsp-ui-sideline-show-hover t)
-(setq lsp-ui-doc-max-height 30)
-(setq lsp-ui-doc-max-width 150)
-#+END_SRC
-
 * Languages
 
 ** Python
@@ -1207,12 +1212,6 @@ Version 2019-11-05"
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
 #+END_SRC
 
-** Use firefox as default browser
-
-#+BEGIN_SRC emacs-lisp
-(setq browse-url-browser-function 'browse-url-firefox)
-#+END_SRC
-
 ** Refresh file automatically
 
 When a file is updated outside emacs, make it update if it's already opened in emacs
@@ -1240,6 +1239,12 @@ Play Apex Legends music when booting up Emacs.
     (async-shell-command
      command)))
 
-(run-with-idle-timer 0 nil '(lambda ()
-                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+(defun run-crypto-music (&optional frame)
+  (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav"))
+
+(add-hook 'after-make-frame-functions 'run-crypto-music)
+
+(add-hook 'emacs-startup-hook (lambda ()
+                                (if (not (daemonp))
+                                    (run-crypto-music))))
 #+END_SRC

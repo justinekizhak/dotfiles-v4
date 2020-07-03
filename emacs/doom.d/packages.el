@@ -43,4 +43,6 @@
 (package! pipenv)                                                                                  ;;; Use and manage Python virtual env from Emacs
 (package! easy-escape)                                                                             ;;; Make Elisp regular expressions more readable
 (package! web-beautify)                                                                            ;;; Beautify your Web development
+(package! plantuml-mode) ;;; Draw UML diagrams in Emacs
+(package! graphviz-dot-mode)
 ;; (package! apex-legends-quotes :recipe (:host gitlab :repo "justinekizhak/apex-legends-quotes")) ;;; Use `apex-legends-voiceline' python package instead

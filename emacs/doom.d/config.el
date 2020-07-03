@@ -228,6 +228,9 @@
   :after (hydra)
   :bind ("C-c >" . #'indent-tools-hydra/body))
 ;; (map! "C-c >" #'indent-tools-hydra/body)
+;; (setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-doc-max-height 30)
+(setq lsp-ui-doc-max-width 150)
 (use-package org
   :defer t
   :config
@@ -236,10 +239,13 @@
   (setq org-use-property-inheritance t)
   ; Fix `org-cycle' bug
   (map! :map org-mode-map
-        :n "<tab>" 'org-cycle))
-(use-package toc-org
-  :defer 3
-  :hook (org-mode . toc-org-mode))
+        :n "<tab>" 'org-cycle)
+  ; Add plantUML
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (setq org-plantuml-jar-path "~/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+  ; Add graphviz
+  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot)))
 (use-package ox-gfm
   :defer 3)
 (use-package ox-reveal
@@ -252,6 +258,8 @@
 (use-package parinfer
   :defer t)
 (use-package pipenv
+  :defer t)
+(use-package plantuml-mode
   :defer t)
 (use-package powerthesaurus
   :defer t)
@@ -371,9 +379,6 @@
   '(add-hook 'vue-mode-hook
              (lambda ()
                (add-hook 'before-save-hook 'prettier-js-mode))))
-;; (setq lsp-ui-sideline-show-hover t)
-(setq lsp-ui-doc-max-height 30)
-(setq lsp-ui-doc-max-width 150)
 (use-package python-mode
   :defer t
   :mode "\\.py\\'"
@@ -450,7 +455,6 @@ Version 2019-11-05"
 
 ;; when switching out of emacs, all unsaved files will be saved
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
-(setq browse-url-browser-function 'browse-url-firefox)
 (global-auto-revert-mode 1)
 (defun async-shell-command-no-window (command)
   (interactive)
@@ -463,5 +467,11 @@ Version 2019-11-05"
     (async-shell-command
      command)))
 
-(run-with-idle-timer 0 nil '(lambda ()
-                              (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav")))
+(defun run-crypto-music (&optional frame)
+  (async-shell-command-no-window "/usr/bin/afplay ~/dotfiles/emacs/doom.d/audio/Crypto.wav"))
+
+(add-hook 'after-make-frame-functions 'run-crypto-music)
+
+(add-hook 'emacs-startup-hook (lambda ()
+                                (if (not (daemonp))
+                                    (run-crypto-music))))
