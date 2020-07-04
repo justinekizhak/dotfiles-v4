@@ -1,10 +1,7 @@
 version: v1
 platforms:
   - name: macos
-    version:
-      identifier: "1"
-      command: "echo 1"
-    package_manager: "brew install {}"
+    os: macos
     default: "doom"
     presets:
       - name: full
@@ -76,10 +73,24 @@ platforms:
           - editorconfig
           - graphviz
           - wordnet
+          - plantUML
+          - emacs-anywhere
         command: "git clone https://github.com/hlissner/doom-emacs ~/doom-emacs"
         config:
           - "ln -s ~/dotfiles/emacs/doom.d/ ~/.doom.d/"
           - "doom install"
+      - name: emacs-anywhere
+        homepage: "https://github.com/zachcurry/emacs-anywhere"
+        description: "Use emacs anywhere"
+        command: "curl -fsSL https://raw.github.com/zachcurry/emacs-anywhere/master/install | bash"
+        config: '! print("Please set custom keybinding for it and give the necessary permission.")'
+      - name: plantUML
+        description: "To use plantUML you need Java and the `plantUML.jar` from their website"
+        requires:
+          - java
+        command: False
+      - name: java
+        command: "brew install java"
       - name: editorconfig
         command: "brew install editorconfig"
       - name: graphviz
@@ -166,8 +177,8 @@ platforms:
         requires:
           - emacs-plus
         command: "git clone --recurse-submodules -j8 https://github.com/MatthewZMD/.emacs.d.git ~/zmd"
-    folders:
       - alias: dotfiles
+        type: folder
         owner: justine
         permission: "744"
         name: "dotfiles"
@@ -177,7 +188,7 @@ platforms:
         init:
           - "git clone git@gitlab.com:justinekizhak/dotfiles.git"
         command: None
-    files:
       - alias: private_var
+        type: file
         name: "private_env_var.sh"
         parent_dir: "~/dotfiles/zsh/"
