@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+
 brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
