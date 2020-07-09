@@ -45,4 +45,5 @@
 (package! web-beautify)                                                                            ;;; Beautify your Web development
 (package! plantuml-mode) ;;; Draw UML diagrams in Emacs
 (package! graphviz-dot-mode)
+(package! atomic-chrome) ;;; Edit browser text in Emacs
 ;; (package! apex-legends-quotes :recipe (:host gitlab :repo "justinekizhak/apex-legends-quotes")) ;;; Use `apex-legends-voiceline' python package instead

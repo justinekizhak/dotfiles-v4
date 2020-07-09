@@ -140,6 +140,10 @@
 This command requires `apex-legends-voicelines' python package."
   (interactive)
   (setq frame-title-format (shell-command-to-string "apex-voicelines")))
+(use-package atomic-chrome)
+(add-hook 'emacs-startup-hook (lambda ()
+                                (if (daemonp)
+                                    (atomic-chrome-start-server))))
 (add-to-list 'after-init-hook 'clipmon-mode-start)
 (use-package dired
   :defer t
@@ -188,12 +192,6 @@ This command requires `apex-legends-voicelines' python package."
   :defer t
   :config
     (set-face-attribute 'easy-escape-face nil :foreground "red"))
-(defun popup-handler (app-name window-title x y w h)
-  (set-frame-position (selected-frame) 333 235)
-  (unless (zerop w)
-    (set-frame-size (selected-frame) 1058 360 t)))
-
-(add-hook 'ea-popup-hook 'popup-handler)
 (use-package evil-snipe
   :defer t
   :config

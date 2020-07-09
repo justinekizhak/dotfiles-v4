@@ -468,6 +468,17 @@ This command requires `apex-legends-voicelines' python package."
   (setq frame-title-format (shell-command-to-string "apex-voicelines")))
 #+END_SRC
 
+** Atomic chrome
+
+Edit browser text in Emacs
+
+#+BEGIN_SRC emacs-lisp
+(use-package atomic-chrome)
+(add-hook 'emacs-startup-hook (lambda ()
+                                (if (daemonp)
+                                    (atomic-chrome-start-server))))
+#+END_SRC
+
 ** Clipmon
 
 #+BEGIN_SRC emacs-lisp
@@ -551,17 +562,6 @@ Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape]
   :config
     (set-face-attribute 'easy-escape-face nil :foreground "red"))
 #+END_SRC
-
-** Emacs Anywhere
-
-#+begin_src emacs-lisp :tangle yes
-(defun popup-handler (app-name window-title x y w h)
-  (set-frame-position (selected-frame) 333 235)
-  (unless (zerop w)
-    (set-frame-size (selected-frame) 1058 360 t)))
-
-(add-hook 'ea-popup-hook 'popup-handler)
-#+end_src
 
 ** Evil snipe
 
@@ -1167,3 +1167,18 @@ Play Apex Legends music when booting up Emacs.
                                 (if (not (daemonp))
                                     (run-crypto-music))))
 #+END_SRC
+
+* Gitlab -> Github repository mirroring
+
+My main config lives in Gitlab, but I do maintain a mirror at Github. So here
+is how to setup the mirroring:
+
+** Step1: Create Github personal token
+
+Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
+
+** Step2: Mirroring from Gitlab -> Github
+
+Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
+
+Make sure to add token in both the URL and in the =password= textfield.
