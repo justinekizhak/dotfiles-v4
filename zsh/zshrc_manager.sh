@@ -43,15 +43,10 @@
 #  echo "tmux not installed."
 # fi
 
-export ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim
-[ -s "${ZIM_HOME}/init.zsh" ] && . "${ZIM_HOME}/init.zsh"
-
 . "$HOME/dotfiles/zsh/custom_functions.sh"
 . "$HOME/dotfiles/zsh/keybindings.sh"
 . "$HOME/dotfiles/zsh/zshrc.sh"
 . "$HOME/dotfiles/zsh/private_env_var.sh"
-
-# [[ -s ${ZDOTDIR:-${HOME}}/dotfile/zsh/zimrc ]] && source ${ZDOTDIR:-${HOME}}/dotfiles/zsh/.zimrc
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
