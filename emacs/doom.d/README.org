@@ -8,6 +8,7 @@
 
 #+MARKDOWN: <h1>My Doom Emacs config</h1>
 #+MARKDOWN: [[_TOC_]]
+
 * About Emacs
   Emacs changes how you /think/ about programming.
 
@@ -64,7 +65,8 @@ pleasent one.
 
 
 ** Screenshot
-[[file:images/screenshot.png]]
+
+#+html: <p align="center"><img width="100%" src="images/screenshot.png" /></p>
 
 ** Installation
 
