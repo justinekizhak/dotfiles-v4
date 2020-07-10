@@ -105,6 +105,25 @@ Everyone starts somewhere, and I started here.
 - [[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
 - [[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
 
+* Gitlab -> Github repository mirroring
+
+My main config lives in Gitlab, but I do maintain a mirror at Github. So here
+is how to setup the mirroring:
+
+** Step1: Create Github personal token
+
+Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
+
+** Step2: Mirroring from Gitlab -> Github
+
+Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
+
+Make sure to add token in both the URL and in the =password= textfield.
+
+* Maintenance
+
+To sort the headers in this file run =M-x org-sort-entries= and select alphabetically order.
+
 * Lexical Binding
 
 Use lexical-binding. [[https://nullprogram.com/blog/2016/12/22/][Why?]]
@@ -1168,17 +1187,3 @@ Play Apex Legends music when booting up Emacs.
                                     (run-crypto-music))))
 #+END_SRC
 
-* Gitlab -> Github repository mirroring
-
-My main config lives in Gitlab, but I do maintain a mirror at Github. So here
-is how to setup the mirroring:
-
-** Step1: Create Github personal token
-
-Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
-
-** Step2: Mirroring from Gitlab -> Github
-
-Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
-
-Make sure to add token in both the URL and in the =password= textfield.
