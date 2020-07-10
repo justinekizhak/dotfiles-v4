@@ -1,4 +1,0 @@
-importmagic==0.1.7
-pytest==3.6.3
-requests==2.19.1
-virtualenv==16.0.0
