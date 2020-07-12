@@ -158,7 +158,7 @@ Also if you want to read more about Emacs, checkout these articles
 
 Also this graph by[[https://github.com/tecosaur/emacs-config/blob/master/config.org][ tecosaur]] describes the best
 
-#+html: <img max-width="100%" src="images/editor-comparison.png" />
+#+html: <img style="max-width: 100%;" src="images/editor-comparison.png" />
 
 [[https://tecosaur.github.io/emacs-config/config.html][Tecosaur's config]]
 * About my config
@@ -206,15 +206,15 @@ Make sure to add token in both the URL and in the =password= textfield.
 ** Screenshots
 
 *** Dashboard
-#+html: <img max-width="100%" src="images/dashboard.png" />
+#+html: <img style="max-width: 100%;" src="images/dashboard.png" />
 
 *** Org mode
 
-#+html: <img max-width="100%" src="images/org-mode.png" />
+#+html: <img style="max-width: 100%;" src="images/org-mode.png" />
 
 *** Python mode
 
-#+html: <img max-width="100%" src="images/python-mode.png" />
+#+html: <img style="max-width: 100%;" src="images/python-mode.png" />
 ** Some helper guide
 *** [[https://noelwelsh.com/posts/2019-01-10-doom-emacs.html][Doom Emacs Workflows]]
 ** Sorting the headlines
@@ -796,7 +796,7 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
 
 Taken from[[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][ Beautifying Org Mode in Emacs by zzamboni]]
 
-#+html: <img max-width="100%" src="https://zzamboni.org/post/beautifying-org-mode-in-emacs/emacs-init-propfonts-light.png" />
+#+html: <img style="max-width: 100%;" src="https://zzamboni.org/post/beautifying-org-mode-in-emacs/emacs-init-propfonts-light.png" />
 
 #+BEGIN_SRC emacs-lisp
 (font-lock-add-keywords 'org-mode
