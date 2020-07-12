@@ -3,126 +3,230 @@
 #+EMAIL: justine@kizhak.com
 #+LANGUAGE: en
 #+STARTUP: noinlineimages
-#+PROPERTY: header-args:emacs-lisp  :tangle yes :cache yes :results silent :padline no
+#+PROPERTY: header-args:emacs-lisp :tangle yes :cache yes :results silent :padline no
 #+OPTIONS: toc:nil
 
-#+MARKDOWN: <h1>My Doom Emacs config</h1>
-#+MARKDOWN: [[_TOC_]]
+* Table of contents :TOC:
+- [[#about-emacs][About Emacs]]
+  - [[#editor-comparison][Editor comparison]]
+- [[#about-my-config][About my config]]
+  - [[#contribution][Contribution]]
+  - [[#installation][Installation]]
+  - [[#license][License]]
+  - [[#repository-mirroring][Repository mirroring]]
+  - [[#screenshots][Screenshots]]
+  - [[#some-helper-guide][Some helper guide]]
+  - [[#sorting-the-headlines][Sorting the headlines]]
+  - [[#special-thanks][Special Thanks]]
+- [[#lexical-binding][Lexical Binding]]
+- [[#personal-information][Personal Information]]
+- [[#defining-constants][Defining constants]]
+  - [[#are-we-running-on-a-gnulinux-system][Are we running on a GNU/Linux system?]]
+  - [[#are-we-running-on-a-gui-emacs][Are we running on a GUI Emacs?]]
+  - [[#are-we-running-on-a-mac-system][Are we running on a Mac system?]]
+  - [[#are-we-running-on-a-wintel-system][Are we running on a WinTel system?]]
+  - [[#are-you-a-root-user][Are you a ROOT user?]]
+  - [[#check-basic-requirements-for-eaf-to-run][Check basic requirements for EAF to run.]]
+  - [[#do-we-have-clangd][Do we have clangd?]]
+  - [[#do-we-have-gcc][Do we have gcc?]]
+  - [[#do-we-have-git][Do we have git?]]
+  - [[#do-we-have-maven][Do we have Maven?]]
+  - [[#do-we-have-pdflatex][Do we have pdflatex?]]
+  - [[#do-we-have-python3][Do we have python3?]]
+  - [[#do-we-have-python][Do we have python?]]
+  - [[#do-we-have-ripgrep][Do we have ripgrep?]]
+  - [[#do-we-have-tr][Do we have tr?]]
+- [[#some-emacs-defaults][Some Emacs defaults]]
+- [[#better-editing-experience][Better editing experience]]
+  - [[#automatically-refreshes-the-buffer-for-changes-outside-of-emacs][Automatically refreshes the buffer for changes outside of Emacs]]
+  - [[#confirm-kill-process][Confirm kill process]]
+  - [[#disable-scroll-bar][Disable scroll bar]]
+  - [[#history][History]]
+  - [[#modernize-selection-behavior][Modernize selection behavior]]
+  - [[#show-matching-parentheses][Show matching parentheses]]
+- [[#appearance][Appearance]]
+  - [[#dashboard-with-images][Dashboard with images]]
+  - [[#setting-up-some-frame-defaults][Setting up some frame defaults]]
+- [[#custom-keybinding][Custom Keybinding]]
+  - [[#window-management][Window management]]
+  - [[#--a--select-all][⌘ + a → Select all]]
+  - [[#--s--save-file][⌘ + s → Save file]]
+  - [[#--v--paste-menu][⌘ + v → Paste menu]]
+- [[#packages][Packages]]
+  - [[#ace-popup][Ace-popup]]
+  - [[#apex-legends-title][Apex Legends title]]
+  - [[#atomic-chrome][Atomic chrome]]
+  - [[#clipmon][Clipmon]]
+  - [[#dired][Dired]]
+  - [[#drag-lines][Drag lines]]
+  - [[#easy-escape][Easy escape]]
+  - [[#easy-escape-1][Easy escape]]
+  - [[#evil-snipe][Evil snipe]]
+  - [[#eww][EWW]]
+  - [[#flycheck][Flycheck]]
+  - [[#go-to-line-preview][Go to line preview]]
+  - [[#htmlize][HTMLize]]
+  - [[#hydra][Hydra]]
+  - [[#iedit][Iedit]]
+  - [[#indent-tools][Indent tools]]
+  - [[#lsp][LSP]]
+  - [[#org-mode][Org mode]]
+  - [[#parinfer][Parinfer]]
+  - [[#pipenv][Pipenv]]
+  - [[#plantuml][PlantUML]]
+  - [[#powerthesaurus][Powerthesaurus]]
+  - [[#projectile][Projectile]]
+  - [[#ripgrep][Ripgrep]]
+  - [[#string-inflection][String-inflection]]
+  - [[#treemacs-magit][Treemacs magit]]
+  - [[#undo-tree][Undo tree]]
+  - [[#vterm][VTerm]]
+  - [[#web-development][Web development]]
+- [[#languages][Languages]]
+  - [[#dart][Dart]]
+  - [[#emacs-lisp][Emacs lisp]]
+  - [[#markdown][Markdown]]
+  - [[#python][Python]]
+  - [[#tex][TeX]]
+  - [[#yaml][YAML]]
+- [[#other-config][Other config]]
+  - [[#backup][Backup]]
+  - [[#create-a-paste-transient-state-to-cycle-through-kill-ring-on-paste][Create a paste-transient-state to cycle through kill ring on paste]]
+  - [[#refresh-file-automatically][Refresh file automatically]]
+  - [[#use-command-key-as-meta-key-only-on-macos][Use Command key as meta key (Only on MacOS)]]
+- [[#post-initialization][Post Initialization]]
+  - [[#play-startup-music][Play startup music]]
 
 * About Emacs
-  Emacs changes how you /think/ about programming.
 
-  Emacs is *totally introspectable*. You can always find out 'what code runs
-  when I press this button?'.
+[[https://imgs.xkcd.com/comics/cautionary.png]]
 
-  Emacs is an *incremental programming environment*. There's no edit-compile-run
- cycle.
- There isn't even an edit-run cycle. You can execute snippets of code and
- gradually turn them into a finished project. There's no distinction between
- your editor and your interpreter.
+Emacs changes how you /think/ about programming.
 
-  Emacs is a *mutable environment*. You can set variables, tweak functions
-  with advice, or redefine entire functions. Nothing is off-limits.
+Emacs is *totally introspectable*. You can always find out 'what code runs
+when I press this button?'.
 
-  Emacs provides *functionality without applications*. Rather than separate
-  applications, functionality is all integrated into your Emacs instance.
-  Amazingly, this works. Ever wanted to use the same snippet tool for writing
-  C++ classes as well as emails?
+Emacs is an *incremental programming environment*. There's no edit-compile-run
+cycle.
+There isn't even an edit-run cycle. You can execute snippets of code and
+gradually turn them into a finished project. There's no distinction between
+your editor and your interpreter.
 
-  Emacs is full of *incredible software concepts that haven't hit the mainstream
-  yet*. For example:
-  - Many platforms have a single item clipboard. Emacs has an *infinite clipboard*.
-  - If you undo a change, and then continue editing, you can't redo the original
-    change. Emacs allows *undoing to any historical state*, even allowing
-    tree-based exploration of history.
-  - Emacs supports a *reverse variable search*: you can find variables with
-    a given value.
-  - You can perform *structural editing* of code, allowing you to make changes
-    without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
-  - Many applications use a modal GUI: for example, you can't do other edits
-    during a find-and-replace operation. Emacs provides *recursive editing* that
-    allow you to suspend what you're currently doing, perform other edits, then
-    continue the original task.
-  Emacs has a *documentation culture*. Emacs includes a usage manual, a lisp
-  programming manual, pervasive docstrings and even an interactive tutorial.
+Emacs is a *mutable environment*. You can set variables, tweak functions
+with advice, or redefine entire functions. Nothing is off-limits.
 
-  Emacs has a *broad ecosystem*. If you want to edit code in a niche language,
-  there's probably an Emacs package for it.
+Emacs provides *functionality without applications*. Rather than separate
+applications, functionality is all integrated into your Emacs instance.
+Amazingly, this works. Ever wanted to use the same snippet tool for writing
+C++ classes as well as emails?
 
-  Emacs doesn't have a monopoly on good ideas, and there are other great tools
+Emacs is full of *incredible software concepts that haven't hit the mainstream
+yet*. For example:
+- Many platforms have a single item clipboard. Emacs has an *infinite clipboard*.
+- If you undo a change, and then continue editing, you can't redo the original
+  change. Emacs allows *undoing to any historical state*, even allowing
+  tree-based exploration of history.
+- Emacs supports a *reverse variable search*: you can find variables with
+  a given value.
+- You can perform *structural editing* of code, allowing you to make changes
+  without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
+- Many applications use a modal GUI: for example, you can't do other edits
+  during a find-and-replace operation. Emacs provides *recursive editing* that
+  allow you to suspend what you're currently doing, perform other edits, then
+  continue the original task.
+Emacs has a *documentation culture*. Emacs includes a usage manual, a lisp
+programming manual, pervasive docstrings and even an interactive tutorial.
+
+Emacs has a *broad ecosystem*. If you want to edit code in a niche language,
+there's probably an Emacs package for it.
+
+Emacs doesn't have a monopoly on good ideas, and there are other great tools
 out there.
-Nonetheless, we believe the [[https://i.stack.imgur.com/7Cu9Z.jpg][Emacs learning curve]] pays off.
+Nonetheless, we believe the Emacs learning curve pays off.
 
-  /This beautifully written *About EMACS* section credits to [[https://github.com/remacs/remacs][Remacs]]./
+[[https://i.stack.imgur.com/7Cu9Z.jpg]]
 
-  Also if you want to read more about Emacs, checkout [[https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform][Why You Should Buy Into the Emacs Platform]].
+/This beautifully written *About EMACS* section credits to [[https://github.com/remacs/remacs][Remacs]]./
 
+Also if you want to read more about Emacs, checkout these articles
+- [[https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform][Why You Should Buy Into the Emacs Platform]]
+- [[https://www.reddit.com/r/emacs/comments/hmtwbt/i_use_emacs_because/][I use emacs because...]]
+
+** Editor comparison
+
+[[https://imgs.xkcd.com/comics/real_programmers.png]]
+
+Also this graph by[[https://github.com/tecosaur/emacs-config/blob/master/config.org][ tecosaur]] describes the best
+
+[[./images/editor-comparison.png]]
+
+[[https://tecosaur.github.io/emacs-config/config.html][Tecosaur's config]]
 * About my config
 
-This Emacs config is a work of many hours of banging my head on a wall.
-My Emacs config has gone through many phase. This phase seems to the most
-pleasent one.
+This Emacs config is a work of many hours painful polishing and trying to create
+a perfect work environment.
 
+** Contribution
 
-** Screenshot
-
-#+html: <p align="center"><img width="100%" src="images/screenshot.png" /></p>
-
+If you spotted a bug or you have any suggestions, please fill in an issue.
+If you have something to fix, feel free to create a pull request.
 ** Installation
 
 Use the install directions from [[https://github.com/hlissner/doom-emacs][Doom Emacs]].
 
-To install Emacs-plus v27 (For MacOS) with all features execute
+For specific instructions use ~devfile.toml~.
+** License
 
-~$ ./install-emacs-plus-for-mac~ on terminal.
-
-OR
-
-copy paste this into terminal
-
-#+BEGIN_SRC sh :exports none :tangle install-emacs-plus-for-mac
-#!/usr/bin/env bash
-#+END_SRC
-
-#+BEGIN_SRC sh :tangle install-emacs-plus-for-mac
-brew install emacs-plus --HEAD --with-emacs-27-branch --with-ctags --with-dbus --with-jansson --with-mailutils --with-xwidgets
-#+END_SRC
-
-** Modification
    You have the permission to use, modify, distribute in any way you want.
 
-   However, what is /free/ stays /free/. After all, this is [[file:LICENSE][GPL]].
+   However, what is /free/ stays /free/. After all, this is [[file:LICENSE.org][GPL]].
 
-** Contribution
-If you spotted a bug or you have any suggestions, please fill in an issue.
-If you have something to fix, feel free to create a pull request.
+   All the files inside the ~doom.d~ is licensed under the terms of GNU GENERAL PUBLIC
+   LICENSE Version 3.
+
+   For more information [[file:LICENSE.org][read the license]].
+
+** Repository mirroring
+
+~Gitlab -> Github~ repository mirroring.
+
+My main config lives in Gitlab, but I do maintain a mirror at Github. So here
+is how to setup the mirroring:
+
+*** Step1: Create Github personal token
+
+Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
+
+*** Step2: Mirroring from Gitlab -> Github
+
+Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
+
+Make sure to add token in both the URL and in the =password= textfield.
+
+** Screenshots
+
+*** Dashboard
+#+html: <p align="center"><img width="100%" src="images/dashboard.png" /></p>
+
+*** Org mode
+
+#+html: <p align="center"><img width="100%" src="images/org-mode.png" /></p>
+
+*** Python mode
+
+#+html: <p align="center"><img width="100%" src="images/python-mode.png" /></p>
 ** Some helper guide
 *** [[https://noelwelsh.com/posts/2019-01-10-doom-emacs.html][Doom Emacs Workflows]]
+** Sorting the headlines
+
+To sort the headers in this file run =M-x org-sort-entries= and select alphabetically order.
+
 ** Special Thanks
 
 Everyone starts somewhere, and I started here.
 
 - [[https://github.com/MatthewZMD/.emacs.d][MatthewZMD]]
 - [[https://github.com/hlissner/doom-emacs][Henrik Lissner's Doom Emacs]]
-
-* Gitlab -> Github repository mirroring
-
-My main config lives in Gitlab, but I do maintain a mirror at Github. So here
-is how to setup the mirroring:
-
-** Step1: Create Github personal token
-
-Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
-
-** Step2: Mirroring from Gitlab -> Github
-
-Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
-
-Make sure to add token in both the URL and in the =password= textfield.
-
-* Maintenance
-
-To sort the headers in this file run =M-x org-sort-entries= and select alphabetically order.
 
 * Lexical Binding
 
@@ -149,11 +253,24 @@ Let's set some variables with basic user information.
 
 * Defining constants
 
+** Are we running on a GNU/Linux system?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *sys/linux*
+  (eq system-type 'gnu/linux))
+#+END_SRC
 ** Are we running on a GUI Emacs?
 
 #+BEGIN_SRC emacs-lisp
 (defconst *sys/gui*
   (display-graphic-p))
+#+END_SRC
+
+** Are we running on a Mac system?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *sys/mac*
+  (eq system-type 'darwin))
 #+END_SRC
 
 ** Are we running on a WinTel system?
@@ -163,19 +280,6 @@ Let's set some variables with basic user information.
   (eq system-type 'windows-nt))
 #+END_SRC
 
-** Are we running on a GNU/Linux system?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *sys/linux*
-  (eq system-type 'gnu/linux))
-#+END_SRC
-** Are we running on a Mac system?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *sys/mac*
-  (eq system-type 'darwin))
-#+END_SRC
-
 ** Are you a ROOT user?
 
 #+BEGIN_SRC emacs-lisp
@@ -183,39 +287,13 @@ Let's set some variables with basic user information.
   (string-equal "root" (getenv "USER")))
 #+END_SRC
 
-** Do we have ripgrep?
+** Check basic requirements for EAF to run.
 
 #+BEGIN_SRC emacs-lisp
-(defconst *rg*
-  (executable-find "rg"))
-#+END_SRC
-
-** Do we have python?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *python*
-  (executable-find "python"))
-#+END_SRC
-
-** Do we have python3?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *python3*
-  (executable-find "python3"))
-#+END_SRC
-
-** Do we have tr?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *tr*
-  (executable-find "tr"))
-#+END_SRC
-
-** Do we have Maven?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *mvn*
-  (executable-find "mvn"))
+(defconst *eaf-env*
+  (and *sys/linux* *sys/gui* *python3*
+       (executable-find "pip")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 #+END_SRC
 
 ** Do we have clangd?
@@ -240,6 +318,13 @@ Let's set some variables with basic user information.
   (executable-find "git"))
 #+END_SRC
 
+** Do we have Maven?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *mvn*
+  (executable-find "mvn"))
+#+END_SRC
+
 ** Do we have pdflatex?
 
 #+BEGIN_SRC emacs-lisp
@@ -247,13 +332,32 @@ Let's set some variables with basic user information.
   (executable-find "pdflatex"))
 #+END_SRC
 
-** Check basic requirements for EAF to run.
+** Do we have python3?
 
 #+BEGIN_SRC emacs-lisp
-(defconst *eaf-env*
-  (and *sys/linux* *sys/gui* *python3*
-       (executable-find "pip")
-       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
+(defconst *python3*
+  (executable-find "python3"))
+#+END_SRC
+
+** Do we have python?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *python*
+  (executable-find "python"))
+#+END_SRC
+
+** Do we have ripgrep?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *rg*
+  (executable-find "rg"))
+#+END_SRC
+
+** Do we have tr?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *tr*
+  (executable-find "tr"))
 #+END_SRC
 
 * Some Emacs defaults
@@ -282,41 +386,6 @@ Let's set some variables with basic user information.
 
 * Better editing experience
 
-** Modernize selection behavior
-
-Replace the active region just by typing text, just like modern editors
-
-#+BEGIN_SRC emacs-lisp
-(use-package delsel
-  :disabled
-  :ensure nil
-  :config (delete-selection-mode +1))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(setq delete-selection-mode t)
-#+END_SRC
-
-** Disable scroll bar
-
-#+BEGIN_SRC emacs-lisp
-(use-package scroll-bar
-  :defer t
-  :ensure nil
-  :config (scroll-bar-mode -1))
-#+END_SRC
-
-** Confirm kill process
-
-Don’t bother confirming killing processes
-
-#+BEGIN_SRC emacs-lisp
-(use-package files
-  :defer t
-  :config
-  (setq confirm-kill-processes nil))
-#+END_SRC
-
 ** Automatically refreshes the buffer for changes outside of Emacs
 
 Auto refreshes every 2 seconds. Don’t forget to refresh the version control status as well.
@@ -332,24 +401,24 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
         auto-revert-verbose nil))
 #+END_SRC
 
-** Show matching parentheses
+** Confirm kill process
 
-Reduce the highlight delay to instantly.
+Don’t bother confirming killing processes
 
 #+BEGIN_SRC emacs-lisp
-(use-package paren
+(use-package files
   :defer t
-  :ensure nil
-  :init (setq show-paren-delay 0.5)
-  :config (show-paren-mode +1))
+  :config
+  (setq confirm-kill-processes nil))
 #+END_SRC
 
-** Treat underscore as part of the word
+** Disable scroll bar
 
 #+BEGIN_SRC emacs-lisp
-;; (add-hook 'after-change-major-mode-hook
-;;           (lambda ()
-;;             (modify-syntax-entry ?_ "w")))
+(use-package scroll-bar
+  :defer t
+  :ensure nil
+  :config (scroll-bar-mode -1))
 #+END_SRC
 
 ** History
@@ -382,27 +451,34 @@ Reduce the highlight delay to instantly.
 (setq-default history-length 500)
 #+END_SRC
 
-* Appearance
+** Modernize selection behavior
 
-** Setting up some frame defaults
-
-Maximize the frame by default on start-up. Set the font to BlexMono, if BlexMono is installed.
+Replace the active region just by typing text, just like modern editors
 
 #+BEGIN_SRC emacs-lisp
-(use-package frame
-  :ensure t
-  :config
-  (defun my-settings()
-    (add-to-list 'default-frame-alist '(fullscreen . maximized))
-    (when (member "BlexMono Nerd Font Mono" (font-family-list))
-        (set-frame-font "BlexMono Nerd Font Mono" t t)))
-  (if (daemonp)
-    (add-hook 'after-make-frame-functions
-      (lambda (frame)
-        (select-frame frame)
-        (my-settings))))
-  (my-settings))
+(use-package delsel
+  :disabled
+  :ensure nil
+  :config (delete-selection-mode +1))
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(setq delete-selection-mode t)
+#+END_SRC
+
+** Show matching parentheses
+
+Reduce the highlight delay to instantly.
+
+#+BEGIN_SRC emacs-lisp
+(use-package paren
+  :defer t
+  :ensure nil
+  :init (setq show-paren-delay 0.5)
+  :config (show-paren-mode +1))
+#+END_SRC
+
+* Appearance
 
 ** Dashboard with images
 
@@ -412,6 +488,17 @@ Use the image in the dotfiles folder as the dashboard splash image
 (add-hook! '(+doom-dashboard-mode-hook)
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
+#+END_SRC
+
+** Setting up some frame defaults
+
+Maximize the frame by default on start-up. Set the font to BlexMono, if BlexMono is installed.
+
+#+BEGIN_SRC emacs-lisp
+(use-package frame
+  :ensure t
+  :config
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 #+END_SRC
 
 * Custom Keybinding
@@ -672,14 +759,9 @@ Meant for indentation-based  languages, but can be used  any time with indented 
   :bind ("C-c >" . #'indent-tools-hydra/body))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-;; (map! "C-c >" #'indent-tools-hydra/body)
-#+END_SRC
-
 ** LSP
 
 #+BEGIN_SRC emacs-lisp
-;; (setq lsp-ui-sideline-show-hover t)
 (setq lsp-ui-doc-max-height 30)
 (setq lsp-ui-doc-max-width 150)
 #+END_SRC
@@ -696,6 +778,7 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
   (setq org-startup-with-inline-images nil)
   (setq org-startup-shrink-all-tables t)
   (setq org-use-property-inheritance t)
+  (setq org-hide-emphasis-markers t)
   ; Fix `org-cycle' bug
   (map! :map org-mode-map
         :n "<tab>" 'org-cycle)
@@ -704,16 +787,146 @@ To show image ~M-x~ =org-toggle-inline-images= OR use keybinding ~z i~
   (setq org-plantuml-jar-path "~/plantuml.jar")
   (setq plantuml-default-exec-mode 'jar)
   ; Add graphviz
-  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot)))
+  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot))
+  (setq org-ellipsis "⬎"))
+   ;; ➡, ⚡, ▼, ↴, , ∞, ⬎, ⤷, ⤵
 #+END_SRC
 
-*** Ox-gfm
+*** Better reading experience
 
-Github Flavored Markdown exporter for Org Mode
+Taken from[[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][ Beautifying Org Mode in Emacs by zzamboni]]
+
+#+ATTR_HTML: :width 700px
+[[https://zzamboni.org/post/beautifying-org-mode-in-emacs/emacs-init-propfonts-light.png]]
 
 #+BEGIN_SRC emacs-lisp
-(use-package ox-gfm
-  :defer 3)
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(let* ((variable-tuple
+        (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+              ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+              ((x-list-fonts "Verdana")         '(:font "Verdana"))
+              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (headline           `(:inherit default :weight bold)))
+
+  (custom-theme-set-faces
+   'user
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.2))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.3))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.4))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "ETBembo" :height 160))))
+ '(fixed-pitch ((t ( :family "Fira Code" :height 160)))))
+
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook 'auto-fill-mode)
+
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+#+END_SRC
+
+*** Org agenda
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
+
+(setq
+  org-deadline-warning-days 7
+  org-agenda-breadcrumbs-separator " ❱ "
+  org-directory "~/org")
+#+END_SRC
+
+Copied from [[https://github.com/psamim/dotfiles/blob/master/doom/config.el][psamim's config]].
+
+#+BEGIN_SRC emacs-lisp
+(customize-set-value
+    'org-agenda-category-icon-alist
+    `(
+      ("work" "~/.doom.d/icons/money-bag.svg" nil nil :ascent center)
+      ("chore" "~/.doom.d/icons/loop.svg" nil nil :ascent center)
+      ("events" "~/.doom.d/icons/calendar.svg" nil nil :ascent center)
+      ("todo" "~/.doom.d/icons/checklist.svg" nil nil :ascent center)
+      ("walk" "~/.doom.d/icons/walk.svg" nil nil :ascent center)
+      ("solution" "~/.doom.d/icons/solution.svg" nil nil :ascent center)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(setq-hook! org-mode
+  org-log-done t
+  org-columns-default-format "%60ITEM(Task) %20TODO %10Effort(Effort){:} %10CLOCKSUM"
+  org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                ("STYLE_ALL" . "habit")))
+  org-archive-location "~/org/archive/todo.org.gpg::")
+
+(setq org-agenda-block-separator (string-to-char " "))
+
+(setq org-agenda-custom-commands
+      '(("o" "My Agenda"
+         ((todo "TODO" ()
+                      (org-agenda-overriding-header "\n⚡ Do Today:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format " %-2i %-15b")
+                      (org-agenda-todo-keyword-format ""))
+
+          (agenda "" (
+                      (org-agenda-start-day "+0d")
+                      (org-agenda-span 5)
+                      (org-agenda-overriding-header "⚡ Schedule:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-repeating-timestamp-show-all nil)
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format   "  %-3i  %-15b %t%s")
+                      (org-agenda-todo-keyword-format " ☐ ")
+                      (org-agenda-current-time-string "⮜┈┈┈┈┈┈┈ now")
+                      (org-agenda-scheduled-leaders '("" ""))
+                      (org-agenda-time-grid (quote ((daily today remove-match)
+                                                    (0900 1200 1500 1800 2100)
+                                                    "      " "┈┈┈┈┈┈┈┈┈┈┈┈┈")))))))))
+#+END_SRC
+
+*** Org bullets
+
+Better bullets for org mode.
+
+[[https://raw.githubusercontent.com/sabof/org-bullets/master/screenshot.png]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
+*** Org LaTeX
+
+Use color links when exported from Org to Latex
+
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 #+END_SRC
 
 *** Org Reveal
@@ -726,18 +939,13 @@ Github Flavored Markdown exporter for Org Mode
     (setq org-reveal-mathjax t))
 #+END_SRC
 
-*** Org LaTeX
+*** Ox-gfm
 
-Use color links when exported from Org to Latex
-
-#+BEGIN_SRC emacs-lisp
-(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
-#+END_SRC
-
-*** Org agenda
+Github Flavored Markdown exporter for Org Mode
 
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
+(use-package ox-gfm
+  :defer 3)
 #+END_SRC
 
 ** Parinfer
@@ -800,23 +1008,6 @@ Use color links when exported from Org to Latex
 #+BEGIN_SRC emacs-lisp
 (use-package string-inflection
   :defer t)
-  ;; :config
-  ;; (defun my-string-inflection-cycle-auto ()
-  ;;   "switching by major-mode"
-  ;;   (interactive)
-  ;;   (cond
-  ;;    ;; for emacs-lisp-mode
-  ;;    ((eq major-mode 'emacs-lisp-mode)
-  ;;     (string-inflection-all-cycle))
-  ;;    ;; for python
-  ;;    ((eq major-mode 'python-mode)
-  ;;     (string-inflection-python-style-cycle))
-  ;;    ;; for java
-  ;;    ((eq major-mode 'java-mode)
-  ;;     (string-inflection-java-style-cycle))
-  ;;    (t
-  ;;     ;; default
-  ;;     (string-inflection-ruby-style-cycle)))))
 #+END_SRC
 
 *** Keybinding
@@ -842,8 +1033,6 @@ Undo tree, a feature that provides a visualization of the undos in a file.
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :defer t
-  ;; :diminish undo-tree-mode
-  ;; :init (global-undo-tree-mode)
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t))
@@ -954,22 +1143,9 @@ JSON Mode, a major mode for editing JSON files.
   :mode "\\.json\\'")
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-;;(setq
-;; js-indent-level 2
-;; json-reformat:indent-width 2
-;; typescript-indent-level 2
-;; css-indent-offset 2)
-#+END_SRC
-
 *** Web beautify
 
 #+BEGIN_SRC emacs-lisp
-;; (eval-after-load 'web-mode
-;;   '(add-hook 'web-mode-hook
-;;              (lambda ()
-;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
-
 (eval-after-load 'css-mode
   '(add-hook 'css-mode-hook
              (lambda ()
@@ -1007,33 +1183,21 @@ JSON Mode, a major mode for editing JSON files.
 
 * Languages
 
-** Python
-
-Adding TabNine completion to buffer
-
-#+BEGIN_SRC emacs-lisp
-(use-package python-mode
-  :defer t
-  :mode "\\.py\\'"
-  :custom
-  (python-indent-offset 4))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-;; (add-hook 'python-mode-hook (lambda ()
-;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-;; (add-hook 'python-mode-hook
-;;  (lambda () (define-key python-mode-map (kbd "C-c >") 'indent-tools-hydra/body)))
-
-#+END_SRC
-
 ** Dart
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
+#+END_SRC
+
+** Emacs lisp
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))
+            (setq tab-width 2)))
+
+(add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
 #+END_SRC
 
 ** Markdown
@@ -1047,15 +1211,16 @@ On save refresh markdown table of contents.
                                  'markdown-toc-refresh-toc))))
 #+END_SRC
 
-** Emacs lisp
+** Python
+
+Adding TabNine completion to buffer
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (setq-local company-backends '((company-capf company-dabbrev-code company-files)))
-            (setq tab-width 2)))
-
-(add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
+(use-package python-mode
+  :defer t
+  :mode "\\.py\\'"
+  :custom
+  (python-indent-offset 4))
 #+END_SRC
 
 ** TeX
@@ -1100,31 +1265,6 @@ On save refresh markdown table of contents.
 
 * Other config
 
-** Use Command key as meta key (Only on MacOS)
-
-#+BEGIN_SRC emacs-lisp
-(setq mac-command-modifier 'meta)
-#+END_SRC
-
-** Create a paste-transient-state to cycle through kill ring on paste
-
-Refer [[https://github.com/hlissner/doom-emacs/blob/cd1675568bdbb388f931591ea6383fa8ded82765/docs/api.org#create-a-paste-transient-state-to-cycle-through-kill-ring-on-paste][doom docs on paste transient]]
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-paste (:color red
-                       :hint nil)
-  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
- [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
- above or below. Anything else exits."
-  ("C-j" evil-paste-pop)
-  ("C-k" evil-paste-pop-next)
-  ("p" evil-paste-after)
-  ("P" evil-paste-before))
-
-(map! :nv "p" #'hydra-paste/evil-paste-after
-      :nv "P" #'hydra-paste/evil-paste-before)
-#+END_SRC
-
 ** Backup
 
 #+BEGIN_SRC emacs-lisp
@@ -1150,6 +1290,25 @@ Version 2019-11-05"
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
 #+END_SRC
 
+** Create a paste-transient-state to cycle through kill ring on paste
+
+Refer [[https://github.com/hlissner/doom-emacs/blob/cd1675568bdbb388f931591ea6383fa8ded82765/docs/api.org#create-a-paste-transient-state-to-cycle-through-kill-ring-on-paste][doom docs on paste transient]]
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-paste (:color red
+                       :hint nil)
+  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
+ [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
+ above or below. Anything else exits."
+  ("C-j" evil-paste-pop)
+  ("C-k" evil-paste-pop-next)
+  ("p" evil-paste-after)
+  ("P" evil-paste-before))
+
+(map! :nv "p" #'hydra-paste/evil-paste-after
+      :nv "P" #'hydra-paste/evil-paste-before)
+#+END_SRC
+
 ** Refresh file automatically
 
 When a file is updated outside emacs, make it update if it's already opened in emacs
@@ -1158,6 +1317,12 @@ Ref: [[http://ergoemacs.org/emacs/emacs_misc_init.html]]
 
 #+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode 1)
+#+END_SRC
+
+** Use Command key as meta key (Only on MacOS)
+
+#+BEGIN_SRC emacs-lisp
+(setq mac-command-modifier 'meta)
 #+END_SRC
 
 * Post Initialization

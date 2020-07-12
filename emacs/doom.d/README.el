@@ -1,26 +1,20 @@
 ;;; README.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
-(defconst *sys/gui*
-  (display-graphic-p))
-(defconst *sys/win32*
-  (eq system-type 'windows-nt))
 (defconst *sys/linux*
   (eq system-type 'gnu/linux))
+(defconst *sys/gui*
+  (display-graphic-p))
 (defconst *sys/mac*
   (eq system-type 'darwin))
+(defconst *sys/win32*
+  (eq system-type 'windows-nt))
 (defconst *sys/root*
   (string-equal "root" (getenv "USER")))
-(defconst *rg*
-  (executable-find "rg"))
-(defconst *python*
-  (executable-find "python"))
-(defconst *python3*
-  (executable-find "python3"))
-(defconst *tr*
-  (executable-find "tr"))
-(defconst *mvn*
-  (executable-find "mvn"))
+(defconst *eaf-env*
+  (and *sys/linux* *sys/gui* *python3*
+       (executable-find "pip")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 (defconst *clangd*
   (or (executable-find "clangd")  ;; usually
       (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
@@ -28,12 +22,18 @@
   (executable-find "gcc"))
 (defconst *git*
   (executable-find "git"))
+(defconst *mvn*
+  (executable-find "mvn"))
 (defconst *pdflatex*
   (executable-find "pdflatex"))
-(defconst *eaf-env*
-  (and *sys/linux* *sys/gui* *python3*
-       (executable-find "pip")
-       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
+(defconst *python3*
+  (executable-find "python3"))
+(defconst *python*
+  (executable-find "python"))
+(defconst *rg*
+  (executable-find "rg"))
+(defconst *tr*
+  (executable-find "tr"))
 (use-package emacs
   :preface
   (defvar ian/indent-width 2) ; change this value to your preferred width
@@ -52,19 +52,6 @@
   ;; Always use spaces for indentation
   (setq-default indent-tabs-mode nil
                 tab-width ian/indent-width))
-(use-package delsel
-  :disabled
-  :ensure nil
-  :config (delete-selection-mode +1))
-(setq delete-selection-mode t)
-(use-package scroll-bar
-  :defer t
-  :ensure nil
-  :config (scroll-bar-mode -1))
-(use-package files
-  :defer t
-  :config
-  (setq confirm-kill-processes nil))
 (use-package autorevert
   :defer t
   :ensure nil
@@ -73,14 +60,14 @@
   (setq auto-revert-interval 2
         auto-revert-check-vc-info t
         auto-revert-verbose nil))
-(use-package paren
+(use-package files
+  :defer t
+  :config
+  (setq confirm-kill-processes nil))
+(use-package scroll-bar
   :defer t
   :ensure nil
-  :init (setq show-paren-delay 0.5)
-  :config (show-paren-mode +1))
-;; (add-hook 'after-change-major-mode-hook
-;;           (lambda ()
-;;             (modify-syntax-entry ?_ "w")))
+  :config (scroll-bar-mode -1))
 (use-package recentf
   :defer t
   :ensure nil
@@ -106,22 +93,23 @@
 
 ;; Set history-length longer
 (setq-default history-length 500)
-(use-package frame
-  :ensure t
-  :config
-  (defun my-settings()
-    (add-to-list 'default-frame-alist '(fullscreen . maximized))
-    (when (member "BlexMono Nerd Font Mono" (font-family-list))
-        (set-frame-font "BlexMono Nerd Font Mono" t t)))
-  (if (daemonp)
-    (add-hook 'after-make-frame-functions
-      (lambda (frame)
-        (select-frame frame)
-        (my-settings))))
-  (my-settings))
+(use-package delsel
+  :disabled
+  :ensure nil
+  :config (delete-selection-mode +1))
+(setq delete-selection-mode t)
+(use-package paren
+  :defer t
+  :ensure nil
+  :init (setq show-paren-delay 0.5)
+  :config (show-paren-mode +1))
 (add-hook! '(+doom-dashboard-mode-hook)
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
+(use-package frame
+  :ensure t
+  :config
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 (map! :leader
       (:prefix ("w")
         "C-w" nil))
@@ -232,8 +220,6 @@ This command requires `apex-legends-voicelines' python package."
   :defer t
   :after (hydra)
   :bind ("C-c >" . #'indent-tools-hydra/body))
-;; (map! "C-c >" #'indent-tools-hydra/body)
-;; (setq lsp-ui-sideline-show-hover t)
 (setq lsp-ui-doc-max-height 30)
 (setq lsp-ui-doc-max-width 150)
 (use-package org
@@ -242,6 +228,7 @@ This command requires `apex-legends-voicelines' python package."
   (setq org-startup-with-inline-images nil)
   (setq org-startup-shrink-all-tables t)
   (setq org-use-property-inheritance t)
+  (setq org-hide-emphasis-markers t)
   ; Fix `org-cycle' bug
   (map! :map org-mode-map
         :n "<tab>" 'org-cycle)
@@ -250,16 +237,114 @@ This command requires `apex-legends-voicelines' python package."
   (setq org-plantuml-jar-path "~/plantuml.jar")
   (setq plantuml-default-exec-mode 'jar)
   ; Add graphviz
-  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot)))
-(use-package ox-gfm
-  :defer 3)
+  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot))
+  (setq org-ellipsis "⬎"))
+   ;; ➡, ⚡, ▼, ↴, , ∞, ⬎, ⤷, ⤵
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(let* ((variable-tuple
+        (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+              ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+              ((x-list-fonts "Verdana")         '(:font "Verdana"))
+              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (headline           `(:inherit default :weight bold)))
+
+  (custom-theme-set-faces
+   'user
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.2))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.3))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.4))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "ETBembo" :height 160))))
+ '(fixed-pitch ((t ( :family "Fira Code" :height 160)))))
+
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+
+(add-hook 'org-mode-hook 'visual-line-mode)
+
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
+
+(setq
+  org-deadline-warning-days 7
+  org-agenda-breadcrumbs-separator " ❱ "
+  org-directory "~/org")
+(customize-set-value
+    'org-agenda-category-icon-alist
+    `(
+      ("work" "~/.doom.d/icons/money-bag.svg" nil nil :ascent center)
+      ("chore" "~/.doom.d/icons/loop.svg" nil nil :ascent center)
+      ("events" "~/.doom.d/icons/calendar.svg" nil nil :ascent center)
+      ("todo" "~/.doom.d/icons/checklist.svg" nil nil :ascent center)
+      ("walk" "~/.doom.d/icons/walk.svg" nil nil :ascent center)
+      ("solution" "~/.doom.d/icons/solution.svg" nil nil :ascent center)))
+(setq-hook! org-mode
+  org-log-done t
+  org-columns-default-format "%60ITEM(Task) %20TODO %10Effort(Effort){:} %10CLOCKSUM"
+  org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                ("STYLE_ALL" . "habit")))
+  org-archive-location "~/org/archive/todo.org.gpg::")
+
+(setq org-agenda-block-separator (string-to-char " "))
+
+(setq org-agenda-custom-commands
+      '(("o" "My Agenda"
+         ((todo "TODO" ()
+                      (org-agenda-overriding-header "\n⚡ Do Today:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format " %-2i %-15b")
+                      (org-agenda-todo-keyword-format ""))
+
+          (agenda "" (
+                      (org-agenda-start-day "+0d")
+                      (org-agenda-span 5)
+                      (org-agenda-overriding-header "⚡ Schedule:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-repeating-timestamp-show-all nil)
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format   "  %-3i  %-15b %t%s")
+                      (org-agenda-todo-keyword-format " ☐ ")
+                      (org-agenda-current-time-string "⮜┈┈┈┈┈┈┈ now")
+                      (org-agenda-scheduled-leaders '("" ""))
+                      (org-agenda-time-grid (quote ((daily today remove-match)
+                                                    (0900 1200 1500 1800 2100)
+                                                    "      " "┈┈┈┈┈┈┈┈┈┈┈┈┈")))))))))
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 (use-package ox-reveal
     :defer 3
     :config
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
-(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
-(setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
+(use-package ox-gfm
+  :defer 3)
 (use-package parinfer
   :defer t)
 (use-package pipenv
@@ -282,23 +367,6 @@ This command requires `apex-legends-voicelines' python package."
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 (use-package string-inflection
   :defer t)
-  ;; :config
-  ;; (defun my-string-inflection-cycle-auto ()
-  ;;   "switching by major-mode"
-  ;;   (interactive)
-  ;;   (cond
-  ;;    ;; for emacs-lisp-mode
-  ;;    ((eq major-mode 'emacs-lisp-mode)
-  ;;     (string-inflection-all-cycle))
-  ;;    ;; for python
-  ;;    ((eq major-mode 'python-mode)
-  ;;     (string-inflection-python-style-cycle))
-  ;;    ;; for java
-  ;;    ((eq major-mode 'java-mode)
-  ;;     (string-inflection-java-style-cycle))
-  ;;    (t
-  ;;     ;; default
-  ;;     (string-inflection-ruby-style-cycle)))))
 (map! :leader
     (:prefix ("a" . "applications")
         :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
@@ -307,8 +375,6 @@ This command requires `apex-legends-voicelines' python package."
   :after (treemacs magit))
 (use-package undo-tree
   :defer t
-  ;; :diminish undo-tree-mode
-  ;; :init (global-undo-tree-mode)
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t))
@@ -354,16 +420,6 @@ This command requires `apex-legends-voicelines' python package."
 (use-package json-mode
   :defer 3
   :mode "\\.json\\'")
-;;(setq
-;; js-indent-level 2
-;; json-reformat:indent-width 2
-;; typescript-indent-level 2
-;; css-indent-offset 2)
-;; (eval-after-load 'web-mode
-;;   '(add-hook 'web-mode-hook
-;;              (lambda ()
-;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
-
 (eval-after-load 'css-mode
   '(add-hook 'css-mode-hook
              (lambda ()
@@ -384,26 +440,22 @@ This command requires `apex-legends-voicelines' python package."
   '(add-hook 'vue-mode-hook
              (lambda ()
                (add-hook 'before-save-hook 'prettier-js-mode))))
-(use-package python-mode
-  :defer t
-  :mode "\\.py\\'"
-  :custom
-  (python-indent-offset 4))
-;; (add-hook 'python-mode-hook (lambda ()
-;;                                 (set (make-local-variable 'company-backends) '(company-tabnine company-capf company-dabbrev-code company-files))))
-;; (add-hook 'python-mode-hook
-;;  (lambda () (define-key python-mode-map (kbd "C-c >") 'indent-tools-hydra/body)))
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
-(add-hook 'gfm-mode-hook
-          (lambda () (when buffer-file-name
-                       (add-hook 'before-save-hook
-                                 'markdown-toc-refresh-toc))))
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (setq-local company-backends '((company-capf company-dabbrev-code company-files)))
             (setq tab-width 2)))
 
 (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
+(add-hook 'gfm-mode-hook
+          (lambda () (when buffer-file-name
+                       (add-hook 'before-save-hook
+                                 'markdown-toc-refresh-toc))))
+(use-package python-mode
+  :defer t
+  :mode "\\.py\\'"
+  :custom
+  (python-indent-offset 4))
 (use-package tex
   :disabled
   :ensure auctex
@@ -434,19 +486,6 @@ This command requires `apex-legends-voicelines' python package."
   :defer t
   :mode ("\\.yaml\\'" "\\.yml\\'")
   :commands (yaml-mode))
-(setq mac-command-modifier 'meta)
-(defhydra hydra-paste (:color red
-                       :hint nil)
-  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
- [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
- above or below. Anything else exits."
-  ("C-j" evil-paste-pop)
-  ("C-k" evil-paste-pop-next)
-  ("p" evil-paste-after)
-  ("P" evil-paste-before))
-
-(map! :nv "p" #'hydra-paste/evil-paste-after
-      :nv "P" #'hydra-paste/evil-paste-before)
 ;; Enable backup
 (setq make-backup-files t)
 
@@ -460,7 +499,20 @@ Version 2019-11-05"
 
 ;; when switching out of emacs, all unsaved files will be saved
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
+(defhydra hydra-paste (:color red
+                       :hint nil)
+  "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
+ [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the same text \
+ above or below. Anything else exits."
+  ("C-j" evil-paste-pop)
+  ("C-k" evil-paste-pop-next)
+  ("p" evil-paste-after)
+  ("P" evil-paste-before))
+
+(map! :nv "p" #'hydra-paste/evil-paste-after
+      :nv "P" #'hydra-paste/evil-paste-before)
 (global-auto-revert-mode 1)
+(setq mac-command-modifier 'meta)
 (defun async-shell-command-no-window (command)
   (interactive)
   (let
