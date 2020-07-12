@@ -190,8 +190,16 @@ For specific instructions use ~devfile.toml~.
 
 ~Gitlab -> Github~ repository mirroring.
 
-My main config lives in Gitlab, but I do maintain a mirror at Github. So here
-is how to setup the mirroring:
+[[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/emacs/doom.d][My Doom Emacs config on Gitlab]] (Main repo)
+
+[[https://github.com/justinekizhak/dotfiles/tree/master/emacs/doom.d][My Doom Emacs config on Github]] (Mirror)
+
+My main config lives in Gitlab, but I do maintain a mirror at Github.
+
+The mirroring is done automatically by Gitlab. All I have to do it just keep on
+pushing commits onto Gitlab.
+
+So here is how to setup the mirroring:
 
 *** Step1: Create Github personal token
 
