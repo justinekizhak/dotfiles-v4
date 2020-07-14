@@ -1,9 +1,8 @@
 #+TITLE: Dotfiles
 
-#+html: <img src="https://svgshare.com/i/Mu5.svg">
+#+html: <a href="https://github.com/hlissner/doom-emacs"><img src="https://svgshare.com/i/Mu5.svg" alt="Doom Emacs"></a>
 #+html: <a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
 #+html: <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-#+html: <a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
 #+html: <br>
 
 -----
@@ -13,10 +12,10 @@
 * Table of contents :TOC:
 - [[#introduction][Introduction]]
 - [[#features][Features]]
+- [[#screenshots][Screenshots]]
 - [[#getting-started][Getting started]]
-  - [[#what-is-devinstaller][What is Devinstaller?]]
-  - [[#documentation][Documentation]]
-  - [[#license][License]]
+- [[#documentation][Documentation]]
+- [[#license][License]]
 
 * Introduction
 
@@ -50,41 +49,37 @@ Contains settings for
 - VSCode (only install instructions for dotfiles)
 - and some terminal settings
 
+* Screenshots
+
+#+caption: Doom Emacs dashboard
+#+html: <img width="100%" src="emacs/doom.d/images/dashboard.png" />
+
+#+caption: Doom Emacs org mode
+#+html: <img width="100%" src="emacs/doom.d/images/org-mode.png" />
+
+#+caption: Python mode
+#+html: <img width="100%" src="emacs/doom.d/images/python-mode.png" />
+
+#+caption: ZSH shell
+#+html: <img width="100%" src="zsh/images/zsh.png" />
 * Getting started
 
 1. ~git clone https://gitlab.com/justinekizhak/dotfiles~
-2. All the instructions are in =devfile.toml=. Use [[https://gitlab.com/devinstaller/devinstaller][devinstaller]] for installing the packages
+2. All the instructions are in =devfile.toml=. Use [[https://gitlab.com/devinstaller/devinstaller][devinstaller]] for installing
+   the packages
 
-** What is Devinstaller?
-
-Devinstaller is a configuration file handler. It is not your regular config file.
-
-Regular config files are static, they define the instructions and some other utility runs the instructions.
-Devinstaller goes above and beyond this. Devinstaller not only knows what instructions but also which
-instructions should be run
-
-Devinstaller config consists of 2 files and the devinstaller app
-
-1. The specification file
-2. The program file
-
-The specification file is your static, declarative config file but with supports for both python and shell scripting.
-The specification file is also equipped with hooks, which can change pre defined instructions while
-it is being run.
-
-Not just that based on the platform it is being run it can change the course of the installation procedure.
-
-** Documentation
+* Documentation
 
 Each application has their own documentation in their folders.
 
 | Application | Documentation path                                                   |
 |-------------+----------------------------------------------------------------------|
 | Doom Emacs  | [[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/emacs/doom.d]] |
+| ZSH         | [[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/zsh]]          |
 
 /Remaining docs are WIP/
 
-** License
+* License
 
 Licensed under the terms of [[file:LICENSE.org][MIT License]]
 

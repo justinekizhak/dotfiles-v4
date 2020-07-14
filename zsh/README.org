@@ -1,0 +1,67 @@
+#+TITLE: ZSH config
+
+* Table of contents :TOC:
+- [[#features][Features]]
+- [[#screenshots][Screenshots]]
+- [[#documentation][Documentation]]
+  - [[#custom_functionssh][=custom_functions.sh=]]
+  - [[#keybindingssh][=keybindings.sh=]]
+  - [[#zimrcsh][=zimrc.sh=]]
+  - [[#zloginsh][=zlogin.sh=]]
+  - [[#zshenvsh][=zshenv.sh=]]
+  - [[#zshrcsh][=zshrc.sh=]]
+  - [[#zshrc_managersh][=zshrc_manager.sh=]]
+
+* Features
+
+- Zsh
+  - Zim framework
+* Screenshots
+
+#+caption: ZSH shell
+#+html: <img width="100%" src="images/zsh.png" />
+* Documentation
+
+#+BEGIN_SRC sh :results raw
+tree
+#+END_SRC
+
+#+RESULTS:
+.
+├── README.org
+├── custom_functions.sh
+├── images
+│   └── zsh.png
+├── keybindings.sh
+├── zimrc.sh
+├── zlogin.sh
+├── zshenv.sh
+├── zshrc.sh
+└── zshrc_manager.sh
+
+1 directory, 9 files
+
+
+1 directory, 10 files
+** =custom_functions.sh=
+
+The custom functions you want to run from your shell directly
+** =keybindings.sh=
+
+Keybinds you use within the shell
+** =zimrc.sh=
+
+Config file for the ZIM framework
+** =zlogin.sh=
+
+Configs which are run when starting the shell
+** =zshenv.sh=
+
+All the environment variables and all the folders in the path
+** =zshrc.sh=
+
+Main zsh config file. All the custom settings.
+** =zshrc_manager.sh=
+
+Main entry point for the zsh configs.
+It loads =custom_functions.sh=, =keybindings.s= and the =zshrc.sh=.
