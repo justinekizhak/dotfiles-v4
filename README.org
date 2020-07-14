@@ -1,15 +1,15 @@
 #+TITLE: Dotfiles
 
-[[https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge]]
+#+html: <img src="https://svgshare.com/i/Mu5.svg">
+#+html: <a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
+#+html: <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
+#+html: <a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
+#+html: <br>
 
-#+BEGIN_SRC html
-<a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
-<a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-<a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
-#+END_SRC
 -----
 
-[[https://img.shields.io/badge/License-MIT-blue.svg]]
+[[https://svgshare.com/i/Mtu.svg]]
+
 * Table of contents :TOC:
 - [[#introduction][Introduction]]
 - [[#features][Features]]
@@ -89,9 +89,7 @@ Each application has their own documentation in their folders.
 Licensed under the terms of [[file:LICENSE.org][MIT License]]
 
 -----
-#+BEGIN_SRC markdown
-[![forthebadge](https://forthebadge.com/images/badges/compatibility-betamax.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/powered-by-water.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-#+END_SRC
+[[https://forthebadge.com/images/badges/compatibility-betamax.svg]]
+[[https://forthebadge.com/images/badges/powered-by-water.svg]]
+[[https://forthebadge.com/images/badges/built-with-love.svg]]
 -----
