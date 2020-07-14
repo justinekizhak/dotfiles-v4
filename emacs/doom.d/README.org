@@ -54,13 +54,13 @@
   - [[#--v--paste-menu][⌘ + v → Paste menu]]
 - [[#packages][Packages]]
   - [[#ace-popup][Ace-popup]]
+  - [[#annotate][Annotate]]
   - [[#apex-legends-title][Apex Legends title]]
   - [[#atomic-chrome][Atomic chrome]]
   - [[#clipmon][Clipmon]]
   - [[#dired][Dired]]
   - [[#drag-lines][Drag lines]]
   - [[#easy-escape][Easy escape]]
-  - [[#easy-escape-1][Easy escape]]
   - [[#evil-snipe][Evil snipe]]
   - [[#eww][EWW]]
   - [[#flycheck][Flycheck]]
@@ -558,6 +558,16 @@ Bind =SPC w M-w= for Ace window
   :defer t)
 #+END_SRC
 
+** Annotate
+
+[[https://github.com/bastibe/annotate.el][Github repo]]
+
+This package provides a minor mode annotate-mode, which can add annotations to arbitrary files without changing the files themselves. This is very useful for code reviews.
+
+#+BEGIN_SRC emacs-lisp
+(use-package annotate)
+#+END_SRC
+
 ** Apex Legends title
 
 Use a random quote of a character from [[https://www.ea.com/games/apex-legends/play-now-for-free][Apex Legends]] as your frame title.
@@ -655,13 +665,6 @@ Edit browser text in Emacs
   (map!
     :n "M-l" #'evil-org->       ; indents line to left
     :n "M-h" #'evil-org-<))      ; indents line to right
-#+END_SRC
-
-** Easy escape
-
-#+BEGIN_SRC emacs-lisp
-(use-package easy-escape
-  :defer t)
 #+END_SRC
 
 ** Easy escape
@@ -953,6 +956,32 @@ Github Flavored Markdown exporter for Org Mode
 #+BEGIN_SRC emacs-lisp
 (use-package ox-gfm
   :defer 3)
+#+END_SRC
+
+*** Org ref
+
+Citations, cross-references, indexes, glossaries and bibtex utilities for org-mode
+
+[[https://github.com/jkitchin/org-ref][Github repo]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-ref
+  :config
+  (setq reftex-default-bibliography '("~/org/references.bib"))
+
+  ;; see org-ref for use of these variables
+  (setq org-ref-bibliography-notes "~/org/notes.org"
+        org-ref-default-bibliography '("~/org/references.bib")
+        org-ref-pdf-directory "~/org/bibtex-pdfs/"))
+
+(setq bibtex-completion-bibliography "~/org/references.bib"
+      bibtex-completion-library-path "~/org/bibtex-pdfs"
+      bibtex-completion-notes-path "~/org/helm-bibtex-notes")
+
+;; open pdf with system pdf viewer (works on mac)
+(setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (start-process "open" "*open*" "open" fpath)))
 #+END_SRC
 
 ** Parinfer

@@ -43,9 +43,10 @@
 (package! pipenv)                  ;;; Use and manage Python virtual env from Emacs
 (package! easy-escape)             ;;; Make Elisp regular expressions more readable
 (package! web-beautify)            ;;; Beautify your Web development
-(package! plantuml-mode)           ;;; Draw UML diagrams in Emacs
 (package! graphviz-dot-mode)
 (package! atomic-chrome)           ;;; Edit browser text in Emacs
 (package! bnf-mode)                ;;; Write context free grammer with sytax higlighting
 (package! poet-theme)              ;;; Make Emacs more friendly for writing prose as well as for code
 (package! org-bullets)             ;;; Emphasis your bullets
+(package! annotate)                ;;; No more using comments for annotation
+(package! org-ref)
