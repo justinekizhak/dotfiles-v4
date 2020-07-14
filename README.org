@@ -15,6 +15,7 @@
 - [[#screenshots][Screenshots]]
 - [[#getting-started][Getting started]]
 - [[#documentation][Documentation]]
+  - [[#repository-mirroring][Repository mirroring]]
 - [[#license][License]]
 
 * Introduction
@@ -78,6 +79,27 @@ Each application has their own documentation in their folders.
 | ZSH         | [[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/zsh]]          |
 
 /Remaining docs are WIP/
+
+** Repository mirroring
+
+~Gitlab -> Github~ repository mirroring.
+
+My main config lives in Gitlab, but I do maintain a mirror at Github.
+
+The mirroring is done automatically by Gitlab. All I have to do it just keep on
+pushing commits onto Gitlab.
+
+So here is how to setup the mirroring:
+
+*** Step1: Create Github personal token
+
+Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
+
+*** Step2: Mirroring from Gitlab -> Github
+
+Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
+
+Make sure to add token in both the URL and in the =password= textfield.
 
 * License
 
