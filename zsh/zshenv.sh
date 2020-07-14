@@ -1,3 +1,11 @@
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019, Justine Kizhakkinedath
+# All rights reserved
+#
+# Licensed under the terms of MIT License
+# See LICENSE file in the project root for full information.
+# -----------------------------------------------------------------------------
+
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by all invocations of the shell
@@ -6,14 +14,6 @@
 # Define Zim location
 : ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
 # }}} End configuration added by Zim install
-
-# -----------------------------------------------------------------------------
-# Copyright (c) 2019, Justine Kizhakkinedath
-# All rights reserved
-#
-# Licensed under the terms of MIT License
-# See LICENSE file in the project root for full information.
-# -----------------------------------------------------------------------------
 
 # Settings
 export TERM="xterm-256color"

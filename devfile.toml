@@ -47,7 +47,6 @@ requires = [
   "git-subrepo",
   "fasd",
   "pipenv",
-  "private_var"
 ]
 config = [
   "sudo sh -c \"echo /usr/local/bin/zsh >> /etc/shells\" && chsh -s $(which zsh)",
@@ -300,9 +299,3 @@ init = [
   "git clone git@gitlab.com:justinekizhak/dotfiles.git"
 ]
 command = "None"
-
-[[modules]]
-alias = "private_var"
-module_type = "file"
-name = "private_env_var.sh"
-parent_dir = "~/dotfiles/zsh/"

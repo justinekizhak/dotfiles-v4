@@ -1,3 +1,4 @@
+# -----------------------------------------------------------------------------
 # Created: Sun 15 Jul 2018 14:58:36 IST
 # Last-Updated: Wed 23 Oct 2019 18:19:52 IST
 #
@@ -171,7 +172,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 . "$HOME/dotfiles/zsh/custom_functions.sh"
 . "$HOME/dotfiles/zsh/keybindings.sh"
 . "$HOME/dotfiles/zsh/zshrc.sh"
-. "$HOME/dotfiles/zsh/private_env_var.sh"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
