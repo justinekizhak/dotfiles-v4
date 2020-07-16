@@ -1,23 +1,31 @@
 #+TITLE: Dotfiles
+#+AUTHOR: Justine Kizhakkinedath
+#+EMAIL: justine@kizhak.com
+#+LANGUAGE: en
+#+STARTUP: noinlineimages
+#+OPTIONS: toc:nil title:(org-export-with-title)
+#+
 
-#+html: <a href="https://github.com/hlissner/doom-emacs"><img src="https://svgshare.com/i/Mu5.svg" alt="Doom Emacs"></a>
-#+html: <a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
-#+html: <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-#+html: <br>
+#+MARKDOWN: [![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
+#+MARKDOWN: <a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
+#+MARKDOWN: <a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
+#+MARKDOWN: <br>
 
 -----
 
-[[https://svgshare.com/i/Mtu.svg]]
+#+MARKDOWN: [![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]
 
-* Table of contents :TOC:
-- [[#introduction][Introduction]]
-- [[#features][Features]]
-- [[#screenshots][Screenshots]]
-- [[#getting-started][Getting started]]
-- [[#documentation][Documentation]]
-  - [[#repository-mirroring][Repository mirroring]]
-- [[#license][License]]
+-----
+#+BEGIN_SRC markdown
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+#+END_SRC
+-----
 
+* My Dotfiles
+
+#+MARKDOWN: [[_TOC_]]
 * Introduction
 
 They say your dotfiles will most likely be the longest project you ever work on.
@@ -52,17 +60,20 @@ Contains settings for
 
 * Screenshots
 
-#+caption: Doom Emacs dashboard
-#+html: <img width="100%" src="emacs/doom.d/images/dashboard.png" />
+*** Doom Emacs - Dashboard
+[[./emacs/doom.d/images/dashboard.png]]
 
-#+caption: Doom Emacs org mode
-#+html: <img width="100%" src="emacs/doom.d/images/org-mode.png" />
+*** Doom Emacs - Org mode
 
-#+caption: Python mode
-#+html: <img width="100%" src="emacs/doom.d/images/python-mode.png" />
+[[./emacs/doom.d/images/org-mode.png]]
 
-#+caption: ZSH shell
-#+html: <img width="100%" src="zsh/images/zsh.png" />
+*** Doom Emacs - Python mode
+
+[[./emacs/doom.d/images/python-mode.png]]
+
+*** ZSH shell
+
+[[./zsh/images/zsh.png]]
 * Getting started
 
 1. ~git clone https://gitlab.com/justinekizhak/dotfiles~
@@ -105,8 +116,7 @@ Make sure to add token in both the URL and in the =password= textfield.
 
 Licensed under the terms of [[file:LICENSE.org][MIT License]]
 
------
-[[https://forthebadge.com/images/badges/compatibility-betamax.svg]]
-[[https://forthebadge.com/images/badges/powered-by-water.svg]]
-[[https://forthebadge.com/images/badges/built-with-love.svg]]
------
+* Local Variables :noexport:
+# Local variables:
+# eval: (add-hook 'after-save-hook 'org-gfm-export-to-markdown t t)
+# end:
