@@ -77,9 +77,9 @@ _Remaining docs are WIP_
 
 ## Repository mirroring
 
-`Gitlab -> Github` repository mirroring.
+**Gitlab -> Github** repository mirroring.
 
-My main config lives in Gitlab, but I do maintain a mirror at Github.
+My main config lives in [Gitlab](https://gitlab.com/justinekizhak/dotfiles), but I do maintain a mirror at [Github](https://github.com/justinekizhak/dotfiles).
 
 The mirroring is done automatically by Gitlab. All I have to do it just keep on pushing commits onto Gitlab.
 
