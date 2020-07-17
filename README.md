@@ -1,20 +1,16 @@
+[![img](https://i.imgur.com/G9YJUZI.png)](https://www.instagram.com/alka1e)
+[![img](http://i.imgur.com/tXSoThF.png)](https://twitter.com/alka1e)
 [![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
-
-<a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
-
-<a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-
-<br>
 
 ---
 
-[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]
+[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
 
 ---
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
 
 ---
 
