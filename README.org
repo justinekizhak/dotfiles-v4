@@ -11,15 +11,13 @@
 [![img](https://img.shields.io/badge/follow_me-@alka1e-1DA1F2?style=for-the-badge&logo=twitter&labelColor=27597a&logoColor=white)](https://twitter.com/alka1e)
 #+END_EXPORT
 
------
+* My Dotfiles
 
 #+BEGIN_EXPORT markdown
 [![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
 #+END_EXPORT
 
------
-
-* My Dotfiles
+** Table of Contents
 
 #+MARKDOWN: [[_TOC_]]
 * Introduction
