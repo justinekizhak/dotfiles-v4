@@ -1255,3 +1255,14 @@ Play Apex Legends music when booting up Emacs.
                                 (if (not (daemonp))
                                     (run-crypto-music))))
 ```
+
+# Fun stuffs
+
+## Play some music
+
+```emacs-lisp
+(defun play-audio-file (file-name)
+  "Play a audio file. Input audio file."
+  (interactive "faudio-file: ")
+  (async-shell-command-no-window (concat "/usr/bin/afplay " file-name)))
+```

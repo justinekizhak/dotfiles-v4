@@ -1281,6 +1281,15 @@ Play Apex Legends music when booting up Emacs.
                                 (if (not (daemonp))
                                     (run-crypto-music))))
 #+END_SRC
+* Fun stuffs
+** Play some music
+
+#+BEGIN_SRC emacs-lisp
+(defun play-audio-file (file-name)
+  "Play a audio file. Input audio file."
+  (interactive "faudio-file: ")
+  (async-shell-command-no-window (concat "/usr/bin/afplay " file-name)))
+#+END_SRC
 * Local Variables :noexport:
 # Local variables:
 # eval: (add-hook 'after-save-hook 'org-gfm-export-to-markdown t t)

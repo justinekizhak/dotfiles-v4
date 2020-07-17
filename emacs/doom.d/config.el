@@ -547,3 +547,7 @@ Version 2019-11-05"
 (add-hook 'emacs-startup-hook (lambda ()
                                 (if (not (daemonp))
                                     (run-crypto-music))))
+(defun play-audio-file (file-name)
+  "Play a audio file. Input audio file."
+  (interactive "faudio-file: ")
+  (async-shell-command-no-window (concat "/usr/bin/afplay " file-name)))
