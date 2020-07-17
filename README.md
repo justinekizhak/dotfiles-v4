@@ -1,10 +1,7 @@
+[![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
+[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
 [![img](https://i.imgur.com/G9YJUZI.png)](https://www.instagram.com/alka1e)
 [![img](http://i.imgur.com/tXSoThF.png)](https://twitter.com/alka1e)
-[![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
-
----
-
-[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
 
 ---
 
