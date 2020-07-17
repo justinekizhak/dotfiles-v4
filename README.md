@@ -1,7 +1,7 @@
 [![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
 [![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
-[![img](https://img.shields.io/badge/follow_me-@alka1e-c13584?style=for-the-badge&logo=instagram)](https://www.instagram.com/alka1e)
-[![img](https://img.shields.io/badge/follow_me-@alka1e-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/alka1e)
+[![img](https://img.shields.io/badge/follow_me-@alka1e-E4405F?style=for-the-badge&logo=instagram&labelColor=8f3c4c&logoColor=white)](https://www.instagram.com/alka1e)
+[![img](https://img.shields.io/badge/follow_me-@alka1e-1DA1F2?style=for-the-badge&logo=twitter&labelColor=27597a&logoColor=white)](https://twitter.com/alka1e)
 
 ---
 
