@@ -3,4 +3,6 @@
 *.log
 tmp/
 
+zim/
+
 private_env_var.sh

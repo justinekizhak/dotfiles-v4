@@ -5,6 +5,9 @@ Utility aliases and functions.
 
 Adds colour to `ls`, `grep` and `less`.
 
+If file `${HOME}/.dir_colors` exists, then its configuration will be set using
+`dircolors` (GNU only).
+
 Aliases
 -------
 
@@ -38,3 +41,5 @@ Aliases
 ### Misc
 
   * `mkcd` creates and changes to the given directory.
+  * `mkpw` generates a random password with the given length and set of characters.
+    The default parameters are equivalent to `mkpw 32 0-9A-Za-z`.

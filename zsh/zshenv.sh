@@ -1,3 +1,12 @@
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by all invocations of the shell
+#
+
+# Define Zim location
+: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim}
+# }}} End configuration added by Zim install
+
 # -----------------------------------------------------------------------------
 # Copyright (c) 2019, Justine Kizhakkinedath
 # All rights reserved
@@ -12,7 +21,7 @@
 #
 
 # Define Zim location
-: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
+# : ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
 # }}} End configuration added by Zim install
 
 # Settings
