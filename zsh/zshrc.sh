@@ -33,6 +33,10 @@ fi
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"
 
+export PATH="/home/justine/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 alias eme='
 setsid emacs
 '
