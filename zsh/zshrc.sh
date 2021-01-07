@@ -32,3 +32,7 @@ fi
 
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"
+
+alias eme='
+setsid emacs
+'

@@ -63,3 +63,4 @@
 (package! lsp-python-ms)                                                       ;;; LSP Python MS, a lsp-mode client leveraging Microsoft's Python Language Server .
 (package! racer)                                                               ;;; Auto complete for rust
 (package! web-beautify)                                                        ;;; Beautify your Web development
+(package! yaml-mode)                                                           ;;; Yaml mode

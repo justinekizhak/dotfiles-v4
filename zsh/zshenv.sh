@@ -17,6 +17,8 @@ export GPG_TTY=$(tty)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export GIT_SUBREPO_VERBOSE=True
 export PRELUDE_INSTALL_DIR="$HOME/prelude"
+export DISPLAY=:0.0
+export LIBGL_ALWAYS_INDIRECT=1
 
 add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
