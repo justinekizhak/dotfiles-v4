@@ -7,8 +7,8 @@
 # -----------------------------------------------------------------------------
 
 # Alias
-alias emacsclient="emacsclient -c -a '' -n"
-alias psg="ps ax | ag"
+alias ec="emacsclient -c -a '' -n"
+alias psg="ps ax | rg"
 alias gs="git status"
 alias kill-last="kill %1"
 alias reload="source ~/.zshrc"

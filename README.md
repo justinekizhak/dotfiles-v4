@@ -1,51 +1,24 @@
 [![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
-<a href="https://www.instagram.com/justinekizhak"><img src="https://i.imgur.com/G9YJUZI.png" alt="Instagram" align="right"></a>
-<a href="https://twitter.com/justinekizhak"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a>
-<a href="https://www.facebook.com/justinekizhak"><img src="http://i.imgur.com/P3YfQoD.png" alt="Facebook" align="right"></a>
-<br>
+[![img](https://img.shields.io/badge/follow_me-@alka1e-E4405F?style=for-the-badge&logo=instagram&labelColor=8f3c4c&logoColor=white)](https://www.instagram.com/alka1e)
+[![img](https://img.shields.io/badge/follow_me-@alka1e-1DA1F2?style=for-the-badge&logo=twitter&labelColor=27597a&logoColor=white)](https://twitter.com/alka1e)
 
----
+# My Dotfiles
 
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
 
-<!-- {Put your badges here} -->
+## Table of Contents
 
----
-
-<h1> Dotfiles </h1>
-
----
-
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
-
-- [Introduction](#introduction)
-- [Features](#features)
-- [Get Started](#get-started)
-- [Full Documentation](#full-documentation)
-    - [Add modules](#add-modules)
-        - [Add new prompt themes](#add-new-prompt-themes)
-- [License](#license)
-
-<!-- markdown-toc end -->
+[[_TOC_]]
 
 # Introduction
 
-They say your dotfiles will most likely be the longest project you ever work on.
-So for this reason, your dotfiles must be organized in a disciplined manner for
-maintainability and extensibility.
+They say your dotfiles will most likely be the longest project you ever work on. So for this reason, your dotfiles must be organized in a disciplined manner for maintainability and extensibility.
 
-My dotfiles are the direct reflection of my software development workflow and
-practices of my past 3 years.
+My dotfiles are the direct reflection of my software development workflow and practices of my past 3 years.
 
-My dotfiles have undergone many transformation from single file vimrc to
-forking someone else's to building a simple yet sophisticated structure for
-housing more dotfiles.
+My dotfiles have undergone many transformation from single file vimrc to forking someone else&rsquo;s to building a simple yet sophisticated structure for housing more dotfiles.
 
-One thing you may notice is that my workflow consists of diverse toolkit,
-this makes it for easier adoption and exploration.
-
-**[Back to top](#table-of-contents)**
+One thing you may notice is that my workflow consists of diverse toolkit, this makes it for easier adoption and exploration.
 
 # Features
 
@@ -63,71 +36,66 @@ Contains settings for
 - VSCode (only install instructions for dotfiles)
 - and some terminal settings
 
-**[Back to top](#table-of-contents)**
+# Screenshots
 
-# Get Started
+### Doom Emacs - Dashboard
 
-1. `git clone https://gitlab.com/justinekizhak/dotfiles`
+![img](./emacs/doom.d/images/dashboard.png)
 
-2. `cd dotfiles & rm -rf .git`
+### Doom Emacs - Org mode
 
-3. Use instructions in `install.yaml` file.
-   Just copy paste lines in the file into terminal.
-   All instructions are bash compatible.
+![img](./emacs/doom.d/images/org-mode.png)
 
-**[Back to top](#table-of-contents)**
+### Doom Emacs - Python mode
 
-# Full Documentation
+![img](./emacs/doom.d/images/python-mode.png)
 
-This repo uses [git subrepo] for adding modules.
+### ZSH shell
 
-## Add modules
+![img](./zsh/images/zsh.png)
 
-`git subrepo clone MODULE_URL MODULE_LOCATION`
+# Getting started
 
-### Add new prompt themes
+1.  `git clone https://gitlab.com/justinekizhak/dotfiles`
+2.  All the instructions are in `devfile.toml`. Use [devinstaller](https://gitlab.com/devinstaller/devinstaller) for installing the packages
 
-- Subrepo clone the module
-  `git subrepo clone PROMPT_URL PROMPT_LOCATION`
+# Documentation
 
-- Symlink zsh file as `prompt_FILENAME_setup`
+Each application has their own documentation in their folders.
 
-Example:
+| Application | Documentation path                                                     |
+| ----------- | ---------------------------------------------------------------------- |
+| Doom Emacs  | <https://gitlab.com/justinekizhak/dotfiles/-/tree/master/emacs/doom.d> |
+| ZSH         | <https://gitlab.com/justinekizhak/dotfiles/-/tree/master/zsh>          |
 
-```
-git subrepo clone https://github.com/denysdovhan/spaceship-prompt \
-zsh/zim/modules/prompt/external-themes/spaceship
-```
+_Remaining docs are WIP_
 
-```
-ln -s ~/dotfiles/zsh/zim/modules/prompt/external-themes/spaceship/spaceship.zsh \
-~/dotfiles/zsh/zim/modules/prompt/functions/prompt_spaceship_setup
-```
+## Repository mirroring
 
----
+**Gitlab -> Github** repository mirroring.
 
-Repo at [GITLAB][website].
+My main config lives in [Gitlab](https://gitlab.com/justinekizhak/dotfiles), but I do maintain a mirror at [Github](https://github.com/justinekizhak/dotfiles).
 
-Read [CHANGELOG], [CODE OF CONDUCT], [CONTRIBUTING] guide.
+The mirroring is done automatically by Gitlab. All I have to do it just keep on pushing commits onto Gitlab.
 
-[git subrepo]: https://github.com/ingydotnet/git-subrepo
-[website]: https://gitlab.com/justinekizhak/dotfiles
-[changelog]: CHANGELOG.md
-[contributing]: CONTRIBUTING.md
-[code of conduct]: CODE_OF_CONDUCT.md
+So here is how to setup the mirroring:
+
+### Step1: Create Github personal token
+
+Instructions <https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token>
+
+### Step2: Mirroring from Gitlab -> Github
+
+Instructions: <http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github>
+
+Make sure to add token in both the URL and in the `password` textfield.
 
 # License
 
-Licensed under the terms of [MIT License].
-
-[mit license]: LICENSE.txt
-
-**[Back to top](#table-of-contents)**
+Licensed under the terms of [MIT License](LICENSE.md)
 
 ---
 
-[![forthebadge](https://forthebadge.com/images/badges/compatibility-betamax.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/powered-by-water.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-
----
+[![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)

@@ -6,6 +6,15 @@
 # See LICENSE file in the project root for full information.
 # -----------------------------------------------------------------------------
 
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by all invocations of the shell
+#
+
+# Define Zim location
+: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
+# }}} End configuration added by Zim install
+
 # Settings
 export TERM="xterm-256color"
 export LANG=en_US.UTF-8
@@ -17,8 +26,6 @@ export GPG_TTY=$(tty)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export GIT_SUBREPO_VERBOSE=True
 export PRELUDE_INSTALL_DIR="$HOME/prelude"
-export DISPLAY=:0.0
-export LIBGL_ALWAYS_INDIRECT=1
 
 add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
@@ -34,6 +41,9 @@ add_to_path "$HOME/.cargo/bin"
 add_to_path "$HOME/flutter/bin"
 add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/doom-emacs/bin"
+add_to_path "$HOME/.poetry/bin"
+add_to_path "$HOME/app_binaries"
+add_to_path "/usr/local/opt/python@3.8/bin"
 
 . "$HOME/git-subrepo/.rc"
 

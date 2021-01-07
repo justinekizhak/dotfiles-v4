@@ -1,0 +1,124 @@
+#+TITLE: Dotfiles
+#+AUTHOR: Justine Kizhakkinedath
+#+EMAIL: justine@kizhak.com
+#+LANGUAGE: en
+#+STARTUP: noinlineimages
+#+OPTIONS: toc:nil
+
+#+BEGIN_EXPORT markdown
+[![img](https://img.shields.io/badge/Made_in-Doom_Emacs-blue?style=for-the-badge)](https://github.com/hlissner/doom-emacs)
+[![img](https://img.shields.io/badge/follow_me-@alka1e-E4405F?style=for-the-badge&logo=instagram&labelColor=8f3c4c&logoColor=white)](https://www.instagram.com/alka1e)
+[![img](https://img.shields.io/badge/follow_me-@alka1e-1DA1F2?style=for-the-badge&logo=twitter&labelColor=27597a&logoColor=white)](https://twitter.com/alka1e)
+#+END_EXPORT
+
+* My Dotfiles
+
+#+BEGIN_EXPORT markdown
+[![img](https://img.shields.io/badge/license-mit-blueviolet?style=for-the-badge)]()
+#+END_EXPORT
+
+** Table of Contents
+
+#+MARKDOWN: [[_TOC_]]
+* Introduction
+
+They say your dotfiles will most likely be the longest project you ever work on.
+So for this reason, your dotfiles must be organized in a disciplined manner for
+maintainability and extensibility.
+
+My dotfiles are the direct reflection of my software development workflow and
+practices of my past 3 years.
+
+My dotfiles have undergone many transformation from single file vimrc to
+forking someone else's to building a simple yet sophisticated structure for
+housing more dotfiles.
+
+One thing you may notice is that my workflow consists of diverse toolkit,
+this makes it for easier adoption and exploration.
+
+* Features
+
+Contains settings for
+
+- Emacs
+  - Doom emacs
+  - Spacemacs
+- Vim
+- Zsh
+  - Zim framework
+- Tmux
+- Custom bash scripts
+- Fonts
+- VSCode (only install instructions for dotfiles)
+- and some terminal settings
+
+* Screenshots
+
+*** Doom Emacs - Dashboard
+[[./emacs/doom.d/images/dashboard.png]]
+
+*** Doom Emacs - Org mode
+
+[[./emacs/doom.d/images/org-mode.png]]
+
+*** Doom Emacs - Python mode
+
+[[./emacs/doom.d/images/python-mode.png]]
+
+*** ZSH shell
+
+[[./zsh/images/zsh.png]]
+* Getting started
+
+1. ~git clone https://gitlab.com/justinekizhak/dotfiles~
+2. All the instructions are in =devfile.toml=. Use [[https://gitlab.com/devinstaller/devinstaller][devinstaller]] for installing
+   the packages
+
+* Documentation
+
+Each application has their own documentation in their folders.
+
+| Application | Documentation path                                                   |
+|-------------+----------------------------------------------------------------------|
+| Doom Emacs  | [[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/emacs/doom.d]] |
+| ZSH         | [[https://gitlab.com/justinekizhak/dotfiles/-/tree/master/zsh]]          |
+
+/Remaining docs are WIP/
+
+** Repository mirroring
+
+*Gitlab -> Github* repository mirroring.
+
+My main config lives in [[https://gitlab.com/justinekizhak/dotfiles][Gitlab]], but I do maintain a mirror at [[https://github.com/justinekizhak/dotfiles][Github]].
+
+The mirroring is done automatically by Gitlab. All I have to do it just keep on
+pushing commits onto Gitlab.
+
+So here is how to setup the mirroring:
+
+*** Step1: Create Github personal token
+
+Instructions [[https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token]]
+
+*** Step2: Mirroring from Gitlab -> Github
+
+Instructions: [[http://repositories.compbio.cs.cmu.edu/help/workflow/repository_mirroring.md#setting-up-a-mirror-from-gitlab-to-github]]
+
+Make sure to add token in both the URL and in the =password= textfield.
+
+* License
+
+Licensed under the terms of [[file:LICENSE.org][MIT License]]
+
+-----
+
+#+BEGIN_EXPORT markdown
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
+#+END_EXPORT
+
+* Local Variables :noexport:
+# Local variables:
+# eval: (add-hook 'after-save-hook 'org-gfm-export-to-markdown t t)
+# end:
