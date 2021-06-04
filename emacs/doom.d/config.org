@@ -326,7 +326,7 @@ Don’t bother confirming killing processes
 
 ** History
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package recentf
   :defer t
   :ensure nil
@@ -358,7 +358,7 @@ Don’t bother confirming killing processes
 
 Replace the active region just by typing text, just like modern editors
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tanlge no
 (use-package delsel
   :disabled
   :ensure nil
@@ -459,8 +459,9 @@ Bind =SPC w M-w= for Ace window
 
 This package provides a minor mode annotate-mode, which can add annotations to arbitrary files without changing the files themselves. This is very useful for code reviews.
 
-#+BEGIN_SRC emacs-lisp
-(use-package annotate)
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package annotate
+  :defer t)
 #+END_SRC
 
 ** Apex Legends title
@@ -492,10 +493,10 @@ This command requires `apex-legends-voicelines' python package."
 Edit browser text in Emacs
 
 #+BEGIN_SRC emacs-lisp
-(use-package atomic-chrome)
+(use-package atomic-chrome
+  :defer t)
 (add-hook 'emacs-startup-hook (lambda ()
-                                (if (daemonp)
-                                    (atomic-chrome-start-server))))
+                                  (atomic-chrome-start-server)))
 #+END_SRC
 
 ** Clipmon
@@ -506,7 +507,7 @@ Edit browser text in Emacs
 
 ** Dired
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package dired
   :defer t
   :ensure nil
@@ -590,10 +591,9 @@ Now no more double backslash hell. [[https://github.com/cpitclaudel/easy-escape]
 
 Emacs Web Wowser, the HTML-based Emacs Web Browser.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package eww
   :defer t
-  :ensure nil
   :commands (eww)
   :hook (eww-mode . (lambda ()
                       "Rename EWW's buffer so sites open in new page."
@@ -607,7 +607,7 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
 
 Flycheck, a syntax checking extension.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package flycheck
   :defer t
   :hook (prog-mode . flycheck-mode)
@@ -622,7 +622,7 @@ Flycheck, a syntax checking extension.
 
 #+BEGIN_SRC emacs-lisp
 (use-package goto-line-preview
-  :defer 3
+  :defer t
   :config
     (global-set-key [remap goto-line] 'goto-line-preview))
 #+END_SRC
@@ -649,8 +649,7 @@ Iedit, a minor mode that allows editing multiple regions simultaneously in a buf
 
 #+BEGIN_SRC emacs-lisp
 (use-package iedit
-  :defer t
-  :diminish)
+  :defer t)
 #+END_SRC
 
 ** Indent tools
@@ -821,8 +820,8 @@ Better bullets for org mode.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :defer t)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+END_SRC
 
 *** Org LaTeX
@@ -837,7 +836,7 @@ Use color links when exported from Org to Latex
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-reveal
-    :defer 3
+    :defer t
     :config
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
@@ -849,7 +848,7 @@ Github Flavored Markdown exporter for Org Mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-gfm
-  :defer 3)
+  :defer t)
 #+END_SRC
 
 *** Org ref
@@ -860,6 +859,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
+  :defer t
   :config
   (setq reftex-default-bibliography '("~/org/references.bib"))
 
@@ -918,6 +918,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
+  :defer t
   :config
     (setq  projectile-project-search-path '("~/projects")))
 #+END_SRC
@@ -926,7 +927,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
 
 #+BEGIN_SRC emacs-lisp
 (use-package deadgrep
-  :defer 3
+  :defer t
   :config
     (map! :leader
       (:prefix ("a" . "applications")
@@ -992,7 +993,7 @@ Web mode, a major mode for editing web templates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
-  :defer 3
+  :defer t
   :custom-face
   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
   (font-lock-comment-face ((t (:foreground "#828282"))))
@@ -1014,7 +1015,7 @@ JS2 mode, a feature that offers improved JavsScript editing mode.
 
 #+BEGIN_SRC emacs-lisp
 (use-package js2-mode
-  :defer 3
+  :defer t
   :mode "\\.js\\'"
   :interpreter "node")
 #+END_SRC
@@ -1025,7 +1026,7 @@ TypeScript mode, a feature that offers TypeScript support for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package typescript-mode
-  :defer 3
+  :defer t
   :mode "\\.ts\\'"
   :commands (typescript-mode))
 #+END_SRC
@@ -1034,7 +1035,7 @@ TypeScript mode, a feature that offers TypeScript support for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package prettier-js
-  :defer 3
+  :defer t
   :hook js2-mode)
 #+END_SRC
 
@@ -1044,7 +1045,7 @@ Emmet, a feature that allows writing HTML using CSS selectors along with C-j. Se
 
 #+BEGIN_SRC emacs-lisp
 (use-package emmet-mode
-  :defer 3
+  :defer t
   :hook ((web-mode . emmet-mode)
          (css-mode . emmet-mode)))
 #+END_SRC
@@ -1055,7 +1056,7 @@ Instant Rename Tag, a plugin that provides ability to rename html tag pairs inst
 
 #+BEGIN_SRC emacs-lisp
 (use-package instant-rename-tag
-  :defer 3
+  :defer t
   :load-path (lambda () (expand-file-name "~/dotfiles/emacs/packages/instant-rename-tag"))
   :config
   (map! :leader
@@ -1069,7 +1070,7 @@ JSON Mode, a major mode for editing JSON files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package json-mode
-  :defer 3
+  :defer t
   :mode "\\.json\\'")
 #+END_SRC
 
@@ -1096,7 +1097,7 @@ JSON Mode, a major mode for editing JSON files.
 (delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
 
 (use-package vue-mode
-  :defer 1
+  :defer t
   :mode "\\.vue\\'")
 (with-eval-after-load 'lsp-mode
   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
@@ -1155,9 +1156,8 @@ Adding TabNine completion to buffer
 
 ** TeX
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package tex
-  :disabled
   :ensure auctex
   :defer t
   :custom

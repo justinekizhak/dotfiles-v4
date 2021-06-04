@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo 'doom' > ~/.emacs-profile
-/usr/local/bin/emacs 

@@ -32,3 +32,4 @@ fi
 
 eval "$(fasd --init auto)"
 eval "$(pipenv --completion)"
+eval "$(pyenv init -)"

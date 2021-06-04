@@ -77,8 +77,9 @@ values."
             shell-default-full-span nil
             shell-default-height 30
             shell-default-position 'bottom)
-     (python :variables python-test-runner 'pytest
-             pytest-global-name "python3 -m pytest")
+     (python :variables python-formatter 'black
+             python-format-on-save t
+             python-sort-imports-on-save t)
      (vue :variables vue-backend 'lsp)
      )
 
@@ -102,6 +103,7 @@ values."
                                       importmagic
                                       (tiny :location(recipe :fetcher github :repo "abo-abo/tiny"))
                                       (ox-rst :location (recipe :fetcher github :repo "msnoigrs/ox-rst"))
+                                      poetry
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -181,7 +183,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("BlexMono Nerd Font Mono"
+   dotspacemacs-default-font '("Fira Code"
                                :size 14
                                :weight normal
                                :width normal
@@ -450,12 +452,13 @@ This function is called at the very end of Spacemacs initialization."
  '(paradox-github-token t)
  '(prettier-js-command "/Users/justine/.nvm/versions/node/v12.4.0/bin/prettier")
  '(pytest-cmd-flags "--pdb")
- '(python-shell-interpreter "python3.8")
  '(ranger-override-dired 'ranger)
  '(rust-format-on-save t)
  '(rust-rustfmt-bin "/Users/justine/.cargo/bin/rustfmt")
  '(safe-local-variable-values
-   '((checkdoc-minor-mode . t)
+   '((eval add-hook 'after-save-hook 'org-rst-export-to-rst t t)
+     (eval add-hook 'after-save-hook 'org-pandoc-export-to-rst t t)
+     (checkdoc-minor-mode . t)
      (header-auto-update-enabled)
      (typescript-backend . tide)
      (typescript-backend . lsp)

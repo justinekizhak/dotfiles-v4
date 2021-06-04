@@ -68,31 +68,6 @@
   :defer t
   :ensure nil
   :config (scroll-bar-mode -1))
-(use-package recentf
-  :defer t
-  :ensure nil
-  :hook (after-init . recentf-mode)
-  :custom
-  (recentf-auto-cleanup "05:00am")
-  (recentf-max-saved-items 200)
-  (recentf-exclude '((expand-file-name package-user-dir)
-                     ".cache"
-                     ".cask"
-                     ".elfeed"
-                     "bookmarks"
-                     "cache"
-                     "ido.*"
-                     "persp-confs"
-                     "recentf"
-                     "undo-tree-hist"
-                     "url"
-                     "COMMIT_EDITMSG\\'")))
-
-;; When buffer is closed, saves the cursor location
-(save-place-mode 1)
-
-;; Set history-length longer
-(setq-default history-length 500)
 (use-package delsel
   :disabled
   :ensure nil
@@ -121,7 +96,6 @@
 (map! "M-v" #'counsel-yank-pop)
 (use-package ace-popup-menu
   :defer t)
-(use-package annotate)
 (setq frame-title-format (shell-command-to-string "apex-voicelines"))
 
 (defun change-emacs-title-apex ()
@@ -129,45 +103,11 @@
 This command requires `apex-legends-voicelines' python package."
   (interactive)
   (setq frame-title-format (shell-command-to-string "apex-voicelines")))
-(use-package atomic-chrome)
+(use-package atomic-chrome
+  :defer t)
 (add-hook 'emacs-startup-hook (lambda ()
-                                (if (daemonp)
-                                    (atomic-chrome-start-server))))
+                                  (atomic-chrome-start-server)))
 (add-to-list 'after-init-hook 'clipmon-mode-start)
-(use-package dired
-  :defer t
-  :ensure nil
-  :bind
-  (("C-x C-j" . dired-jump)
-   ("C-x j" . dired-jump-other-window))
-  :custom
-  ;; Always delete and copy recursively
-  (dired-recursive-deletes 'always)
-  (dired-recursive-copies 'always)
-  ;; Auto refresh Dired, but be quiet about it
-  (global-auto-revert-non-file-buffers t)
-  (auto-revert-verbose nil)
-  ;; Quickly copy/move file in Dired
-  (dired-dwim-target t)
-  ;; Move files to trash when deleting
-  (delete-by-moving-to-trash t)
-  ;; Load the newest version of a file
-  (load-prefer-newer t)
-  ;; Detect external file changes and auto refresh file
-  (auto-revert-use-notify nil)
-  (auto-revert-interval 3) ; Auto revert every 3 sec
-  :config
-  ;; Enable global auto-revert
-  (global-auto-revert-mode t)
-  ;; Reuse same dired buffer, to prevent numerous buffers while navigating in dired
-  (put 'dired-find-alternate-file 'disabled nil)
-  :hook
-  (dired-mode . (lambda ()
-                  (dired-hide-details-mode)
-                  (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
-                  (local-set-key (kbd "RET") #'dired-find-alternate-file)
-                  (local-set-key (kbd "^")
-                                 (lambda () (interactive) (find-alternate-file ".."))))))
 (map!
     :n "M-k" #'drag-stuff-up    ; drags line up
     :n "M-j" #'drag-stuff-down)  ; drags line down
@@ -185,27 +125,8 @@ This command requires `apex-legends-voicelines' python package."
   (setq evil-snipe-scope 'visible)
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
-(use-package eww
-  :defer t
-  :ensure nil
-  :commands (eww)
-  :hook (eww-mode . (lambda ()
-                      "Rename EWW's buffer so sites open in new page."
-                      (rename-buffer "eww" t)))
-  :config
-  ;; I am using EAF-Browser instead of EWW
-  (unless *eaf-env*
-    (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
-(use-package flycheck
-  :defer t
-  :hook (prog-mode . flycheck-mode)
-  :custom
-  (flycheck-emacs-lisp-load-path 'inherit)
-  :config
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
-  (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
 (use-package goto-line-preview
-  :defer 3
+  :defer t
   :config
     (global-set-key [remap goto-line] 'goto-line-preview))
 (use-package htmlize
@@ -213,8 +134,7 @@ This command requires `apex-legends-voicelines' python package."
 (use-package hydra
   :defer t)
 (use-package iedit
-  :defer t
-  :diminish)
+  :defer t)
 (use-package indent-tools
   :defer t
   :after (hydra)
@@ -333,17 +253,18 @@ This command requires `apex-legends-voicelines' python package."
                                                     (0900 1200 1500 1800 2100)
                                                     "      " "┈┈┈┈┈┈┈┈┈┈┈┈┈")))))))))
 (use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :defer t)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 (use-package ox-reveal
-    :defer 3
+    :defer t
     :config
     (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
     (setq org-reveal-mathjax t))
 (use-package ox-gfm
-  :defer 3)
+  :defer t)
 (use-package org-ref
+  :defer t
   :config
   (setq reftex-default-bibliography '("~/org/references.bib"))
 
@@ -372,10 +293,11 @@ This command requires `apex-legends-voicelines' python package."
       (:prefix ("a" . "applications")
         :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
 (use-package projectile
+  :defer t
   :config
     (setq  projectile-project-search-path '("~/projects")))
 (use-package deadgrep
-  :defer 3
+  :defer t
   :config
     (map! :leader
       (:prefix ("a" . "applications")
@@ -398,7 +320,7 @@ This command requires `apex-legends-voicelines' python package."
       :n "P" #'vterm-yank
       :n "p" #'vterm-yank)
 (use-package web-mode
-  :defer 3
+  :defer t
   :custom-face
   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
   (font-lock-comment-face ((t (:foreground "#828282"))))
@@ -411,29 +333,29 @@ This command requires `apex-legends-voicelines' python package."
    web-mode-code-indent-offset 2
    web-mode-css-indent-offset 2))
 (use-package js2-mode
-  :defer 3
+  :defer t
   :mode "\\.js\\'"
   :interpreter "node")
 (use-package typescript-mode
-  :defer 3
+  :defer t
   :mode "\\.ts\\'"
   :commands (typescript-mode))
 (use-package prettier-js
-  :defer 3
+  :defer t
   :hook js2-mode)
 (use-package emmet-mode
-  :defer 3
+  :defer t
   :hook ((web-mode . emmet-mode)
          (css-mode . emmet-mode)))
 (use-package instant-rename-tag
-  :defer 3
+  :defer t
   :load-path (lambda () (expand-file-name "~/dotfiles/emacs/packages/instant-rename-tag"))
   :config
   (map! :leader
         (:prefix ("m" . "local leader")
           :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
 (use-package json-mode
-  :defer 3
+  :defer t
   :mode "\\.json\\'")
 (eval-after-load 'css-mode
   '(add-hook 'css-mode-hook
@@ -447,7 +369,7 @@ This command requires `apex-legends-voicelines' python package."
 (delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
 
 (use-package vue-mode
-  :defer 1
+  :defer t
   :mode "\\.vue\\'")
 (with-eval-after-load 'lsp-mode
   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
@@ -471,30 +393,6 @@ This command requires `apex-legends-voicelines' python package."
   :mode "\\.py\\'"
   :custom
   (python-indent-offset 4))
-(use-package tex
-  :disabled
-  :ensure auctex
-  :defer t
-  :custom
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  (TeX-master nil)
-  ;; to use pdfview with auctex
-  (TeX-view-program-selection '((output-pdf "pdf-tools"))
-                              TeX-source-correlate-start-server t)
-  (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
-  (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
-  :hook
-  (LaTeX-mode . (lambda ()
-                  (turn-on-reftex)
-                  (setq reftex-plug-into-AUCTeX t)
-                  (reftex-isearch-minor-mode)
-                  (setq TeX-PDF-mode t)
-                  (setq TeX-source-correlate-method 'synctex)
-                  (setq TeX-source-correlate-start-server t)))
-  :config
-  (when (version< emacs-version "26")
-    (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 
 (use-package yaml-mode
@@ -551,3 +449,40 @@ Version 2019-11-05"
   "Play a audio file. Input audio file."
   (interactive "faudio-file: ")
   (async-shell-command-no-window (concat "/usr/bin/afplay " file-name)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((eval add-hook 'after-save-hook 'org-gfm-export-to-markdown t t))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(css-selector ((t (:inherit default :foreground "#66CCFF"))))
+ '(fixed-pitch ((t (:family "Fira Code" :height 160))))
+ '(font-lock-comment-face ((t (:foreground "#828282"))))
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-title ((t (:inherit default :weight bold :font "ETBembo" :height 2.0 :underline nil))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-level-1 ((t (:inherit default :weight bold :font "ETBembo" :height 1.5))))
+ '(org-level-2 ((t (:inherit default :weight bold :font "ETBembo" :height 1.4))))
+ '(org-level-3 ((t (:inherit default :weight bold :font "ETBembo" :height 1.3))))
+ '(org-level-4 ((t (:inherit default :weight bold :font "ETBembo" :height 1.2))))
+ '(org-level-5 ((t (:inherit default :weight bold :font "ETBembo" :height 1.1))))
+ '(org-level-6 ((t (:inherit default :weight bold :font "ETBembo"))))
+ '(org-level-7 ((t (:inherit default :weight bold :font "ETBembo"))))
+ '(org-level-8 ((t (:inherit default :weight bold :font "ETBembo"))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+ '(variable-pitch ((t (:family "ETBembo" :height 160)))))
