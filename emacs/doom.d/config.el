@@ -11,6 +11,8 @@
   (eq system-type 'windows-nt))
 (defconst *sys/root*
   (string-equal "root" (getenv "USER")))
+(defconst *python3*
+  (executable-find "python3"))
 (defconst *eaf-env*
   (and *sys/linux* *sys/gui* *python3*
        (executable-find "pip")
@@ -26,8 +28,6 @@
   (executable-find "mvn"))
 (defconst *pdflatex*
   (executable-find "pdflatex"))
-(defconst *python3*
-  (executable-find "python3"))
 (defconst *python*
   (executable-find "python"))
 (defconst *rg*
@@ -388,6 +388,15 @@ This command requires `apex-legends-voicelines' python package."
 (use-package treemacs-magit
   :defer t
   :after (treemacs magit))
+(setq-default magit-process-password-prompt-regexps
+  '("^\\(Enter \\)?[Pp]assphrase\\( for \\(RSA \\)?key '.*'\\)?: ?$"
+    ;; Match-group 99 is used to identify the "user@host" part.
+    "^\\(Enter \\)?[Pp]assword\\( for '\\(https?://\\)?\\(?99:.*\\)'\\)?: ?$"
+    ;; Pinentry Curses box in the terminal when used with GnuPG
+    "Please enter the passphrase for the ssh key"
+    "^.*'s password: ?$"
+    "^Yubikey for .*: ?$"
+    "^Enter PIN for .*: ?$"))
 (use-package undo-tree
   :defer t
   :custom
@@ -444,13 +453,16 @@ This command requires `apex-legends-voicelines' python package."
              (lambda ()
                (add-hook 'before-save-hook 'prettier-js-mode))))
 (add-hook 'vue-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
-(delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
+;; (delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
 
 (use-package vue-mode
   :defer 1
-  :mode "\\.vue\\'")
-(with-eval-after-load 'lsp-mode
-  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
+ :mode "\\.vue\\'"
+    :custom
+    (mmm-submode-decoration-level 0)
+    (vue-html-extra-indent 2))
+;; (with-eval-after-load 'lsp-mode
+;;   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
 (eval-after-load 'prettier-js
   '(add-hook 'vue-mode-hook
              (lambda ()

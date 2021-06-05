@@ -2,11 +2,12 @@
 
 [[_TOC_]]
 
+
 # About Emacs
 
 ![img](https://imgs.xkcd.com/comics/cautionary.png)
 
-Emacs changes how you _think_ about programming.
+Emacs changes how you *think* about programming.
 
 Emacs is **totally introspectable**. You can always find out &rsquo;what code runs when I press this button?&rsquo;.
 
@@ -18,11 +19,11 @@ Emacs provides **functionality without applications**. Rather than separate appl
 
 Emacs is full of **incredible software concepts that haven&rsquo;t hit the mainstream yet**. For example:
 
-- Many platforms have a single item clipboard. Emacs has an **infinite clipboard**.
-- If you undo a change, and then continue editing, you can&rsquo;t redo the original change. Emacs allows **undoing to any historical state**, even allowing tree-based exploration of history.
-- Emacs supports a **reverse variable search**: you can find variables with a given value.
-- You can perform **structural editing** of code, allowing you to make changes without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
-- Many applications use a modal GUI: for example, you can&rsquo;t do other edits during a find-and-replace operation. Emacs provides **recursive editing** that allow you to suspend what you&rsquo;re currently doing, perform other edits, then continue the original task.
+-   Many platforms have a single item clipboard. Emacs has an **infinite clipboard**.
+-   If you undo a change, and then continue editing, you can&rsquo;t redo the original change. Emacs allows **undoing to any historical state**, even allowing tree-based exploration of history.
+-   Emacs supports a **reverse variable search**: you can find variables with a given value.
+-   You can perform **structural editing** of code, allowing you to make changes without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
+-   Many applications use a modal GUI: for example, you can&rsquo;t do other edits during a find-and-replace operation. Emacs provides **recursive editing** that allow you to suspend what you&rsquo;re currently doing, perform other edits, then continue the original task.
 
 Emacs has a **documentation culture**. Emacs includes a usage manual, a lisp programming manual, pervasive docstrings and even an interactive tutorial.
 
@@ -32,12 +33,13 @@ Emacs doesn&rsquo;t have a monopoly on good ideas, and there are other great too
 
 ![img](https://i.stack.imgur.com/7Cu9Z.jpg)
 
-_This beautifully written **About EMACS** section credits to [Remacs](https://github.com/remacs/remacs)._
+*This beautifully written **About EMACS** section credits to [Remacs](https://github.com/remacs/remacs).*
 
 Also if you want to read more about Emacs, checkout these articles
 
-- [Why You Should Buy Into the Emacs Platform](https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform)
-- [I use emacs because&#x2026;](https://www.reddit.com/r/emacs/comments/hmtwbt/i_use_emacs_because/)
+-   [Why You Should Buy Into the Emacs Platform](https://two-wrongs.com/why-you-should-buy-into-the-emacs-platform)
+-   [I use emacs because&#x2026;](https://www.reddit.com/r/emacs/comments/hmtwbt/i_use_emacs_because/)
+
 
 ## Editor comparison
 
@@ -49,13 +51,16 @@ Also this graph by[ tecosaur](https://github.com/tecosaur/emacs-config/blob/mast
 
 [Tecosaur&rsquo;s config](https://tecosaur.github.io/emacs-config/config.html)
 
+
 # About my config
 
 This Emacs config is a work of many hours painful polishing and trying to create a perfect work environment.
 
+
 ## Contribution
 
 If you spotted a bug or you have any suggestions, please fill in an issue. If you have something to fix, feel free to create a pull request.
+
 
 ## Installation
 
@@ -63,15 +68,17 @@ Use the install directions from [Doom Emacs](https://github.com/hlissner/doom-em
 
 For specific instructions use `devfile.toml`.
 
+
 ## License
 
 You have the permission to use, modify, distribute in any way you want.
 
-However, what is _free_ stays _free_. After all, this is [GPL](LICENSE.md).
+However, what is *free* stays *free*. After all, this is [GPL](LICENSE.md).
 
 All the files inside the `doom.d` is licensed under the terms of GNU GENERAL PUBLIC LICENSE Version 3.
 
 For more information [read the license](LICENSE.md).
+
 
 ## Repository mirroring
 
@@ -79,34 +86,43 @@ For more information [read the license](LICENSE.md).
 
 [My Doom Emacs config on Github](https://github.com/justinekizhak/dotfiles/tree/master/emacs/doom.d) (Mirror)
 
+
 ## Screenshots
+
 
 ### Dashboard
 
 ![img](./images/dashboard.png)
 
+
 ### Org mode
 
 ![img](./images/org-mode.png)
+
 
 ### Python mode
 
 ![img](./images/python-mode.png)
 
+
 ## Some helper guide
 
+
 ### [Doom Emacs Workflows](https://noelwelsh.com/posts/2019-01-10-doom-emacs.html)
+
 
 ## Sorting the headlines
 
 To sort the headers in this file run `M-x org-sort-entries` and select alphabetically order.
 
+
 ## Special Thanks
 
 Everyone starts somewhere, and I started here.
 
-- [MatthewZMD](https://github.com/MatthewZMD/.emacs.d)
-- [Henrik Lissner&rsquo;s Doom Emacs](https://github.com/hlissner/doom-emacs)
+-   [MatthewZMD](https://github.com/MatthewZMD/.emacs.d)
+-   [Henrik Lissner&rsquo;s Doom Emacs](https://github.com/hlissner/doom-emacs)
+
 
 # Lexical Binding
 
@@ -118,6 +134,7 @@ Use lexical-binding. [Why?](https://nullprogram.com/blog/2016/12/22/)
 ;;; config.el --- -*- lexical-binding: t -*-
 ```
 
+
 # Personal Information
 
 Let&rsquo;s set some variables with basic user information.
@@ -127,7 +144,9 @@ Let&rsquo;s set some variables with basic user information.
       user-mail-address "justine@kizhak.com")
 ```
 
+
 # Defining constants
+
 
 ## Are we running on a GNU/Linux system?
 
@@ -136,12 +155,14 @@ Let&rsquo;s set some variables with basic user information.
   (eq system-type 'gnu/linux))
 ```
 
+
 ## Are we running on a GUI Emacs?
 
 ```emacs-lisp
 (defconst *sys/gui*
   (display-graphic-p))
 ```
+
 
 ## Are we running on a Mac system?
 
@@ -150,6 +171,7 @@ Let&rsquo;s set some variables with basic user information.
   (eq system-type 'darwin))
 ```
 
+
 ## Are we running on a WinTel system?
 
 ```emacs-lisp
@@ -157,12 +179,22 @@ Let&rsquo;s set some variables with basic user information.
   (eq system-type 'windows-nt))
 ```
 
+
 ## Are you a ROOT user?
 
 ```emacs-lisp
 (defconst *sys/root*
   (string-equal "root" (getenv "USER")))
 ```
+
+
+## Do we have python3?
+
+```emacs-lisp
+(defconst *python3*
+  (executable-find "python3"))
+```
+
 
 ## Check basic requirements for EAF to run.
 
@@ -173,6 +205,7 @@ Let&rsquo;s set some variables with basic user information.
        (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
 ```
 
+
 ## Do we have clangd?
 
 ```emacs-lisp
@@ -181,12 +214,14 @@ Let&rsquo;s set some variables with basic user information.
       (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
 ```
 
+
 ## Do we have gcc?
 
 ```emacs-lisp
 (defconst *gcc*
   (executable-find "gcc"))
 ```
+
 
 ## Do we have git?
 
@@ -195,12 +230,14 @@ Let&rsquo;s set some variables with basic user information.
   (executable-find "git"))
 ```
 
+
 ## Do we have Maven?
 
 ```emacs-lisp
 (defconst *mvn*
   (executable-find "mvn"))
 ```
+
 
 ## Do we have pdflatex?
 
@@ -209,12 +246,6 @@ Let&rsquo;s set some variables with basic user information.
   (executable-find "pdflatex"))
 ```
 
-## Do we have python3?
-
-```emacs-lisp
-(defconst *python3*
-  (executable-find "python3"))
-```
 
 ## Do we have python?
 
@@ -223,6 +254,7 @@ Let&rsquo;s set some variables with basic user information.
   (executable-find "python"))
 ```
 
+
 ## Do we have ripgrep?
 
 ```emacs-lisp
@@ -230,12 +262,14 @@ Let&rsquo;s set some variables with basic user information.
   (executable-find "rg"))
 ```
 
+
 ## Do we have tr?
 
 ```emacs-lisp
 (defconst *tr*
   (executable-find "tr"))
 ```
+
 
 # Some Emacs defaults
 
@@ -261,7 +295,9 @@ Let&rsquo;s set some variables with basic user information.
 
 ```
 
+
 # Better editing experience
+
 
 ## Automatically refreshes the buffer for changes outside of Emacs
 
@@ -278,6 +314,7 @@ Auto refreshes every 2 seconds. Don’t forget to refresh the version control st
         auto-revert-verbose nil))
 ```
 
+
 ## Confirm kill process
 
 Don’t bother confirming killing processes
@@ -289,6 +326,7 @@ Don’t bother confirming killing processes
   (setq confirm-kill-processes nil))
 ```
 
+
 ## Disable scroll bar
 
 ```emacs-lisp
@@ -297,6 +335,7 @@ Don’t bother confirming killing processes
   :ensure nil
   :config (scroll-bar-mode -1))
 ```
+
 
 ## History
 
@@ -328,6 +367,7 @@ Don’t bother confirming killing processes
 (setq-default history-length 500)
 ```
 
+
 ## Modernize selection behavior
 
 Replace the active region just by typing text, just like modern editors
@@ -343,6 +383,7 @@ Replace the active region just by typing text, just like modern editors
 (setq delete-selection-mode t)
 ```
 
+
 ## Show matching parentheses
 
 Reduce the highlight delay to instantly.
@@ -355,7 +396,9 @@ Reduce the highlight delay to instantly.
   :config (show-paren-mode +1))
 ```
 
+
 # Appearance
+
 
 ## Dashboard with images
 
@@ -366,6 +409,7 @@ Use the image in the dotfiles folder as the dashboard splash image
            ;; Crypto logo
            (setq fancy-splash-image "~/dotfiles/emacs/doom.d/images/crypto.png"))
 ```
+
 
 ## Setting up some frame defaults
 
@@ -378,9 +422,12 @@ Maximize the frame by default on start-up. Set the font to BlexMono, if BlexMono
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 ```
 
+
 # Custom Keybinding
 
+
 ## Window management
+
 
 ### Jump to any window using `SPC w M-w`
 
@@ -400,11 +447,13 @@ Bind `SPC w M-w` for Ace window
         :desc "Jump to any window using Ace" "M-w" #'ace-window))
 ```
 
+
 ## ⌘ + a → Select all
 
 ```emacs-lisp
 (map! "M-a" #'mark-whole-buffer)
 ```
+
 
 ## ⌘ + s → Save file
 
@@ -412,13 +461,16 @@ Bind `SPC w M-w` for Ace window
 (map! "M-s" #'save-buffer)
 ```
 
+
 ## ⌘ + v → Paste menu
 
 ```emacs-lisp
 (map! "M-v" #'counsel-yank-pop)
 ```
 
+
 # Packages
+
 
 ## Ace-popup
 
@@ -426,6 +478,7 @@ Bind `SPC w M-w` for Ace window
 (use-package ace-popup-menu
   :defer t)
 ```
+
 
 ## Annotate
 
@@ -437,17 +490,20 @@ This package provides a minor mode annotate-mode, which can add annotations to a
 (use-package annotate)
 ```
 
+
 ## Apex Legends title
 
 Use a random quote of a character from [Apex Legends](https://www.ea.com/games/apex-legends/play-now-for-free) as your frame title.
 
 Requires [Apex Legends voicelines](https://pypi.org/project/apex-legends-voicelines/) python package.
 
+
 ### Install the package using
 
 ```sh
 pipx install apex-legends-voicelines
 ```
+
 
 ### Usage
 
@@ -461,6 +517,7 @@ This command requires `apex-legends-voicelines' python package."
   (setq frame-title-format (shell-command-to-string "apex-voicelines")))
 ```
 
+
 ## Atomic chrome
 
 Edit browser text in Emacs
@@ -472,11 +529,13 @@ Edit browser text in Emacs
                                     (atomic-chrome-start-server))))
 ```
 
+
 ## Clipmon
 
 ```emacs-lisp
 (add-to-list 'after-init-hook 'clipmon-mode-start)
 ```
+
 
 ## Dired
 
@@ -517,7 +576,9 @@ Edit browser text in Emacs
                                  (lambda () (interactive) (find-alternate-file ".."))))))
 ```
 
+
 ## Drag lines
+
 
 ### Vertically
 
@@ -527,6 +588,7 @@ Edit browser text in Emacs
     :n "M-j" #'drag-stuff-down)  ; drags line down
 ```
 
+
 ### Horizontally
 
 ```emacs-lisp
@@ -535,6 +597,7 @@ Edit browser text in Emacs
     :n "M-l" #'evil-org->       ; indents line to left
     :n "M-h" #'evil-org-<))      ; indents line to right
 ```
+
 
 ## Easy escape
 
@@ -549,6 +612,7 @@ Now no more double backslash hell. [Github repo](https://github.com/cpitclaudel/
     (set-face-attribute 'easy-escape-face nil :foreground "red"))
 ```
 
+
 ## Evil snipe
 
 ```emacs-lisp
@@ -559,6 +623,7 @@ Now no more double backslash hell. [Github repo](https://github.com/cpitclaudel/
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
 ```
+
 
 ## EWW
 
@@ -578,6 +643,7 @@ Emacs Web Wowser, the HTML-based Emacs Web Browser.
     (setq browse-url-browser-function 'eww-browse-url))) ; Hit & to browse url with system browser
 ```
 
+
 ## Flycheck
 
 Flycheck, a syntax checking extension.
@@ -593,6 +659,7 @@ Flycheck, a syntax checking extension.
   (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
 ```
 
+
 ## Go to line preview
 
 ```emacs-lisp
@@ -601,6 +668,7 @@ Flycheck, a syntax checking extension.
   :config
     (global-set-key [remap goto-line] 'goto-line-preview))
 ```
+
 
 ## HTMLize
 
@@ -611,12 +679,14 @@ HTMLize, a tool that converts buffer text and decorations to HTML
   :defer t)
 ```
 
+
 ## Hydra
 
 ```emacs-lisp
 (use-package hydra
   :defer t)
 ```
+
 
 ## Iedit
 
@@ -627,6 +697,7 @@ Iedit, a minor mode that allows editing multiple regions simultaneously in a buf
   :defer t
   :diminish)
 ```
+
 
 ## Indent tools
 
@@ -639,12 +710,14 @@ Indent, move around and act on code based on indentation (yaml, python, jade, et
   :bind ("C-c >" . #'indent-tools-hydra/body))
 ```
 
+
 ## LSP
 
 ```emacs-lisp
 (setq lsp-ui-doc-max-height 30)
 (setq lsp-ui-doc-max-width 150)
 ```
+
 
 ## Org mode
 
@@ -670,6 +743,7 @@ Don&rsquo;t display images in a org file which has images. To show image `M-x` `
   (setq org-ellipsis "⬎"))
    ;; ➡, ⚡, ▼, ↴, , ∞, ⬎, ⤷, ⤵
 ```
+
 
 ### Better reading experience
 
@@ -727,6 +801,7 @@ Taken from[ Beautifying Org Mode in Emacs by zzamboni](https://zzamboni.org/post
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 ```
+
 
 ### Org agenda
 
@@ -786,6 +861,7 @@ Copied from [psamim&rsquo;s config](https://github.com/psamim/dotfiles/blob/mast
                                                     "      " "┈┈┈┈┈┈┈┈┈┈┈┈┈")))))))))
 ```
 
+
 ### Org bullets
 
 Better bullets for org mode.
@@ -798,6 +874,7 @@ Better bullets for org mode.
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 ```
 
+
 ### Org LaTeX
 
 Use color links when exported from Org to Latex
@@ -805,6 +882,7 @@ Use color links when exported from Org to Latex
 ```emacs-lisp
 (setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
 ```
+
 
 ### Org Reveal
 
@@ -816,6 +894,7 @@ Use color links when exported from Org to Latex
     (setq org-reveal-mathjax t))
 ```
 
+
 ### Ox-gfm
 
 Github Flavored Markdown exporter for Org Mode
@@ -824,6 +903,7 @@ Github Flavored Markdown exporter for Org Mode
 (use-package ox-gfm
   :defer 3)
 ```
+
 
 ### Org ref
 
@@ -851,12 +931,14 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
     (start-process "open" "*open*" "open" fpath)))
 ```
 
+
 ## Parinfer
 
 ```emacs-lisp
 (use-package parinfer
   :defer t)
 ```
+
 
 ## Pipenv
 
@@ -865,6 +947,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
   :defer t)
 ```
 
+
 ## PlantUML
 
 ```emacs-lisp
@@ -872,12 +955,14 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
   :defer t)
 ```
 
+
 ## Powerthesaurus
 
 ```emacs-lisp
 (use-package powerthesaurus
   :defer t)
 ```
+
 
 ### Keybinding
 
@@ -887,6 +972,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
         :desc "Use powerthesaurus to fetch better word" "p" #'powerthesaurus-lookup-word-dwim))
 ```
 
+
 ## Projectile
 
 ```emacs-lisp
@@ -894,6 +980,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
   :config
     (setq  projectile-project-search-path '("~/projects")))
 ```
+
 
 ## Ripgrep
 
@@ -906,12 +993,14 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
         :desc "Open Ripgrep interface" "r" #'deadgrep)))
 ```
 
+
 ## String-inflection
 
 ```emacs-lisp
 (use-package string-inflection
   :defer t)
 ```
+
 
 ### Keybinding
 
@@ -921,6 +1010,7 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
         :desc "Cycle through string case using String-inflection" "c" #'string-inflection-all-cycle))
 ```
 
+
 ## Treemacs magit
 
 ```emacs-lisp
@@ -928,6 +1018,22 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
   :defer t
   :after (treemacs magit))
 ```
+
+
+## Magit
+
+```emacs-lisp
+(setq-default magit-process-password-prompt-regexps
+  '("^\\(Enter \\)?[Pp]assphrase\\( for \\(RSA \\)?key '.*'\\)?: ?$"
+    ;; Match-group 99 is used to identify the "user@host" part.
+    "^\\(Enter \\)?[Pp]assword\\( for '\\(https?://\\)?\\(?99:.*\\)'\\)?: ?$"
+    ;; Pinentry Curses box in the terminal when used with GnuPG
+    "Please enter the passphrase for the ssh key"
+    "^.*'s password: ?$"
+    "^Yubikey for .*: ?$"
+    "^Enter PIN for .*: ?$"))
+```
+
 
 ## Undo tree
 
@@ -941,13 +1047,16 @@ Undo tree, a feature that provides a visualization of the undos in a file.
   (undo-tree-visualizer-timestamps t))
 ```
 
+
 ## VTerm
+
 
 ### Add clickable links inside terminal
 
 ```emacs-lisp
 (add-hook 'vterm-mode-hook #'goto-address-mode)
 ```
+
 
 ### Vterm paste using vim keybind
 
@@ -957,7 +1066,9 @@ Undo tree, a feature that provides a visualization of the undos in a file.
       :n "p" #'vterm-yank)
 ```
 
+
 ## Web development
+
 
 ### Web mode
 
@@ -979,12 +1090,13 @@ Web mode, a major mode for editing web templates.
    web-mode-css-indent-offset 2))
 ```
 
+
 ### JavaScript/TypeScript
 
 1.  JavaScript2 Mode
 
     JS2 mode, a feature that offers improved JavsScript editing mode.
-
+    
     ```emacs-lisp
     (use-package js2-mode
       :defer 3
@@ -995,13 +1107,14 @@ Web mode, a major mode for editing web templates.
 2.  TypeScript Mode
 
     TypeScript mode, a feature that offers TypeScript support for Emacs.
-
+    
     ```emacs-lisp
     (use-package typescript-mode
       :defer 3
       :mode "\\.ts\\'"
       :commands (typescript-mode))
     ```
+
 
 ### Prettier
 
@@ -1010,6 +1123,7 @@ Web mode, a major mode for editing web templates.
   :defer 3
   :hook js2-mode)
 ```
+
 
 ### Emmet
 
@@ -1021,6 +1135,7 @@ Emmet, a feature that allows writing HTML using CSS selectors along with C-j. Se
   :hook ((web-mode . emmet-mode)
          (css-mode . emmet-mode)))
 ```
+
 
 ### Instant Rename Tag
 
@@ -1036,6 +1151,7 @@ Instant Rename Tag, a plugin that provides ability to rename html tag pairs inst
           :desc "Instantly rename opening/closing HTML tag" "o" #'instant-rename-tag)))
 ```
 
+
 ### JSON
 
 JSON Mode, a major mode for editing JSON files.
@@ -1045,6 +1161,7 @@ JSON Mode, a major mode for editing JSON files.
   :defer 3
   :mode "\\.json\\'")
 ```
+
 
 ### Web beautify
 
@@ -1062,17 +1179,21 @@ JSON Mode, a major mode for editing JSON files.
                (add-hook 'before-save-hook 'prettier-js-mode))))
 ```
 
+
 ### VueJS
 
 ```emacs-lisp
 (add-hook 'vue-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
-(delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
+;; (delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
 
 (use-package vue-mode
   :defer 1
-  :mode "\\.vue\\'")
-(with-eval-after-load 'lsp-mode
-  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
+ :mode "\\.vue\\'"
+    :custom
+    (mmm-submode-decoration-level 0)
+    (vue-html-extra-indent 2))
+;; (with-eval-after-load 'lsp-mode
+;;   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
 ```
 
 1.  Prettier
@@ -1084,13 +1205,16 @@ JSON Mode, a major mode for editing JSON files.
                    (add-hook 'before-save-hook 'prettier-js-mode))))
     ```
 
+
 # Languages
+
 
 ## Dart
 
 ```emacs-lisp
 (add-hook 'dart-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
 ```
+
 
 ## Emacs lisp
 
@@ -1103,6 +1227,7 @@ JSON Mode, a major mode for editing JSON files.
 (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode)
 ```
 
+
 ## Markdown
 
 On save refresh markdown table of contents.
@@ -1113,6 +1238,7 @@ On save refresh markdown table of contents.
                        (add-hook 'before-save-hook
                                  'markdown-toc-refresh-toc))))
 ```
+
 
 ## Python
 
@@ -1125,6 +1251,7 @@ Adding TabNine completion to buffer
   :custom
   (python-indent-offset 4))
 ```
+
 
 ## TeX
 
@@ -1155,6 +1282,7 @@ Adding TabNine completion to buffer
     (add-hook LaTeX-mode-hook #'display-line-numbers-mode)))
 ```
 
+
 ## YAML
 
 ```emacs-lisp
@@ -1166,7 +1294,9 @@ Adding TabNine completion to buffer
   :commands (yaml-mode))
 ```
 
+
 # Other config
+
 
 ## Backup
 
@@ -1177,6 +1307,7 @@ Adding TabNine completion to buffer
 ;; Backup by copying
 (setq backup-by-copying t)
 ```
+
 
 ### Auto save files when Emacs is out of focus
 
@@ -1192,6 +1323,7 @@ Version 2019-11-05"
 ;; when switching out of emacs, all unsaved files will be saved
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
 ```
+
 
 ## Create a paste-transient-state to cycle through kill ring on paste
 
@@ -1212,6 +1344,7 @@ Refer [doom docs on paste transient](https://github.com/hlissner/doom-emacs/blob
       :nv "P" #'hydra-paste/evil-paste-before)
 ```
 
+
 ## Refresh file automatically
 
 When a file is updated outside emacs, make it update if it&rsquo;s already opened in emacs
@@ -1222,13 +1355,16 @@ Ref: <http://ergoemacs.org/emacs/emacs_misc_init.html>
 (global-auto-revert-mode 1)
 ```
 
+
 ## Use Command key as meta key (Only on MacOS)
 
 ```emacs-lisp
 (setq mac-command-modifier 'meta)
 ```
 
+
 # Post Initialization
+
 
 ## Play startup music
 
@@ -1256,7 +1392,9 @@ Play Apex Legends music when booting up Emacs.
                                     (run-crypto-music))))
 ```
 
+
 # Fun stuffs
+
 
 ## Play some music
 
