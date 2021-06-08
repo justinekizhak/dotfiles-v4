@@ -1,3 +1,12 @@
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by all invocations of the shell
+#
+
+# Define Zim location
+: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/dotfiles/zsh/zim}
+# }}} End configuration added by Zim install
+
 # -----------------------------------------------------------------------------
 # Copyright (c) 2019, Justine Kizhakkinedath
 # All rights reserved
@@ -12,7 +21,7 @@
 #
 
 # Define Zim location
-: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
+# : ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
 # }}} End configuration added by Zim install
 
 # Settings
@@ -26,6 +35,10 @@ export GPG_TTY=$(tty)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export GIT_SUBREPO_VERBOSE=True
 export PRELUDE_INSTALL_DIR="$HOME/prelude"
+export DENO_INSTALL="/home/justine/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+# export PATH=$HOME/bin:$PATH
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 
 add_to_path () {
     if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
@@ -44,6 +57,7 @@ add_to_path "$HOME/doom-emacs/bin"
 add_to_path "$HOME/.poetry/bin"
 add_to_path "$HOME/app_binaries"
 add_to_path "/usr/local/opt/python@3.8/bin"
+add_to_path "$HOME/bin"
 
 # . "$HOME/git-subrepo/.rc"
 
@@ -52,3 +66,9 @@ if [ -f '/Users/justinkizhakkinedath/Downloads/google-cloud-sdk/path.zsh.inc' ];
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/justinkizhakkinedath/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/justinkizhakkinedath/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+export DISPLAY=192.168.1.100:0
+export LIBGL_ALWAYS_INDIRECT=1
+
+alias ec="emacsclient -c -a '' -n"

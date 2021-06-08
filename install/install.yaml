@@ -1,0 +1,66 @@
+Vim:
+  - brew install neovim
+  - ln -sf ~/dotfiles/vim/vimrc.vim ~/.vimrc
+  - mkdir -p $HOME/.vim/undo
+
+Rust:
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  - rustup toolchain add nightly
+  - cargo +nightly install racer
+  - rustup component add rust-src
+
+Emacs:
+  - brew install git clang ripgrep fd coreutils
+  - brew tap d12frosted/emacs-plus
+  - brew install emacs-plus
+  - mkdir -p ~/.emacs-saves ~/.emacs-undo
+  - Spacemacs:
+      - brew install aspell
+      - git clone -b develop https://github.com/syl20bnr/spacemacs ~/.emacs.d
+      - rm -rf ~/.spacemacs && ln -sf ~/dotfiles/emacs/spacemacs.el ~/.spacemacs
+  - Doom emacs:
+      # backup your existing config or maybe just delete it
+      - mv ~/.emacs.d ~/.emacs.d.bak
+      - git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+      - ~/.emacs.d/bin/doom install
+      - ln -sf ~/dotfiles/emacs/doom.d ~/.doom.d
+  - GPG key signing:
+      - brew install pinentry pinentry-mac
+      - Follow the instructions on https://gitlab.com/help/user/project/repository/gpg_signed_commits/index.md
+
+Zsh:
+  - brew install zsh
+  - sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells' && chsh -s $(which zsh)
+  - ln -sf ~/dotfiles/zsh/zshrc_manager.sh ~/.zshrc
+  - ln -sf ~/dotfiles/zsh/zimrc.sh ~/.zimrc
+  - ln -sf ~/dotfiles/zsh/zlogin.sh ~/.zlogin
+  - ln -sf ~/dotfiles/zsh/zshenv.sh ~/.zshenv
+
+Tmux:
+  - brew install tmux reattach-to-user-namespace
+  - ln -sf ~/dotfiles/tmux/tmux_manager.conf ~/.tmux.conf
+
+Vim plugins:
+  - curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  - vim -c 'PlugInstall' -c 'qa!'
+  - ~/dotfiles/vim/install_cmdT.sh
+  - ~/dotfiles/vim/install_ycm.sh
+  - brew install clang-format
+
+System Python:
+  - brew prune
+  - brew install python
+  - pip install -r ~/dotfiles/install/sys_python_req.txt
+
+Homebrew:
+  - /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Brew packages:
+  - brew install $(cat ~/dotfiles/install/my_brews.txt)
+
+VSCode:
+  - Install "Settings sync" by "Shan Khan" https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
+  - Press Shift + Alt + D it will ask your GitHub Gist ID.
+  - Generate a new GitHub token and enter.
+  - Enter Your Gist ID. Gist ID ---> 9daeed44c74f3ed7434f939ed07958d1
+  - Settings Downloaded.

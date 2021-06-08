@@ -190,6 +190,13 @@ Let's set some variables with basic user information.
   (string-equal "root" (getenv "USER")))
 #+END_SRC
 
+** Do we have python3?
+
+#+BEGIN_SRC emacs-lisp
+(defconst *python3*
+  (executable-find "python3"))
+#+END_SRC
+
 ** Check basic requirements for EAF to run.
 
 #+BEGIN_SRC emacs-lisp
@@ -233,13 +240,6 @@ Let's set some variables with basic user information.
 #+BEGIN_SRC emacs-lisp
 (defconst *pdflatex*
   (executable-find "pdflatex"))
-#+END_SRC
-
-** Do we have python3?
-
-#+BEGIN_SRC emacs-lisp
-(defconst *python3*
-  (executable-find "python3"))
 #+END_SRC
 
 ** Do we have python?
@@ -957,6 +957,19 @@ Citations, cross-references, indexes, glossaries and bibtex utilities for org-mo
   :after (treemacs magit))
 #+END_SRC
 
+** Magit
+#+BEGIN_SRC emacs-lisp
+(setq-default magit-process-password-prompt-regexps
+  '("^\\(Enter \\)?[Pp]assphrase\\( for \\(RSA \\)?key '.*'\\)?: ?$"
+    ;; Match-group 99 is used to identify the "user@host" part.
+    "^\\(Enter \\)?[Pp]assword\\( for '\\(https?://\\)?\\(?99:.*\\)'\\)?: ?$"
+    ;; Pinentry Curses box in the terminal when used with GnuPG
+    "Please enter the passphrase for the ssh key"
+    "^.*'s password: ?$"
+    "^Yubikey for .*: ?$"
+    "^Enter PIN for .*: ?$"))
+#+END_SRC
+
 ** Undo tree
 
 Undo tree, a feature that provides a visualization of the undos in a file.
@@ -1094,13 +1107,7 @@ JSON Mode, a major mode for editing JSON files.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'vue-mode-hook #'lsp-deferred)  ;; Add lsp support to dart
-(delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
-
-(use-package vue-mode
-  :defer t
-  :mode "\\.vue\\'")
-(with-eval-after-load 'lsp-mode
-  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
+;; (delete '("\\.vue\\'". web-mode) auto-mode-alist)  ;;; Remove web-mode from vue files and then add vue mode to it
 #+END_SRC
 
 **** Prettier
@@ -1282,6 +1289,7 @@ Play Apex Legends music when booting up Emacs.
                                     (run-crypto-music))))
 #+END_SRC
 * Fun stuffs
+
 ** Play some music
 
 #+BEGIN_SRC emacs-lisp

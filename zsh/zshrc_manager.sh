@@ -1,39 +1,3 @@
-# -----------------------------------------------------------------------------
-# Created: Sun 15 Jul 2018 14:58:36 IST
-# Last-Updated: Wed 23 Oct 2019 18:19:52 IST
-#
-# zshrc_manager.sh is part of dotfiles
-# URL: https://gitlab.com/justinethomas/dotfiles
-# Description: This is the file that is symlinked to the ~/.zshrc and this
-# file sources other files.
-#
-# Copyright (c) 2018, Justine T Kizhakkinedath
-# All rights reserved
-#
-# Licensed under the terms of MIT License
-# See LICENSE file in the project root for full information.
-# -----------------------------------------------------------------------------
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
-# OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# -----------------------------------------------------------------------------
-
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells
@@ -127,8 +91,8 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # Initialize modules
 # ------------------
 
-if [[ ${ZIM_HOME}/init.zsh -ot ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
-  # Update static initialization script if it's outdated, before sourcing it
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  # Update static initialization script if it does not exist or it's outdated, before sourcing it
   source ${ZIM_HOME}/zimfw.zsh init -q
 fi
 source ${ZIM_HOME}/init.zsh
@@ -158,6 +122,41 @@ bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 # }}} End configuration added by Zim install
 
+# -----------------------------------------------------------------------------
+# Created: Sun 15 Jul 2018 14:58:36 IST
+# Last-Updated: Wed 23 Oct 2019 18:19:52 IST
+#
+# zshrc_manager.sh is part of dotfiles
+# URL: https://gitlab.com/justinethomas/dotfiles
+# Description: This is the file that is symlinked to the ~/.zshrc and this
+# file sources other files.
+#
+# Copyright (c) 2018, Justine T Kizhakkinedath
+# All rights reserved
+#
+# Licensed under the terms of MIT License
+# See LICENSE file in the project root for full information.
+# -----------------------------------------------------------------------------
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+# OR OTHER DEALINGS IN THE SOFTWARE.
+#
+# -----------------------------------------------------------------------------
 
 # # Profiling
 # zmodload zsh/zprof
@@ -172,7 +171,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 . "$HOME/dotfiles/zsh/custom_functions.sh"
 . "$HOME/dotfiles/zsh/keybindings.sh"
 . "$HOME/dotfiles/zsh/zshrc.sh"
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

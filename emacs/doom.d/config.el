@@ -1,6 +1,41 @@
 ;;; config.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
+
+(defconst *sys/linux*
+  (eq system-type 'gnu/linux))
+(defconst *sys/gui*
+  (display-graphic-p))
+(defconst *sys/mac*
+  (eq system-type 'darwin))
+(defconst *sys/win32*
+  (eq system-type 'windows-nt))
+(defconst *sys/root*
+  (string-equal "root" (getenv "USER")))
+(defconst *python3*
+  (executable-find "python3"))
+(defconst *eaf-env*
+  (and *sys/linux* *sys/gui* *python3*
+       (executable-find "pip")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
+(defconst *clangd*
+  (or (executable-find "clangd")  ;; usually
+      (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
+(defconst *gcc*
+  (executable-find "gcc"))
+(defconst *git*
+  (executable-find "git"))
+(defconst *mvn*
+  (executable-find "mvn"))
+(defconst *pdflatex*
+  (executable-find "pdflatex"))
+(defconst *python*
+  (executable-find "python"))
+(defconst *rg*
+  (executable-find "rg"))
+(defconst *tr*
+  (executable-find "tr"))
+
 (use-package emacs
   :preface
   (defvar ian/indent-width 2) ; change this value to your preferred width
@@ -123,6 +158,15 @@ This command requires `apex-legends-voicelines' python package."
 (use-package treemacs-magit
   :defer t
   :after (treemacs magit))
+(setq-default magit-process-password-prompt-regexps
+  '("^\\(Enter \\)?[Pp]assphrase\\( for \\(RSA \\)?key '.*'\\)?: ?$"
+    ;; Match-group 99 is used to identify the "user@host" part.
+    "^\\(Enter \\)?[Pp]assword\\( for '\\(https?://\\)?\\(?99:.*\\)'\\)?: ?$"
+    ;; Pinentry Curses box in the terminal when used with GnuPG
+    "Please enter the passphrase for the ssh key"
+    "^.*'s password: ?$"
+    "^Yubikey for .*: ?$"
+    "^Enter PIN for .*: ?$"))
 (use-package undo-tree
   :defer t
   :custom
