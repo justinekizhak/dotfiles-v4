@@ -1,6 +1,39 @@
 ;;; config.el --- -*- lexical-binding: t -*-
 (setq user-full-name "Justine Kizhakkinedath"
       user-mail-address "justine@kizhak.com")
+(defconst *sys/linux*
+  (eq system-type 'gnu/linux))
+(defconst *sys/gui*
+  (display-graphic-p))
+(defconst *sys/mac*
+  (eq system-type 'darwin))
+(defconst *sys/win32*
+  (eq system-type 'windows-nt))
+(defconst *sys/root*
+  (string-equal "root" (getenv "USER")))
+(defconst *python3*
+  (executable-find "python3"))
+(defconst *eaf-env*
+  (and *sys/linux* *sys/gui* *python3*
+       (executable-find "pip")
+       (not (equal (shell-command-to-string "pip freeze | grep '^PyQt\\|PyQtWebEngine'") ""))))
+(defconst *clangd*
+  (or (executable-find "clangd")  ;; usually
+      (executable-find "/usr/local/opt/llvm/bin/clangd")))  ;; macOS
+(defconst *gcc*
+  (executable-find "gcc"))
+(defconst *git*
+  (executable-find "git"))
+(defconst *mvn*
+  (executable-find "mvn"))
+(defconst *pdflatex*
+  (executable-find "pdflatex"))
+(defconst *python*
+  (executable-find "python"))
+(defconst *rg*
+  (executable-find "rg"))
+(defconst *tr*
+  (executable-find "tr"))
 (use-package emacs
   :preface
   (defvar ian/indent-width 2) ; change this value to your preferred width
@@ -31,6 +64,14 @@
   :defer t
   :config
   (setq confirm-kill-processes nil))
+(use-package scroll-bar
+  :defer t
+  :ensure nil
+  :config (scroll-bar-mode -1))
+(use-package delsel
+  :disabled
+  :ensure nil
+  :config (delete-selection-mode +1))
 (setq delete-selection-mode t)
 (use-package paren
   :defer t
@@ -44,10 +85,15 @@
   :ensure t
   :config
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+(map! :leader
+      (:prefix ("w")
+        "C-w" nil))
+(map! :leader
+      (:prefix ("w" . "window")
+        :desc "Jump to any window using Ace" "M-w" #'ace-window))
 (map! "M-a" #'mark-whole-buffer)
 (map! "M-s" #'save-buffer)
 (map! "M-v" #'counsel-yank-pop)
-
 (setq frame-title-format (shell-command-to-string "apex-voicelines"))
 
 (defun change-emacs-title-apex ()
@@ -55,8 +101,7 @@
 This command requires `apex-legends-voicelines' python package."
   (interactive)
   (setq frame-title-format (shell-command-to-string "apex-voicelines")))
-
-;; (add-to-list 'after-init-hook 'clipmon-mode-start)
+(add-to-list 'after-init-hook 'clipmon-mode-start)
 (map!
     :n "M-k" #'drag-stuff-up    ; drags line up
     :n "M-j" #'drag-stuff-down)  ; drags line down
@@ -68,7 +113,6 @@ This command requires `apex-legends-voicelines' python package."
   :defer t
   :config
     (set-face-attribute 'easy-escape-face nil :foreground "red"))
-;;
 (use-package evil-snipe
   :defer t
   :config
@@ -79,9 +123,6 @@ This command requires `apex-legends-voicelines' python package."
   :defer t
   :config
     (global-set-key [remap goto-line] 'goto-line-preview))
-
-(use-package htmlize
-  :defer t)
 (use-package hydra
   :defer t)
 (use-package iedit
@@ -92,14 +133,148 @@ This command requires `apex-legends-voicelines' python package."
   :bind ("C-c >" . #'indent-tools-hydra/body))
 (setq lsp-ui-doc-max-height 30)
 (setq lsp-ui-doc-max-width 150)
+(use-package org
+  :defer t
+  :config
+  (setq org-startup-with-inline-images nil)
+  (setq org-startup-shrink-all-tables t)
+  (setq org-use-property-inheritance t)
+  (setq org-hide-emphasis-markers t)
+  ; Fix `org-cycle' bug
+  (map! :map org-mode-map
+        :n "<tab>" 'org-cycle)
+  ; Add plantUML
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (setq org-plantuml-jar-path "~/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+  ; Add graphviz
+  (add-to-list 'org-src-lang-modes  '("dot" . graphviz-dot))
+  (setq org-ellipsis "⬎"))
+   ;; ➡, ⚡, ▼, ↴, , ∞, ⬎, ⤷, ⤵
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
+(let* ((variable-tuple
+        (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+              ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+              ((x-list-fonts "Verdana")         '(:font "Verdana"))
+              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (headline           `(:inherit default :weight bold)))
+
+  (custom-theme-set-faces
+   'user
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.2))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.3))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.4))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "ETBembo" :height 160))))
+ '(fixed-pitch ((t ( :family "Fira Code" :height 160)))))
+
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
+
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 (setq org-agenda-files (list "~/org/project/" "~/org/todo.org"))
 
 (setq
   org-deadline-warning-days 7
   org-agenda-breadcrumbs-separator " ❱ "
   org-directory "~/org")
+(customize-set-value
+    'org-agenda-category-icon-alist
+    `(
+      ("work" "~/.doom.d/icons/money-bag.svg" nil nil :ascent center)
+      ("chore" "~/.doom.d/icons/loop.svg" nil nil :ascent center)
+      ("events" "~/.doom.d/icons/calendar.svg" nil nil :ascent center)
+      ("todo" "~/.doom.d/icons/checklist.svg" nil nil :ascent center)
+      ("walk" "~/.doom.d/icons/walk.svg" nil nil :ascent center)
+      ("solution" "~/.doom.d/icons/solution.svg" nil nil :ascent center)))
+(setq-hook! org-mode
+  org-log-done t
+  org-columns-default-format "%60ITEM(Task) %20TODO %10Effort(Effort){:} %10CLOCKSUM"
+  org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                ("STYLE_ALL" . "habit")))
+  org-archive-location "~/org/archive/todo.org.gpg::")
 
+(setq org-agenda-block-separator (string-to-char " "))
+
+(setq org-agenda-custom-commands
+      '(("o" "My Agenda"
+         ((todo "TODO" ()
+                      (org-agenda-overriding-header "\n⚡ Do Today:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format " %-2i %-15b")
+                      (org-agenda-todo-keyword-format ""))
+
+          (agenda "" (
+                      (org-agenda-start-day "+0d")
+                      (org-agenda-span 5)
+                      (org-agenda-overriding-header "⚡ Schedule:\n⎺⎺⎺⎺⎺⎺⎺⎺⎺")
+                      (org-agenda-repeating-timestamp-show-all nil)
+                      (org-agenda-remove-tags t)
+                      (org-agenda-prefix-format   "  %-3i  %-15b %t%s")
+                      (org-agenda-todo-keyword-format " ☐ ")
+                      (org-agenda-current-time-string "⮜┈┈┈┈┈┈┈ now")
+                      (org-agenda-scheduled-leaders '("" ""))
+                      (org-agenda-time-grid (quote ((daily today remove-match)
+                                                    (0900 1200 1500 1800 2100)
+                                                    "      " "┈┈┈┈┈┈┈┈┈┈┈┈┈")))))))))
+(use-package org-bullets
+  :defer t)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(setq org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}, \n colorlinks = true}\n")
+(use-package ox-reveal
+    :defer t
+    :config
+    (setq org-reveal-root "/Users/justinkizhakkinedath/revealjs")
+    (setq org-reveal-mathjax t))
+(use-package ox-gfm
+  :defer t)
+(use-package org-ref
+  :defer t
+  :config
+  (setq reftex-default-bibliography '("~/org/references.bib"))
+
+  ;; see org-ref for use of these variables
+  (setq org-ref-bibliography-notes "~/org/notes.org"
+        org-ref-default-bibliography '("~/org/references.bib")
+        org-ref-pdf-directory "~/org/bibtex-pdfs/"))
+
+(setq bibtex-completion-bibliography "~/org/references.bib"
+      bibtex-completion-library-path "~/org/bibtex-pdfs"
+      bibtex-completion-notes-path "~/org/helm-bibtex-notes")
+
+;; open pdf with system pdf viewer (works on mac)
+(setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (start-process "open" "*open*" "open" fpath)))
+(use-package parinfer
+  :defer t)
 (use-package powerthesaurus
   :defer t)
 (map! :leader
@@ -123,6 +298,15 @@ This command requires `apex-legends-voicelines' python package."
 (use-package treemacs-magit
   :defer t
   :after (treemacs magit))
+(setq-default magit-process-password-prompt-regexps
+  '("^\\(Enter \\)?[Pp]assphrase\\( for \\(RSA \\)?key '.*'\\)?: ?$"
+    ;; Match-group 99 is used to identify the "user@host" part.
+    "^\\(Enter \\)?[Pp]assword\\( for '\\(https?://\\)?\\(?99:.*\\)'\\)?: ?$"
+    ;; Pinentry Curses box in the terminal when used with GnuPG
+    "Please enter the passphrase for the ssh key"
+    "^.*'s password: ?$"
+    "^Yubikey for .*: ?$"
+    "^Enter PIN for .*: ?$"))
 (use-package undo-tree
   :defer t
   :custom
@@ -132,6 +316,9 @@ This command requires `apex-legends-voicelines' python package."
 (map! :map vterm-mode-map
       :n "P" #'vterm-yank
       :n "p" #'vterm-yank)
+(use-package json-mode
+  :defer t
+  :mode "\\.json\\'")
 ;; Enable backup
 (setq make-backup-files t)
 
@@ -141,7 +328,7 @@ This command requires `apex-legends-voicelines' python package."
   "Save all unsaved files. no ask.
 Version 2019-11-05"
   (interactive)
-  (save-some-buffers t))
+  (save-some-buffers t ))
 
 ;; when switching out of emacs, all unsaved files will be saved
 (add-hook 'focus-out-hook 'xah-save-all-unsaved)
